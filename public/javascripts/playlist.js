@@ -1,5 +1,7 @@
 var playSong = function() {
   var idx = $(this).attr("idx");
+  $(this).fadeOut("fast");
+  $(this).fadeIn("fast");
   console.log("play idx: "+idx);
 }
 var unmarkSong = function(element, oldColor) {
@@ -24,6 +26,9 @@ var markSong = function() {
 var removeSong = function() {
   var trElem = $(this).parents('tr.playlist-item');
   var idx = $(trElem).attr('idx');
+  $(trElem).fadeOut("slow", function() {
+      $(trElem).remove();
+  });
 
   console.log("Remove elem "+idx);
 }
