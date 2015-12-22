@@ -2,10 +2,10 @@
 
 <tr class="playlist-item" idx="@idx">
   <td>
-    <span class="step fi-minus-circle size-72 red" id="remove-song"></span>
+    @icon("fi-minus-circle", "remove-song")("step", "red")
     @if(title.isPlaying){
       <br/>
-      <span class="step fi-play size-72" id="actual-song-icon"></span>
+      @icon("fi-play", "actual-song-icon")("step")
     }
   </td>
   <td class="clickable-elem">@idx</td>

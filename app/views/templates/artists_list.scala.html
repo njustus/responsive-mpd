@@ -11,7 +11,9 @@
     @artists.map { x =>
       <tr>
         <td><a href="@fn(x)">@x</a></td>
-        <td><span class="fi-plus size-60 font-btn" id="add-to-playlist-btn"></span></td>
+        <td>
+          @icon("fi-plus", "add-to-playlist-btn")("font-btn")
+        </td>
       </tr>
     }
   </tbody>
