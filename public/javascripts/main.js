@@ -1,5 +1,14 @@
+var ENTER_KEY = 13;
+
 $(document).ready(function() {
   var bar = $('div.progress-meter');
+
+  // ==================== menuebar
+  $('li button#search-btn').on('click', searchPressed);
+  $('li input[type=search]').on('keypress', function(e) {
+    if(e.which == ENTER_KEY)
+      searchPressed();
+  });
 
   // ==================== playlist
   $('tr.playlist-item').on('dblclick', playSong);
@@ -18,3 +27,8 @@ $(document).ready(function() {
   $('span#repeat-btn').on('click', repeatPressed);
   $('span#shuffle-btn').on('click', shufflePressed);
 });
+
+var searchPressed = function() {
+  var key = $('li input[type=search]').val();
+  console.log("search for "+key);
+}
