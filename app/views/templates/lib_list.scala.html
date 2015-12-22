@@ -1,0 +1,20 @@
+@(artists:List[String], header:String)(fn: String => play.api.mvc.Call)
+
+<table>
+  <thead>
+    <tr>
+      <td>@header</td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    @artists.map { x =>
+      <tr>
+        <td><a href="@fn(x)">@x</a></td>
+        <td>
+          @icon("fi-plus", "add-to-playlist-btn")("font-btn")
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
