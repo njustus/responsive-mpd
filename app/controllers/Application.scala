@@ -36,19 +36,19 @@ class Application extends Controller {
     (artist, album) match {
       case (Some(art), Some(alb)) =>
         val filteredList = library.filter( x => x._1 == art && x._2 == alb ).map(_._2).sorted
-        val artistList = views.html.templates.artists_list(filteredList) { x =>
+        val artistList = views.html.templates.artists_list(filteredList, s"$art - $alb") { x =>
           controllers.routes.Application.lib(None, None)
         }
         Ok(views.html.lib(artistList))
       case (Some(art), None) =>
         val filteredList = library.filter( x => x._1 == art ).map(_._2).sorted
-        val artistList = views.html.templates.artists_list(filteredList) { x =>
+        val artistList = views.html.templates.artists_list(filteredList, art) { x =>
           controllers.routes.Application.lib(Some(art), Some(x))
         }
         Ok(views.html.lib(artistList))
       case _ =>
         val filteredList = library.map(_._1).sorted
-        val artistList = views.html.templates.artists_list(filteredList) { x =>
+        val artistList = views.html.templates.artists_list(filteredList, "Artist") { x =>
           controllers.routes.Application.lib(Some(x), None)
         }
         Ok(views.html.lib(artistList))

@@ -25,10 +25,5 @@ var removeSong = function() {
   var trElem = $(this).parents('tr.playlist-item');
   var idx = $(trElem).attr('idx');
 
-  var lines = $('table#playlist-table tbody').children('[marked=1]');
-  lines.push(trElem);
-  var idxes = lines.map(function() {
-    return $(this).attr('idx');
-  });
-  console.log(idxes);
+  console.log("Remove elem "+idx);
 }

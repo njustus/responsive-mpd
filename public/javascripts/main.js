@@ -4,7 +4,7 @@ $(document).ready(function() {
   // ==================== playlist
   $('tr.playlist-item').on('dblclick', playSong);
   $('td span#remove-song').on('click', removeSong);
-  $('tr.playlist-item').on('click', markSong);
+  //$('tr.playlist-item').on('click', markSong);
   //$('td span#save-playlist-btn').on('click')
 
   // ==================== playing line

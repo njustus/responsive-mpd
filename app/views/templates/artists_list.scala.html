@@ -1,15 +1,17 @@
-@(artists:List[String])(fn: String => play.api.mvc.Call)
+@(artists:List[String], header:String)(fn: String => play.api.mvc.Call)
 
 <table>
-  <!--<thead>
+  <thead>
     <tr>
+      <td>@header</td>
       <td></td>
     </tr>
-  </thead>-->
+  </thead>
   <tbody>
     @artists.map { x =>
       <tr>
         <td><a href="@fn(x)">@x</a></td>
+        <td><span class="fi-plus size-60 font-btn" id="add-to-playlist-btn"></span></td>
       </tr>
     }
   </tbody>

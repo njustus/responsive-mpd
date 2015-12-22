@@ -1,0 +1,17 @@
+@import templates._
+
+@()(implicit actualSong:Option[Title])
+
+@side("About", actualSong) {
+  <h1>About</h1>
+  <table>
+    <tr>
+      <td>Connected to</td>
+      <td>127.0.0.1:8734</td>
+    </tr>
+    <tr>
+      <td>Uptime</td>
+      <td>2:34</td>
+    </tr>
+  </table>
+}
