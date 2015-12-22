@@ -1,0 +1,13 @@
+@(title:String, actualSong:Option[Title])(content: Html)
+<!DOCTYPE html>
+
+<html lang="de">
+    <head>
+      @head(title)
+    </head>
+    <body>
+        @menu(title)
+        @play_line(actualSong)
+        @content
+    </body>
+</html>

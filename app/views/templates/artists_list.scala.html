@@ -1,0 +1,16 @@
+@(artists:List[String])(fn: String => play.api.mvc.Call)
+
+<table>
+  <!--<thead>
+    <tr>
+      <td></td>
+    </tr>
+  </thead>-->
+  <tbody>
+    @artists.map { x =>
+      <tr>
+        <td><a href="@fn(x)">@x</a></td>
+      </tr>
+    }
+  </tbody>
+</table>

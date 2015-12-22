@@ -1,0 +1,20 @@
+@import templates._
+@import models.Title
+
+@(titles:List[Title])(implicit actualSong:Option[Title])
+
+@side("Playlist", actualSong) {
+  <table id="playlist-table">
+    <thead>
+      <tr>
+        <td></td>
+        <td>#</td>
+        <td>Title</td>
+        <td>Length</td>
+      </tr>
+    </thead>
+    <tbody>
+      @titles.zipWithIndex.map(x => title_line(x._1, x._2))
+    </tbody>
+  </table>
+}

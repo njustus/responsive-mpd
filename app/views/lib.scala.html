@@ -1,0 +1,7 @@
+@import templates._
+
+@(list:Html)(implicit actualSong:Option[Title])
+
+@side("Library", actualSong) {
+  @list
+}

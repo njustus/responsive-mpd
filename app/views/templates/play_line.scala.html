@@ -1,0 +1,36 @@
+@(title:Option[Title])
+
+<div class="top-bar">
+  <div class="top-bar-left">
+    <ul class="vertical medium-horizontal menu">
+      <li><span class="fi-previous size-60 font-btn blue-on-hover" id="prev-btn"></span></li>
+      @if(title.isDefined && title.get.isPlaying){
+        <li><span class="fi-stop size-60 font-btn blue-on-hover" id="stop-btn"></span></li>
+      } else {
+        <li><span class="fi-play size-60 font-btn blue-on-hover" id="stop-btn"></span></li>
+      }
+      <li><span class="fi-next size-60 font-btn blue-on-hover" id="next-btn"></span></li>
+
+    @title match {
+      case Some(t) => {
+        <li class="actual-song-text">
+            @t.artist - @t.name
+        </li>
+      }
+      case None => {}
+    }
+
+    <li class="actual-song-text left-10-pt">Volume</li>
+    <li class="left-10-pt"><span class="fi-minus size-60 font-btn blue-on-hover" id="volume-minus-btn"></span></li>
+    <li id="volume-container">
+      <div class="progress" role="progressbar" tabindex="0"
+        aria-valuenow="50" aria-valuemin="0" aria-valuetext="50 percent" aria-valuemax="100">
+        <div class="progress-meter" style="width: 40%"></div>
+      </div>
+    </li>
+    <li class="left-10-pt"><span class="fi-plus size-60 font-btn blue-on-hover" id="volume-plus-btn"></span></li>
+    <li class="left-10-pt"><span class="fi-refresh size-60 font-btn blue-on-hover" id="repeat-btn"></span></li>
+    <li class="left-10-pt"><span class="fi-shuffle size-60 font-btn blue-on-hover" id="shuffle-btn"></span></li>
+  </ul>
+  </div>
+</div>

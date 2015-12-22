@@ -1,0 +1,30 @@
+@(activeSide:String)
+
+@defining(List(
+    "Playlist" -> controllers.routes.Application.index,
+    "Library" -> controllers.routes.Application.lib(None, None),
+    "About" -> controllers.routes.Application.index
+  )) { sides =>
+
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <ul class="vertical medium-horizontal menu">
+          @sides.map { case (name, route) =>
+            @if(name == activeSide) {
+              <li class="bold"><a href="@route">@name</a></li>
+            } else {
+              <li><a href="@route">@name</a></li>
+            }
+          }
+        </ul>
+      </div>
+      <div class="top-bar-right">
+      </div>
+      <div class="top-bar-right">
+        <ul class="menu">
+          <li><input type="search" placeholder="Search in DB"></li>
+          <li><button type="button" class="button">Search</button></li>
+        </ul>
+      </div>
+    </div>
+}
