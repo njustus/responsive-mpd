@@ -1,15 +1,12 @@
 @(title:Option[Title])
 
 @newIcon(iconname:String, id:String) = {
-  @icon(iconname, id)("font-btn", "blue-on-hover")
+  @icon(iconname, id, true)("font-btn", "blue-on-hover")
 }
 <div class="top-bar">
   <div class="top-bar-left">
     <ul class="vertical medium-horizontal menu">
       <li>
-<!--
-        <span class="fi-previous size-60 font-btn blue-on-hover" id="prev-btn"></span></li>
--->
       @newIcon("fi-previous", "prev-btn")
       @if(title.isDefined && title.get.isPlaying){
         <li>

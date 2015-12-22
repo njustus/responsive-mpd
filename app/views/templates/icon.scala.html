@@ -1,2 +1,9 @@
-@(iconname:String, id:String)(cssClasses:String*)
-<span class="@iconname size-60 @cssClasses.mkString(" ")" id="@id"></span>
+@(iconname:String, id:String, isButton:Boolean=false)(cssClasses:String*)
+
+@if(isButton) {
+<a style="color:black;">
+  <span class="@iconname size-60 @cssClasses.mkString(" ")" id="@id"></span>
+</a>
+} else {
+  <span class="@iconname size-60 @cssClasses.mkString(" ")" id="@id"></span>
+}
