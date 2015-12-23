@@ -1,9 +1,20 @@
-var playSong = function() {
+function playSongPressed() {
   var idx = $(this).attr("idx");
   $(this).fadeOut("fast");
   $(this).fadeIn("fast");
-  console.log("play idx: "+idx);
+  player.playSong(idx);
 }
+
+function removeSongPressed() {
+  var trElem = $(this).parents('tr.playlist-item');
+  var idx = $(trElem).attr('idx');
+  $(trElem).fadeOut("slow", function() {
+      $(trElem).remove();
+  });
+  player.removeSong(idx);
+}
+
+/*
 var unmarkSong = function(element, oldColor) {
   $(element).attr('marked', '0');
   $(element).css('background-color', oldColor);
@@ -22,13 +33,4 @@ var markSong = function() {
   });
 
   console.log("marked idx "+idx);
-}
-var removeSong = function() {
-  var trElem = $(this).parents('tr.playlist-item');
-  var idx = $(trElem).attr('idx');
-  $(trElem).fadeOut("slow", function() {
-      $(trElem).remove();
-  });
-
-  console.log("Remove elem "+idx);
-}
+}*/

@@ -1,34 +1,40 @@
 var ENTER_KEY = 13;
 
-$(document).ready(function() {
-  var bar = $('div.progress-meter');
-
-  // ==================== menuebar
+function addMenuBarHandlers() {
   $('li button#search-btn').on('click', searchPressed);
   $('li input[type=search]').on('keypress', function(e) {
     if(e.which == ENTER_KEY)
       searchPressed();
   });
-
-  // ==================== playlist
-  $('tr.playlist-item').on('dblclick', playSong);
-  $('td span#remove-song').on('click', removeSong);
-  //$('tr.playlist-item').on('click', markSong);
-  //$('td span#save-playlist-btn').on('click')
-
+}
+function addPlayerHandlers() {
+  var bar = $('div.progress-meter');
   // ==================== playing line
   $('span#volume-minus-btn').on('click', function() {
-    minusPressed(bar);
+    player.volume.down(bar);
   });
   $('span#volume-plus-btn').on('click', function() {
-    plusPressed(bar);
+    player.volume.up(bar);
   });
-  $('span#stop-btn').on('click', playPressed);
-  $('span#repeat-btn').on('click', repeatPressed);
-  $('span#shuffle-btn').on('click', shufflePressed);
+  $('span#stop-btn').on('click', player.playToggle);
+  $('span#repeat-btn').on('click', player.repeatToggle);
+  $('span#shuffle-btn').on('click', player.shuffleToggle);
+}
+function addPlaylistHandlers() {
+  $('tr.playlist-item').on('dblclick', playSongPressed);
+  $('td span#remove-song').on('click', removeSongPressed);
+  //$('tr.playlist-item').on('click', markSong);
+  //$('td span#save-playlist-btn').on('click')
+}
+
+$(document).ready(function() {
+  addMenuBarHandlers();
+  addPlaylistHandlers();
+  addPlayerHandlers();
+
 });
 
-var searchPressed = function() {
+function searchPressed() {
   var key = $('li input[type=search]').val();
-  console.log("search for "+key);
+  player.search(key);
 }
