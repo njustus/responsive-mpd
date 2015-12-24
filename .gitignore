@@ -3,6 +3,7 @@ target
 /.idea
 /.idea_modules
 /.classpath
+/.cache-main
 /.project
 /.settings
 /RUNNING_PID
