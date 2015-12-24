@@ -2,9 +2,16 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-import models.Title
+import play.api.libs.concurrent.Akka
+import play.api.Play.current
+
+import akka.actor.Props
+
+import models._
 
 class Application extends Controller {
+  val mpdConnector = Akka.system.actorOf(Props[MpdConnector], name = "Mpd-Connector")
+
   val titles = List(
     Title("In the end", "Linkin Park", "Meteora", 3.14, false),
     Title("Numb", "Linkin Park", "Meteora", 4.20, false),
@@ -17,6 +24,9 @@ class Application extends Controller {
   implicit val playingSong = titles.find(_.isPlaying)
 
   def index = Action {
+    mpdConnector ! "heyho"
+    mpdConnector ! Connect
+
     Ok(views.html.playlist(titles))
   }
 
