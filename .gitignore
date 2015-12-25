@@ -4,6 +4,7 @@ target
 /.idea_modules
 /.classpath
 /.cache-main
+/.cache-tests
 /.project
 /.settings
 /RUNNING_PID
