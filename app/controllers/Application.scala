@@ -10,7 +10,7 @@ import akka.actor.Props
 import models._
 
 class Application extends Controller {
-  val mpdConnector = Akka.system.actorOf(Props[MpdConnector], name = "Mpd-Connector")
+//  val mpdConnector = Akka.system.actorOf(Props[MpdConnector], name = "Mpd-Connector")
 
   val titles = List(
     Title("In the end", "Linkin Park", "Meteora", 3.14, false),
@@ -20,12 +20,11 @@ class Application extends Controller {
     Title("Papercut", "Linkin Park", "Meteora", 3.20, false)
     )
 
-
   implicit val playingSong = titles.find(_.isPlaying)
 
   def index = Action {
-    mpdConnector ! "heyho"
-    mpdConnector ! Connect
+//    mpdConnector ! "heyho"
+//    mpdConnector ! Connect
 
     Ok(views.html.playlist(titles))
   }

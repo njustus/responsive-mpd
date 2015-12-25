@@ -32,6 +32,7 @@ $(document).ready(function() {
   addPlaylistHandlers();
   addPlayerHandlers();
 
+  console.log(globalUris);
 });
 
 function searchPressed() {
