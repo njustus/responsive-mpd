@@ -23,7 +23,13 @@ class Application extends Controller {
     (mpdConnector ? models.mpdbackend.GetMpdStatus) flatMap { anySong =>
       val status = anySong.asInstanceOf[MpdStatus]
       (mpdConnector ? models.mpdbackend.GetPlaylist) map { anyList =>
-        val titles = anyList.asInstanceOf[List[Title]]
+        val titles = anyList.asInstanceOf[List[Title]].map { x =>
+          if(x == status.actualSong) {
+            x.isPlaying = status.isPlaying
+            x
+          }
+          else x
+        }
         Ok(views.html.playlist(titles)(status))
       }
     }
