@@ -9,13 +9,18 @@ GET     /lib                        controllers.Application.lib(artist:Option[St
 
 GET     /about                        controllers.Application.about
 
-# player routes
+# player
 GET     /player/stop           controllers.Player.stop
 GET     /player/play           controllers.Player.play
 GET     /player/next-song      controllers.Player.next
 GET     /player/prev-song      controllers.Player.prev
 GET     /player/volume-up      controllers.Player.volumeUp
-GET     /player/volume-down      controllers.Player.volumeDown
+GET     /player/volume-down    controllers.Player.volumeDown
+GET     /player/shuffle(flag)  controllers.Player.shuffle(flag:Boolean)
+GET     /player/repeat(flag)   controllers.Player.repeat(flag:Boolean)
+
+# playlist
+GET     /player/play-id/:idx      controllers.Player.playId(idx: Int)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

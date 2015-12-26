@@ -37,13 +37,50 @@ var playerHandler = {
     }
   },
   repeatToggle: function() {
+    if($(this).attr('active')=== '1') {
+      //disable it
+      fireAjax({
+        method: globalUris.player.repeat.method,
+        uri: globalUris.player.repeat.uri.off
+      });
+    } else {
+      //activate it
+      fireAjax({
+        method: globalUris.player.repeat.method,
+        uri: globalUris.player.repeat.uri.on
+      });
+    }
     changeActiveState(this);
   },
   shuffleToggle: function() {
+    if($(this).attr('active')=== '1') {
+      //disable it
+      fireAjax({
+        method: globalUris.player.shuffle.method,
+        uri: globalUris.player.shuffle.uri.off
+      });
+    } else {
+      //activate it
+      fireAjax({
+        method: globalUris.player.shuffle.method,
+        uri: globalUris.player.shuffle.uri.on
+      });
+    }
     changeActiveState(this);
   },
   playSong: function(songIdx) {
     console.log("play idx: "+songIdx);
+    $.ajax({
+      method: globalUris.player.playSong.method,
+      url: globalUris.player.playSong.uri + songIdx,
+      success: function(msg) {
+        console.log("success");
+        console.log(msg);
+      },
+      error: function(msg) {
+        console.log(msg);
+      }
+    });
   },
   removeSong: function(songIdx) {
     console.log("remove idx:"+songIdx);
