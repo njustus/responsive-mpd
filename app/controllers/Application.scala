@@ -10,25 +10,24 @@ import models.mpdbackend.MpdConnector
 import akka.actor.ActorRef
 
 class Application extends Controller {
-  private def getPlayerStatus[T](mpdConnector:ActorRef)(fn: MpdStatus => Future[T]): Future[T] = {
-    (mpdConnector ? models.mpdbackend.GetMpdStatus) flatMap { anySong =>
-      val status = anySong.asInstanceOf[MpdStatus]
-      fn(status)
+  private def getPlayerStatus[T](mpdConnector:ActorRef)
+    (fn: MpdStatus => Future[T]): Future[T] = {
+      (mpdConnector ? models.mpdbackend.GetMpdStatus)
+        .mapTo[MpdStatus].flatMap(fn)
     }
-  }
 
   def index = Action.async {
     val mpdConnector = getMpdActor
     getPlayerStatus(mpdConnector) { implicit status =>
-      (mpdConnector ? models.mpdbackend.GetPlaylist) map { anyList =>
-        val titles = anyList.asInstanceOf[List[Title]] map { x =>
-          if(x == status.actualSong) {
-            x.isPlaying = status.isPlaying
-            x
+      (mpdConnector ? models.mpdbackend.GetPlaylist).mapTo[List[Title]].map { titles =>
+          val mappedTitles = titles.map { x =>
+            if(x == status.actualSong) {
+              x.isPlaying = status.isPlaying
+              x
+            }
+            else x
           }
-          else x
-        }
-        Ok(views.html.playlist(titles))
+        Ok(views.html.playlist(mappedTitles))
       }
     }
 
