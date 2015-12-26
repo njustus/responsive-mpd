@@ -9,7 +9,7 @@
   </thead>
   <tbody>
     @artists.map { x =>
-      <tr>
+      <tr data-name="@x">
         <td><a href="@fn(x)">@x</a></td>
         <td>
           @icon("fi-plus", "add-to-playlist-btn", true)("font-btn")
