@@ -8,6 +8,9 @@ import play.api.mvc.{ Action, Controller }
 import scala.concurrent.Future
 import models.mpdbackend.MpdConnector
 import akka.actor.ActorRef
+import models.mpdbackend.GetArtistsList
+import models.mpdbackend.GetAlbumList
+import models.mpdbackend.GetAlbumTitles
 
 class Application extends Controller {
   private def getPlayerStatus[T](mpdConnector:ActorRef)
@@ -36,12 +39,29 @@ class Application extends Controller {
   def lib(artist:Option[String], album:Option[String]) = Action.async {
     val mpdConnector = getMpdActor
     getPlayerStatus(mpdConnector) { implicit status =>
-      Future {
-        val libList = views.html.templates.lib_list(Nil, "Artists") { s =>
-          controllers.routes.Application.lib(None,None)
+        (artist, album) match {
+          case (Some(art),Some(alb)) =>
+            (mpdConnector ? GetAlbumTitles(art, alb)).mapTo[List[String]].map { titles =>
+              val libList = views.html.templates.lib_list(titles, s"$art - $alb") { _ =>
+                controllers.routes.Application.lib(None, None)
+              }
+              Ok(views.html.lib(libList))
+            }
+          case (Some(art), None) =>
+            (mpdConnector ? GetAlbumList(art)).mapTo[List[String]].map { albums =>
+              val libList = views.html.templates.lib_list(albums, art) { s =>
+                controllers.routes.Application.lib(Some(art), Some(s))
+              }
+              Ok(views.html.lib(libList))
+            }
+          case _ =>
+            (mpdConnector ? GetArtistsList).mapTo[List[String]].map { artists =>
+              val libList = views.html.templates.lib_list(artists, "Artists") { s =>
+                controllers.routes.Application.lib(Some(s), None)
+              }
+              Ok(views.html.lib(libList))
+            }
         }
-        Ok(views.html.lib(libList))
-      }
     }
   }
 

@@ -1,12 +1,10 @@
 package models.mpdbackend
 
-import scala.collection.JavaConversions.asScalaBuffer
+import scala.collection.JavaConversions._
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
-
 import org.bff.javampd.MPD
-
 import akka.actor.{ Actor, ActorRef, Props, actorRef2Scala }
 import akka.pattern.pipe
 import akka.util.Timeout
@@ -14,6 +12,8 @@ import models.MpdStatus
 import play.api.Play.current
 import play.api.libs.concurrent.Akka
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import org.bff.javampd.objects.MPDArtist
+import org.bff.javampd.objects.MPDAlbum
 
 class MpdConnector extends Actor {
   import MpdConnector._
@@ -64,6 +64,18 @@ class MpdConnector extends Actor {
     case GetPlaylist =>
       Future {
         mpd.getPlaylist.getSongList.map(MpdConverters.mpdSongToTitle(_)).toList
+      } pipeTo(sender)
+    case GetArtistsList =>
+      Future {
+        mpd.getDatabase.listAllArtists.map(_.getName)
+      } pipeTo(sender)
+    case GetAlbumList(artist) =>
+      Future {
+        mpd.getDatabase.listAlbumsByArtist(new MPDArtist(artist)).map(_.getName)
+      } pipeTo(sender)
+    case GetAlbumTitles(artist, album) =>
+      Future {
+        mpd.getDatabase.findAlbumByArtist(new MPDArtist(artist), new MPDAlbum(album)).map(_.getName)
       } pipeTo(sender)
     case s:String => println(s"Got msg $s!")
   }

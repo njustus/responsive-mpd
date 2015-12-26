@@ -14,6 +14,9 @@ case object GetPlaylist extends ConnectorMesage
 case object GetActualSong extends ConnectorMesage
 case object GetStatus extends ConnectorMesage
 case object GetMpdStatus extends ConnectorMesage
+case object GetArtistsList extends ConnectorMesage
+case class GetAlbumList(artist:String) extends ConnectorMesage
+case class GetAlbumTitles(artist:String, album:String) extends ConnectorMesage
 case object IsShuffling extends ConnectorMesage
 case object IsLooping extends ConnectorMesage
 case class RepeatSwitch(f:Boolean) extends ConnectorMesage
