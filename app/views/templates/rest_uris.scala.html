@@ -6,6 +6,10 @@
 						method: "@routes.Player.play.method",
 						uri: "@routes.Player.play"
 					},
+					playSong: {
+						method: "GET",
+						uri: "/player/play-id/"
+					},
 					stop: {
 						method: "@routes.Player.stop.method",
 						uri: "@routes.Player.stop"
@@ -26,6 +30,20 @@
 						down: {
 							method: "@routes.Player.volumeDown.method",
 							uri: "@routes.Player.volumeDown"
+						}
+					},
+					shuffle: {
+						method:"@routes.Player.shuffle(true).method",
+						uri: {
+							on: "@routes.Player.shuffle(true)",
+							off: "@routes.Player.shuffle(false)"
+						}
+					},
+					repeat: {
+						method: "@routes.Player.repeat(true).method",
+						uri: {
+							on: "@routes.Player.repeat(true)",
+							off: "@routes.Player.repeat(false)"
 						}
 					}
 				}
