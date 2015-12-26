@@ -4,6 +4,7 @@ import play.api._
 import play.api.mvc._
 import play.api.Play.current
 import models.mpdbackend.MpdConnector
+import models._
 
 class Player extends Controller {
   private def sendToActor(msg:models.mpdbackend.ConnectorMesage) : Action[AnyContent] = Action {
@@ -13,12 +14,15 @@ class Player extends Controller {
       Ok(msg.toString())
   }
 
-  def play = sendToActor(models.mpdbackend.PlaySong)
-  def stop = sendToActor(models.mpdbackend.Stop)
+  def play = sendToActor(mpdbackend.PlaySong)
+  def playId(id: Int) = sendToActor(mpdbackend.PlaySongId(id))
+  def stop = sendToActor(mpdbackend.Stop)
 
-  def next = sendToActor(models.mpdbackend.Next)
-  def prev = sendToActor(models.mpdbackend.Prev)
+  def next = sendToActor(mpdbackend.Next)
+  def prev = sendToActor(mpdbackend.Prev)
 
-  def volumeUp = sendToActor(models.mpdbackend.VolumeUp)
-  def volumeDown = sendToActor(models.mpdbackend.VolumeDown)
+  def volumeUp = sendToActor(mpdbackend.VolumeUp)
+  def volumeDown = sendToActor(mpdbackend.VolumeDown)
+  def shuffle(flag:Boolean) = sendToActor(mpdbackend.ShuffleSwitch(flag))
+  def repeat(flag:Boolean) = sendToActor(mpdbackend.RepeatSwitch(flag))
 }
