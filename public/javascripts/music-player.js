@@ -1,25 +1,39 @@
-var player = {
+var playerHandler = {
   volume: {
     down: function(progressbar) {
         var percent = Number(progressbar.css('width').replace("px", ""));
-        if(percent >= 10)
+        if(percent >= 10) {
           progressbar.css('width', (percent-10)+"%");
+          fireAjax(globalUris.player.volume.down);
+        }
       },
     up: function(progressbar) {
       var percent = Number(progressbar.css('width').replace("px", ""));
-      if(percent <= 90)
+      if(percent <= 90) {
         progressbar.css('width', (percent+10)+"%");
+        fireAjax(globalUris.player.volume.up);
+      }
     }
+  },
+  next: function() {
+    fireAjax(globalUris.player.nextSong);
+  },
+  prev: function() {
+    fireAjax(globalUris.player.prevSong);
   },
   playToggle: function() {
     if($(this).hasClass('fi-stop')) {
       //stop playing
       $(this).removeClass('fi-stop');
       $(this).addClass('fi-play');
+
+      fireAjax(globalUris.player.stop);
     } else {
       //resume playing
       $(this).removeClass('fi-play');
       $(this).addClass('fi-stop');
+
+      fireAjax(globalUris.player.play);
     }
   },
   repeatToggle: function() {
@@ -47,4 +61,18 @@ function changeActiveState(elem) {
     $(elem).css('color', defaultBlue);
     $(elem).attr('active', '1')
   }
+}
+
+function fireAjax(uriObj) {
+  $.ajax({
+    method: uriObj.method,
+    url: uriObj.uri,
+    success: function(msg) {
+      console.log("success");
+      console.log(msg);
+    },
+    error: function(msg) {
+      console.log(msg);
+    }
+  });
 }

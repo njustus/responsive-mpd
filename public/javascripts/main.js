@@ -11,14 +11,16 @@ function addPlayerHandlers() {
   var bar = $('div.progress-meter');
   // ==================== playing line
   $('span#volume-minus-btn').on('click', function() {
-    player.volume.down(bar);
+    playerHandler.volume.down(bar);
   });
   $('span#volume-plus-btn').on('click', function() {
-    player.volume.up(bar);
+    playerHandler.volume.up(bar);
   });
-  $('span#stop-btn').on('click', player.playToggle);
-  $('span#repeat-btn').on('click', player.repeatToggle);
-  $('span#shuffle-btn').on('click', player.shuffleToggle);
+  $('span#stop-btn').on('click', playerHandler.playToggle);
+  $('span#repeat-btn').on('click', playerHandler.repeatToggle);
+  $('span#shuffle-btn').on('click', playerHandler.shuffleToggle);
+  $('span#prev-btn').on('click', playerHandler.prev);
+  $('span#next-btn').on('click', playerHandler.next);
 }
 function addPlaylistHandlers() {
   $('tr.playlist-item').on('dblclick', playSongPressed);

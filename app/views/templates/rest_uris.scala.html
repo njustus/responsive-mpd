@@ -1,14 +1,33 @@
 @()
 <script type="text/javascript">
-			@**globalUris = {
-				next-song: {
-					method: "@routes.Player.next.method",
-					uri: "@routes.Player.next"
-				},
-				prev-song: {
-					method: "@routes.Player.prev.method",
-					uri: "@routes.Player.prev"
+			globalUris = {
+				player: {
+					play: {
+						method: "@routes.Player.play.method",
+						uri: "@routes.Player.play"
+					},
+					stop: {
+						method: "@routes.Player.stop.method",
+						uri: "@routes.Player.stop"
+					},
+					nextSong: {
+						method: "@routes.Player.next.method",
+						uri: "@routes.Player.next"
+					},
+					prevSong: {
+						method: "@routes.Player.prev.method",
+						uri: "@routes.Player.prev"
+					},
+					volume: {
+						up: {
+							method: "@routes.Player.volumeUp.method",
+							uri: "@routes.Player.volumeUp"
+						},
+						down: {
+							method: "@routes.Player.volumeDown.method",
+							uri: "@routes.Player.volumeDown"
+						}
+					}
 				}
-			};**@
-			globalUris = "test-bla";
+			};
 </script>
