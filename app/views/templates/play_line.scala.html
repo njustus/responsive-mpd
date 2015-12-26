@@ -1,14 +1,21 @@
-@(title:Option[Title])
+@import models.MpdStatus
 
-@newIcon(iconname:String, id:String) = {
-  @icon(iconname, id, true)("font-btn", "blue-on-hover")
+@(status:MpdStatus)
+
+@newIcon(iconname:String, id:String, activate:Boolean = false) = {
+  @if(activate) {
+		@icon(iconname, id, true)("font-btn", "blue-on-hover")
+	} else {
+  		@icon(iconname, id, true)("font-btn", "blue-on-hover")
+	}
 }
+
 <div class="top-bar">
   <div class="top-bar-left">
     <ul class="vertical medium-horizontal menu">
       <li>
       @newIcon("fi-previous", "prev-btn")
-      @if(title.isDefined && title.get.isPlaying){
+      @if(status.isPlaying){
         <li>
           @newIcon("fi-stop", "stop-btn")
         </li>
@@ -19,14 +26,9 @@
       }
       <li>@newIcon("fi-next", "next-btn")</li>
 
-    @title match {
-      case Some(t) => {
-        <li class="actual-song-text">
-            @t.artist - @t.name
-        </li>
-      }
-      case None => {}
-    }
+       <li class="actual-song-text">
+           @status.actualSong.artist - @status.actualSong.name
+       </li>
 
     <li class="actual-song-text left-10-pt">Volume</li>
     <li class="left-10-pt">@newIcon("fi-minus", "volume-minus-btn")</li>
@@ -37,8 +39,8 @@
       </div>
     </li>
     <li class="left-10-pt">@newIcon("fi-plus", "volume-plus-btn")</li>
-    <li class="left-10-pt">@newIcon("fi-refresh", "repeat-btn")</li>
-    <li class="left-10-pt">@newIcon("fi-shuffle", "shuffle-btn")</li>
+    <li class="left-10-pt">@newIcon("fi-refresh", "repeat-btn", status.isLooping)</li>
+    <li class="left-10-pt">@newIcon("fi-shuffle", "shuffle-btn", status.isShuffling)</li>
   </ul>
   </div>
 </div>

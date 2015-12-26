@@ -1,4 +1,6 @@
-@(title:String, actualSong:Option[Title])(content: Html)
+@import models.MpdStatus
+
+@(title:String, status:MpdStatus)(content: Html)
 <!DOCTYPE html>
 
 <html lang="de">
@@ -7,7 +9,7 @@
     </head>
     <body>
         @menu(title)
-        @play_line(actualSong)
+        @play_line(status)
 
         <div class="row">
           <div class="small-9 small-centered columns">

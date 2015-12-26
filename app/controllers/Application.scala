@@ -2,33 +2,36 @@ package controllers
 
 import play.api._
 import play.api.mvc._
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.concurrent.Akka
 import play.api.Play.current
-
 import akka.actor.Props
-
+import akka.pattern.ask
 import models._
+import models.mpdbackend.MpdConnector
+import models.mpdbackend.MpdConnector._
+import models.mpdbackend.MpdConverters._
+import akka.actor.Identify
+import scala.concurrent.Future
+import org.bff.javampd.objects.MPDSong
+import models.mpdbackend.MpdConverters
 
 class Application extends Controller {
 
-  val titles = List(
-    Title("In the end", "Linkin Park", "Meteora", 3.14, false),
-    Title("Numb", "Linkin Park", "Meteora", 4.20, false),
-    Title("No more sorrow", "Linkin Park", "Minutes to Midnight", 1.50, false),
-    Title("Hands held high", "Linkin Park", "Minutes to Midnight", 2.50, true),
-    Title("Papercut", "Linkin Park", "Meteora", 3.20, false)
-    )
-
-  implicit val playingSong = titles.find(_.isPlaying)
-
-  def index = Action {
-    val mpdConnector = MpdConnector.getMpdRef
-    mpdConnector ! models.Play
-
-    Ok(views.html.playlist(titles))
+  def index = Action.async {
+    val mpdConnector = getMpdActor
+    (mpdConnector ? models.mpdbackend.GetMpdStatus) flatMap { anySong =>
+      val status = anySong.asInstanceOf[MpdStatus]
+      (mpdConnector ? models.mpdbackend.GetPlaylist) map { anyList =>
+        val titles = anyList.asInstanceOf[List[Title]]
+        Ok(views.html.playlist(titles)(status))
+      }
+    }
   }
 
-  def lib(artist:Option[String], album:Option[String]) = Action {
+  def lib(artist:Option[String], album:Option[String]) = TODO
+
+  /*def lib(artist:Option[String], album:Option[String]) = Action {
     val library = List(
       "Linkin Park" -> "Meteora",
       "Linkin Park" -> "Minutes to midnight",
@@ -65,6 +68,7 @@ class Application extends Controller {
 
   def about = Action {
     Ok(views.html.about())
-  }
+  }*/
 
+  def about = TODO
 }

@@ -1,7 +1,8 @@
 @import templates._
+@import models.MpdStatus
 
-@(list:Html)(implicit actualSong:Option[Title])
+@(list:Html)(implicit status:MpdStatus)
 
-@side("Library", actualSong) {
+@side("Library", status) {
   @list
 }
