@@ -5,28 +5,46 @@ import models.{ MpdStatus, Title }
 import models.mpdbackend.MpdConnector.{ actorTimeout, getMpdActor }
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.mvc.{ Action, Controller }
+import scala.concurrent.Future
+import models.mpdbackend.MpdConnector
+import akka.actor.ActorRef
 
 class Application extends Controller {
+  private def getPlayerStatus[T](mpdConnector:ActorRef)(fn: MpdStatus => Future[T]): Future[T] = {
+    (mpdConnector ? models.mpdbackend.GetMpdStatus) flatMap { anySong =>
+      val status = anySong.asInstanceOf[MpdStatus]
+      fn(status)
+    }
+  }
 
   def index = Action.async {
     val mpdConnector = getMpdActor
-    (mpdConnector ? models.mpdbackend.GetMpdStatus) flatMap { anySong =>
-      val status = anySong.asInstanceOf[MpdStatus]
-
+    getPlayerStatus(mpdConnector) { implicit status =>
       (mpdConnector ? models.mpdbackend.GetPlaylist) map { anyList =>
-        val titles = anyList.asInstanceOf[List[Title]].map { x =>
+        val titles = anyList.asInstanceOf[List[Title]] map { x =>
           if(x == status.actualSong) {
             x.isPlaying = status.isPlaying
             x
           }
           else x
         }
-        Ok(views.html.playlist(titles)(status))
+        Ok(views.html.playlist(titles))
+      }
+    }
+
+  }
+
+  def lib(artist:Option[String], album:Option[String]) = Action.async {
+    val mpdConnector = getMpdActor
+    getPlayerStatus(mpdConnector) { implicit status =>
+      Future {
+        val libList = views.html.templates.lib_list(Nil, "Artists") { s =>
+          controllers.routes.Application.lib(None,None)
+        }
+        Ok(views.html.lib(libList))
       }
     }
   }
-
-  def lib(artist:Option[String], album:Option[String]) = TODO
 
   /*def lib(artist:Option[String], album:Option[String]) = Action {
     val library = List(
@@ -67,5 +85,12 @@ class Application extends Controller {
     Ok(views.html.about())
   }*/
 
-  def about = TODO
+  def about = Action.async {
+    val mpdConnector = getMpdActor
+    getPlayerStatus(mpdConnector) { implicit status =>
+      Future {
+        Ok(views.html.about())
+      }
+    }
+  }
 }
