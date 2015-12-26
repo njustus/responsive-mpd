@@ -1,8 +1,10 @@
 package models.mpdbackend
 
-import org.bff.javampd.objects.MPDSong
-import models.Title
 import java.util.concurrent.TimeUnit
+
+import org.bff.javampd.objects.MPDSong
+
+import models.Title
 
 object MpdConverters {
   private def secondsToMinutesAndSeconds(seconds:Int): (Int, Int)= {

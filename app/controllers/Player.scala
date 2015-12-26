@@ -1,10 +1,9 @@
 package controllers
 
-import play.api._
-import play.api.mvc._
-import play.api.Play.current
+import akka.actor.actorRef2Scala
+import models.mpdbackend
 import models.mpdbackend.MpdConnector
-import models._
+import play.api.mvc.{ Action, AnyContent, Controller }
 
 class Player extends Controller {
   private def sendToActor(msg:models.mpdbackend.ConnectorMesage) : Action[AnyContent] = Action {

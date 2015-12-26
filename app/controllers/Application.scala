@@ -1,20 +1,10 @@
 package controllers
 
-import play.api._
-import play.api.mvc._
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import play.api.libs.concurrent.Akka
-import play.api.Play.current
-import akka.actor.Props
 import akka.pattern.ask
-import models._
-import models.mpdbackend.MpdConnector
-import models.mpdbackend.MpdConnector._
-import models.mpdbackend.MpdConverters._
-import akka.actor.Identify
-import scala.concurrent.Future
-import org.bff.javampd.objects.MPDSong
-import models.mpdbackend.MpdConverters
+import models.{ MpdStatus, Title }
+import models.mpdbackend.MpdConnector.{ actorTimeout, getMpdActor }
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import play.api.mvc.{ Action, Controller }
 
 class Application extends Controller {
 
@@ -22,6 +12,7 @@ class Application extends Controller {
     val mpdConnector = getMpdActor
     (mpdConnector ? models.mpdbackend.GetMpdStatus) flatMap { anySong =>
       val status = anySong.asInstanceOf[MpdStatus]
+
       (mpdConnector ? models.mpdbackend.GetPlaylist) map { anyList =>
         val titles = anyList.asInstanceOf[List[Title]].map { x =>
           if(x == status.actualSong) {
