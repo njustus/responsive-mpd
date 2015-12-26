@@ -2,7 +2,9 @@ function playSongPressed() {
   var idx = $(this).attr("idx");
   $(this).fadeOut("fast");
   $(this).fadeIn("fast");
-  player.playSong(idx);
+  removePlayIcons();
+  addPlayIcon(this);
+  playerHandler.playSong(idx);
 }
 
 function removeSongPressed() {
@@ -11,7 +13,7 @@ function removeSongPressed() {
   $(trElem).fadeOut("slow", function() {
       $(trElem).remove();
   });
-  player.removeSong(idx);
+  playerHandler.removeSong(idx);
 }
 
 /*
