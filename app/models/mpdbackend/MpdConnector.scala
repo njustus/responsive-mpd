@@ -44,9 +44,8 @@ class MpdConnector extends Actor {
     case mpdbackend.Prev => mpd.getPlayer.playPrev()
     case mpdbackend.VolumeUp => mpd.getPlayer.setVolume(mpd.getPlayer.getVolume + volumeStep)
     case mpdbackend.VolumeDown => mpd.getPlayer.setVolume(mpd.getPlayer.getVolume - volumeStep)
-//    case mpdbackend.GetStatus => sender ! mpd.getPlayer.getStatus
-//    case mpdbackend.IsShuffling => sender ! mpd.getPlayer.isRandom()
-//    case mpdbackend.IsLooping => sender ! mpd.getPlayer.isRepeat()
+    case mpdbackend.ShuffleSwitch(b) => mpd.getPlayer.setRandom(b)
+    case mpdbackend.RepeatSwitch(b) => mpd.getPlayer.setRepeat(b)
     case mpdbackend.GetMpdStatus =>
       Future {
         MpdStatus(
@@ -59,9 +58,9 @@ class MpdConnector extends Actor {
       } pipeTo(sender)
     case mpdbackend.PlaySongId(id) =>
       Future {
-        mpd.getPlaylist.getSongList.find(_.getId == id) match {
+        mpd.getPlaylist.getSongList.find(_.getPosition == id) match {
           case Some(song) => mpd.getPlayer.playId(song)
-          case None => ???
+          case None => //ignore
         }
       }
     case mpdbackend.GetActualSong =>
@@ -80,12 +79,6 @@ object MpdConnector {
   val mpdActorPath: String = "/user/"+mpdActorName
 
   implicit val actorTimeout:Timeout = Timeout(8 seconds)
-
-/*
-  def getMpdRef: ActorSelection = {
-    play.api.Play.current.actorSystem.actorSelection(MpdConnector.mpdActorPath)
-  }
-*/
 
   def getMpdActor: ActorRef = {
     if(!mpdActor.isDefined) {
