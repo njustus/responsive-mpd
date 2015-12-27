@@ -5,13 +5,7 @@ import models.mpdbackend
 import models.mpdbackend.MpdConnector
 import play.api.mvc.{ Action, AnyContent, Controller }
 
-class Player extends Controller {
-  private def sendToActor(msg:models.mpdbackend.ConnectorMesage) : Action[AnyContent] = Action {
-    implicit request =>
-      val mpdActor = MpdConnector.getMpdActor
-      mpdActor ! msg
-      Ok(msg.toString())
-  }
+class Player extends AbstractMpdController {
 
   def play = sendToActor(mpdbackend.PlaySong)
   def playId(id: Int) = sendToActor(mpdbackend.PlaySongId(id))
