@@ -33,5 +33,11 @@ var libHandler = {
         uri: globalUris.playlist.addToPlaylist.uri + "?artist="+selectedData
       });
     }
+  },
+  search: function(searchString) {
+    console.log("search for "+searchString);
+    searchString = toUriComponent(searchString);
+
+    window.location = globalUris.db.search.uri + searchString;
   }
 }

@@ -49,5 +49,5 @@ $(document).ready(function() {
 
 function searchPressed() {
   var key = $('li input[type=search]').val();
-  player.search(key);
+  libHandler.search(key);
 }

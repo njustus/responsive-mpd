@@ -88,9 +88,6 @@ var playerHandler = {
       method: globalUris.playlist.removeSong.method,
       uri: globalUris.playlist.removeSong.uri + songIdx,
     });
-  },
-  search: function(searchString) {
-    console.log("search for "+searchString);
   }
 }
 
@@ -102,18 +99,4 @@ function changeActiveState(elem) {
     $(elem).css('color', defaultBlue);
     $(elem).attr('active', '1')
   }
-}
-
-function fireAjax(uriObj) {
-  $.ajax({
-    method: uriObj.method,
-    url: uriObj.uri,
-    success: function(msg) {
-      console.log("success");
-      console.log(msg);
-    },
-    error: function(msg) {
-      console.log(msg);
-    }
-  });
 }

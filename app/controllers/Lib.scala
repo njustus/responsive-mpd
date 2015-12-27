@@ -19,11 +19,12 @@ class Lib extends AbstractMpdController {
     q match {
         case Some(key) =>
           val mpdActor = MpdConnector.getMpdActor
-          (mpdActor ? mpdbackend.Search(key)).mapTo[List[Title]].map { xs =>
-            val sorted = xs.sorted
-            Ok(sorted.mkString("\n"))
+          getPlayerStatus(mpdActor) { implicit status =>
+            (mpdActor ? mpdbackend.Search(key)).mapTo[List[Title]].map { xs =>
+              val sorted = xs.sorted
+              Ok(views.html.search_result(sorted))
+            }
           }
-
         case None => Future(Redirect(routes.Application.lib(None, None)))
     }
   }

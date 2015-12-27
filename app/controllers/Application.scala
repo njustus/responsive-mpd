@@ -13,12 +13,6 @@ import models.mpdbackend.GetAlbumList
 import models.mpdbackend.GetAlbumTitles
 
 class Application extends Controller {
-  private def getPlayerStatus[T](mpdConnector:ActorRef)
-    (fn: MpdStatus => Future[T]): Future[T] = {
-      (mpdConnector ? models.mpdbackend.GetMpdStatus)
-        .mapTo[MpdStatus].flatMap(fn)
-    }
-
   def index = Action.async {
     val mpdConnector = getMpdActor
     getPlayerStatus(mpdConnector) { implicit status =>

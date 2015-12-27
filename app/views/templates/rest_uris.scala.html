@@ -58,8 +58,16 @@
 				}
 			}
 
+			var db = {
+				search: {
+					method: "GET",
+					uri: "/db?q="
+				}
+			};
+
 			globalUris = {
 				"player": player,
-				"playlist": playlist
+				"playlist": playlist,
+				"db": db
 			};
 </script>

@@ -1,5 +1,19 @@
 var defaultBlue = "#2199e8";
 
+function fireAjax(uriObj) {
+  $.ajax({
+    method: uriObj.method,
+    url: uriObj.uri,
+    success: function(msg) {
+      console.log("success");
+      console.log(msg);
+    },
+    error: function(msg) {
+      console.log(msg);
+    }
+  });
+}
+
 function addPlayIcon(elem) {
   console.log(elem);
   var tdElem = $(elem).children(":first")
