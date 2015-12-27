@@ -7,6 +7,9 @@ var libHandler = {
     if(artist !== undefined) {
       if(album !== undefined) {
         //uri: lib?artist=...,album=...
+        artist = toUriComponent(artist);
+        album = toUriComponent(album);
+        selectedData = toUriComponent(selectedData);
         fireAjax({
           method: globalUris.playlist.addToPlaylist.method,
           uri: globalUris.playlist.addToPlaylist.uri +
@@ -14,9 +17,17 @@ var libHandler = {
         });
       } else {
         //uri: lib?artist=...
+        artist = toUriComponent(artist);
+        selectedData = toUriComponent(selectedData);
+        fireAjax({
+          method: globalUris.playlist.addToPlaylist.method,
+          uri: globalUris.playlist.addToPlaylist.uri +
+            "?artist="+artist+"&album="+selectedData
+        });
       }
     } else {
       //uri: lib
+      selectedData = toUriComponent(selectedData);
       fireAjax({
         method: globalUris.playlist.addToPlaylist.method,
         uri: globalUris.playlist.addToPlaylist.uri + "?artist="+selectedData

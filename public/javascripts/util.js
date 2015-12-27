@@ -16,3 +16,7 @@ function removePlayIcons() {
 function getBrowserUrl() {
   return window.location.href;
 }
+
+function toUriComponent(str) {
+  return encodeURIComponent(str);
+}
