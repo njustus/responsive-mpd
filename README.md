@@ -1,7 +1,7 @@
 # Responsive mpd
 ### The usable web client for mpd.
 
-This is a web-based and responsive client for the famous [mpd](http://www.musicpd.org/ MPD Project Homepage)-linux-daemon. This client was created with the ambition for a client which can be used from everywhere without installing any special software.
+This is a web-based and responsive client for the famous [mpd](http://www.musicpd.org/)-linux-daemon. This client was created with the ambition for a client which can be used from everywhere without installing any special software.
 
 For example you could install mpd and this client on a Raspberry Pi and control the music-player from your PC, your Tablet or your Smartphone.
 
