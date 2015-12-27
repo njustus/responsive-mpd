@@ -84,6 +84,10 @@ var playerHandler = {
   },
   removeSong: function(songIdx) {
     console.log("remove idx:"+songIdx);
+    fireAjax({
+      method: globalUris.playlist.removeSong.method,
+      uri: globalUris.playlist.removeSong.uri + songIdx,
+    });
   },
   search: function(searchString) {
     console.log("search for "+searchString);

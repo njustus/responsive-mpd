@@ -24,4 +24,5 @@ class Player extends Controller {
   def volumeDown = sendToActor(mpdbackend.VolumeDown)
   def shuffle(flag:Boolean) = sendToActor(mpdbackend.ShuffleSwitch(flag))
   def repeat(flag:Boolean) = sendToActor(mpdbackend.RepeatSwitch(flag))
+  def removeId(idx: Int) = sendToActor(mpdbackend.RemoveSong(idx))
 }

@@ -14,6 +14,7 @@ import play.api.libs.concurrent.Akka
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import org.bff.javampd.objects.MPDArtist
 import org.bff.javampd.objects.MPDAlbum
+import org.bff.javampd.objects.MPDSong
 
 class MpdConnector extends Actor {
   import MpdConnector._
@@ -22,6 +23,16 @@ class MpdConnector extends Actor {
   private lazy val playConf = Play.current.configuration
   private var mpd: MPD = null
   private val volumeStep:Int = 10
+
+  private[mpdbackend] def getSongById(id:Int): Future[Option[MPDSong]] =
+    Future { mpd.getPlaylist.getSongList.find(_.getPosition == id) }
+
+  private[mpdbackend] def ifSongIsDefined[T](id:Int)(fn : MPDSong => T): Future[T] =
+    for {
+      songOpt <- getSongById(id)
+      if songOpt.isDefined
+      song = songOpt.get
+    } yield { fn(song) }
 
   def receive = {
     case Connect =>
@@ -53,11 +64,18 @@ class MpdConnector extends Actor {
         )
       } pipeTo(sender)
     case PlaySongId(id) =>
-      Future {
+        ifSongIsDefined(id) { song =>
+          mpd.getPlayer.playId(song)
+        }
+      /*Future {
         mpd.getPlaylist.getSongList.find(_.getPosition == id) match {
           case Some(song) => mpd.getPlayer.playId(song)
           case None => //ignore
         }
+      }*/
+    case RemoveSong(id) =>
+      ifSongIsDefined(id) { song =>
+          mpd.getPlaylist.removeSong(song)
       }
     case GetActualSong =>
       sender ! mpd.getPlayer.getCurrentSong

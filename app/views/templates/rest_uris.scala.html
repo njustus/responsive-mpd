@@ -1,51 +1,61 @@
 @()
 <script type="text/javascript">
-			globalUris = {
-				player: {
-					play: {
-						method: "@routes.Player.play.method",
-						uri: "@routes.Player.play"
+			var player = {
+				play: {
+					method: "@routes.Player.play.method",
+					uri: "@routes.Player.play"
+				},
+				playSong: {
+					method: "GET",
+					uri: "/player/play-id/"
+				},
+				stop: {
+					method: "@routes.Player.stop.method",
+					uri: "@routes.Player.stop"
+				},
+				nextSong: {
+					method: "@routes.Player.next.method",
+					uri: "@routes.Player.next"
+				},
+				prevSong: {
+					method: "@routes.Player.prev.method",
+					uri: "@routes.Player.prev"
+				},
+				volume: {
+					up: {
+						method: "@routes.Player.volumeUp.method",
+						uri: "@routes.Player.volumeUp"
 					},
-					playSong: {
-						method: "GET",
-						uri: "/player/play-id/"
-					},
-					stop: {
-						method: "@routes.Player.stop.method",
-						uri: "@routes.Player.stop"
-					},
-					nextSong: {
-						method: "@routes.Player.next.method",
-						uri: "@routes.Player.next"
-					},
-					prevSong: {
-						method: "@routes.Player.prev.method",
-						uri: "@routes.Player.prev"
-					},
-					volume: {
-						up: {
-							method: "@routes.Player.volumeUp.method",
-							uri: "@routes.Player.volumeUp"
-						},
-						down: {
-							method: "@routes.Player.volumeDown.method",
-							uri: "@routes.Player.volumeDown"
-						}
-					},
-					shuffle: {
-						method:"@routes.Player.shuffle(true).method",
-						uri: {
-							on: "@routes.Player.shuffle(true)",
-							off: "@routes.Player.shuffle(false)"
-						}
-					},
-					repeat: {
-						method: "@routes.Player.repeat(true).method",
-						uri: {
-							on: "@routes.Player.repeat(true)",
-							off: "@routes.Player.repeat(false)"
-						}
+					down: {
+						method: "@routes.Player.volumeDown.method",
+						uri: "@routes.Player.volumeDown"
+					}
+				},
+				shuffle: {
+					method:"@routes.Player.shuffle(true).method",
+					uri: {
+						on: "@routes.Player.shuffle(true)",
+						off: "@routes.Player.shuffle(false)"
+					}
+				},
+				repeat: {
+					method: "@routes.Player.repeat(true).method",
+					uri: {
+						on: "@routes.Player.repeat(true)",
+						off: "@routes.Player.repeat(false)"
 					}
 				}
+			}
+
+			var playlist = {
+				removeSong: {
+					method: "GET",
+					uri: "/playlist/remove/"
+				}
+			}
+
+			globalUris = {
+				"player": player,
+				"playlist": playlist
 			};
 </script>

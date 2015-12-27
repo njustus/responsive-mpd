@@ -10,5 +10,5 @@ function addPlayIcon(elem) {
 function removePlayIcons() {
   var tdElems = $('tr.playlist-item > td');
   tdElems.find('br').remove();
-  tdElems.find('span').remove();
+  tdElems.find('span#actual-song-icon').remove();
 }
