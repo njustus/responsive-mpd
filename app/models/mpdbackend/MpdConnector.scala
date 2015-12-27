@@ -34,6 +34,14 @@ class MpdConnector extends Actor {
       song = songOpt.get
     } yield { fn(song) }
 
+  private def addSongs(songs:java.util.Collection[MPDSong]): Future[Unit] = Future {
+    val list:java.util.List[MPDSong] =
+      if(songs.isInstanceOf[java.util.List[MPDSong]]) songs.asInstanceOf[java.util.List[MPDSong]]
+      else new java.util.ArrayList[MPDSong](songs)
+
+    mpd.getPlaylist.addSongs(list)
+  }
+
   def receive = {
     case Connect =>
       for {
@@ -55,6 +63,9 @@ class MpdConnector extends Actor {
     case RepeatSwitch(b) => mpd.getPlayer.setRepeat(b)
     case GetMpdStatus =>
       Future {
+        /*TODO
+          getStatus could be null, error handling
+        */
         MpdStatus(
           mpd.getPlayer.getStatus,
           MpdConverters.mpdSongToTitle(mpd.getPlayer.getCurrentSong),
@@ -70,6 +81,22 @@ class MpdConnector extends Actor {
     case RemoveSong(id) =>
       ifSongIsDefined(id) { song =>
           mpd.getPlaylist.removeSong(song)
+      }
+    case t @ AddToPlaylist(artistOpt, albumOpt, titleOpt) =>
+      Future {
+        /* TODO
+        include title option for adding the song
+        */
+        println(t)
+        (artistOpt, albumOpt) match {
+          case (Some(artist), Some(album)) =>
+            val songs = mpd.getDatabase.findAlbumByArtist(new MPDArtist(artist), new MPDAlbum(album))
+            addSongs(songs)
+          case (Some(artist), None) =>
+            val songs = mpd.getDatabase.findArtist(artist)
+            addSongs(songs)
+          case _ => //ignore
+        }
       }
     case GetActualSong =>
       sender ! mpd.getPlayer.getCurrentSong
