@@ -84,15 +84,14 @@ class MpdConnector extends Actor {
       }
     case t @ AddToPlaylist(artistOpt, albumOpt, titleOpt) =>
       Future {
-        /* TODO
-        include title option for adding the song
-        */
-        println(t)
-        (artistOpt, albumOpt) match {
-          case (Some(artist), Some(album)) =>
+        (artistOpt, albumOpt, titleOpt) match {
+          case (Some(artist), Some(album), Some(title)) =>
+            val albumSongs = mpd.getDatabase.findAlbumByArtist(new MPDArtist(artist), new MPDAlbum(album))
+            albumSongs.find(_.getTitle == title).foreach(mpd.getPlaylist.addSong)
+          case (Some(artist), Some(album), None) =>
             val songs = mpd.getDatabase.findAlbumByArtist(new MPDArtist(artist), new MPDAlbum(album))
             addSongs(songs)
-          case (Some(artist), None) =>
+          case (Some(artist), None, None) =>
             val songs = mpd.getDatabase.findArtist(artist)
             addSongs(songs)
           case _ => //ignore
