@@ -67,12 +67,6 @@ class MpdConnector extends Actor {
         ifSongIsDefined(id) { song =>
           mpd.getPlayer.playId(song)
         }
-      /*Future {
-        mpd.getPlaylist.getSongList.find(_.getPosition == id) match {
-          case Some(song) => mpd.getPlayer.playId(song)
-          case None => //ignore
-        }
-      }*/
     case RemoveSong(id) =>
       ifSongIsDefined(id) { song =>
           mpd.getPlaylist.removeSong(song)
