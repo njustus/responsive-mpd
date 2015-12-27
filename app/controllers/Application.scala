@@ -42,21 +42,21 @@ class Application extends Controller {
         (artist, album) match {
           case (Some(art),Some(alb)) =>
             (mpdConnector ? GetAlbumTitles(art, alb)).mapTo[List[String]].map { titles =>
-              val libList = views.html.templates.lib_list(titles, s"$art - $alb") { _ =>
+              val libList = views.html.templates.lib_list(titles, artist, album, s"$art - $alb") { _ =>
                 controllers.routes.Application.lib(None, None)
               }
               Ok(views.html.lib(libList))
             }
           case (Some(art), None) =>
             (mpdConnector ? GetAlbumList(art)).mapTo[List[String]].map { albums =>
-              val libList = views.html.templates.lib_list(albums, art) { s =>
+              val libList = views.html.templates.lib_list(albums, artist, album, art) { s =>
                 controllers.routes.Application.lib(Some(art), Some(s))
               }
               Ok(views.html.lib(libList))
             }
           case _ =>
             (mpdConnector ? GetArtistsList).mapTo[List[String]].map { artists =>
-              val libList = views.html.templates.lib_list(artists, "Artists") { s =>
+              val libList = views.html.templates.lib_list(artists, artist, album, "Artists") { s =>
                 controllers.routes.Application.lib(Some(s), None)
               }
               Ok(views.html.lib(libList))
