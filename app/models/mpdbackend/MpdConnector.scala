@@ -129,6 +129,10 @@ class MpdConnector extends Actor {
       Future {
         mpd.getDatabase.findAlbumByArtist(new MPDArtist(artist), new MPDAlbum(album)).map(_.getName)
       } pipeTo(sender)
+    case Search(key) =>
+      Future {
+        mpd.getDatabase.searchAny(key).map(MpdConverters.mpdSongToTitle(_)).toList
+      } pipeTo(sender)
     case s:String => println(s"Got msg $s!")
   }
 }

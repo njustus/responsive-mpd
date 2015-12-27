@@ -1,0 +1,10 @@
+@(title:Title, idx:Int)
+
+<tr>
+  <td>@idx</td>
+  <td>
+    <p class="bold">@title.name</p>
+    <p class="description">@title.artist - @title.album</p>
+  </td>
+  <td>@{ s"${title.length._1} : ${title.length._2}" }</td>
+</tr>

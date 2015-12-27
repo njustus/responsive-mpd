@@ -1,0 +1,19 @@
+@import templates._
+@import models.MpdStatus
+
+@(titles:List[Title])(implicit status:MpdStatus)
+
+@side("Playlist", status) {
+  <table id="search-result-table" class="full-width">
+    <thead>
+      <tr>
+        <td>#</td>
+        <td>Title</td>
+        <td>Length</td>
+      </tr>
+    </thead>
+    <tbody>
+      @titles.zipWithIndex.map(x => search_result_title(x._1, x._2))
+    </tbody>
+  </table>
+}
