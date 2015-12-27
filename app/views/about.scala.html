@@ -1,20 +1,35 @@
 @import templates._
 @import models.MpdStatus
 
-@()(implicit status:MpdStatus)
+@(general:Map[String, String], dbstat:Map[String, String])(implicit status:MpdStatus)
+
+@headLine(s:String)={
+  <h4>@s</h4>
+}
+@genRow(kv: (String, String))={
+  <tr>
+    <td class="bold">@kv._1</td>
+    <td>@kv._2</td>
+  </tr>
+}
 
 @side("About", status) {
-  <h1>About</h1>
-  <table>
-    <tr>
-      <td>Connected to</td>
-      <td>127.0.0.1:8734</td>
-    </tr>
-    <tr>
-      <td>Uptime</td>
-      <td>2:34</td>
-      <td>Test</td>
-      <td>test-entry</td>
-    </tr>
-  </table>
+  <div class="row">
+    <div class="small-6 columns">
+      @headLine("General")
+      <table>
+        <tbody>
+          @general.map(genRow(_))
+        </tbody>
+      </table>
+    </div>
+    <div class="small-6 columns">
+      @headLine("Database Statistics")
+      <table>
+        <tbody>
+          @dbstat.map(genRow(_))
+        </tbody>
+      </table>
+    </div>
+  </div>
 }

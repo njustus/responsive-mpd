@@ -102,7 +102,17 @@ class Application extends Controller {
     val mpdConnector = getMpdActor
     getPlayerStatus(mpdConnector) { implicit status =>
       Future {
-        Ok(views.html.about())
+        val general = Map(
+          "network" -> "127.0.0.1",
+          "system" -> "linux",
+          "uptime" -> "5000 h"
+        )
+        val db = Map(
+          "song-count" -> "3321",
+          "album-count" -> "978",
+          "artist-count" -> "90"
+        )
+        Ok(views.html.about(general, db))
       }
     }
   }
