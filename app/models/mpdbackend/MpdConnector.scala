@@ -15,6 +15,7 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import org.bff.javampd.objects.MPDArtist
 import org.bff.javampd.objects.MPDAlbum
 import org.bff.javampd.objects.MPDSong
+import org.bff.javampd.Player
 
 class MpdConnector extends Actor {
   import MpdConnector._
@@ -34,6 +35,17 @@ class MpdConnector extends Actor {
       song = songOpt.get
     } yield { fn(song) }
 
+  private def repeatUntilSuccess[T](fn: => Option[T]): Option[T] = {
+    var res:Option[T] = fn
+    var i = 0
+    var maxTrys = playConf.getInt("mpd.max-trys").getOrElse(4)
+    while(i<maxTrys && !res.isDefined) {
+      res = fn
+      i += 1
+    }
+    res
+  }
+
   private def addSongs(songs:java.util.Collection[MPDSong]): Future[Unit] = Future {
     val list:java.util.List[MPDSong] =
       if(songs.isInstanceOf[java.util.List[MPDSong]]) songs.asInstanceOf[java.util.List[MPDSong]]
@@ -41,6 +53,11 @@ class MpdConnector extends Actor {
 
     mpd.getPlaylist.addSongs(list)
   }
+
+  private def getPlayersStatus: Future[Option[Player.Status]] =
+    Future {
+      repeatUntilSuccess { Option(mpd.getPlayer.getStatus) }
+    }
 
   def receive = {
     case Connect =>
@@ -62,12 +79,9 @@ class MpdConnector extends Actor {
     case ShuffleSwitch(b) => mpd.getPlayer.setRandom(b)
     case RepeatSwitch(b) => mpd.getPlayer.setRepeat(b)
     case GetMpdStatus =>
-      Future {
-        /*TODO
-          getStatus could be null, error handling
-        */
+      getPlayersStatus.map { status =>
         MpdStatus(
-          mpd.getPlayer.getStatus,
+          status,
           MpdConverters.mpdSongToTitle(mpd.getPlayer.getCurrentSong),
           mpd.getPlayer.getVolume,
           mpd.getPlayer.isRandom,

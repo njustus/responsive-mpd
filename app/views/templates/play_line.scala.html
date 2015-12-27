@@ -20,9 +20,15 @@
           @newIcon("fi-stop", "stop-btn")
         </li>
       } else {
+      	@if(!status.status.isDefined) {
+      	<li>
+      		<span id="unknown-btn">?</span>
+      	</li>
+      	} else {
         <li>
           @newIcon("fi-play", "stop-btn")
         </li>
+      	}
       }
       <li>@newIcon("fi-next", "next-btn")</li>
 
