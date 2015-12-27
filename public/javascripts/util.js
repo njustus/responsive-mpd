@@ -12,3 +12,7 @@ function removePlayIcons() {
   tdElems.find('br').remove();
   tdElems.find('span#actual-song-icon').remove();
 }
+
+function getBrowserUrl() {
+  return window.location.href;
+}

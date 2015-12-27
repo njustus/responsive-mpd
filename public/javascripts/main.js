@@ -29,10 +29,20 @@ function addPlaylistHandlers() {
   //$('td span#save-playlist-btn').on('click')
 }
 
+function addLibHandlers() {
+  if(getBrowserUrl().indexOf("/lib") != -1) {
+    $('span#add-to-playlist-btn').on('click', function() {
+      var elem = $(this).parents('tr');
+      libHandler.addToPlaylist(elem);
+    });
+  }
+}
+
 $(document).ready(function() {
   addMenuBarHandlers();
   addPlaylistHandlers();
   addPlayerHandlers();
+  addLibHandlers();
 
   console.log(globalUris);
 });
