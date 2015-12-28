@@ -80,21 +80,6 @@ class MpdConnector extends Actor {
       Logger.info("MPD-Connection closed")
   }
 
-  /*override def preStart(): Unit = {
-    if(mpd == null) {
-      for {
-        server <- playConf.getString("mpd.servername")
-        port <- playConf.getInt("mpd.port")
-      } {
-        playConf.getString("mpd.password") match {
-          case Some(pw) => mpd = new MPD.Builder().server(server).port(port).password(pw).build()
-          case None => mpd = new MPD.Builder().server(server).port(port).build()
-        }
-        Logger.info(s"Client connected to $server : $port")
-      }
-    }
-  }*/
-
   def receive = {
     case PlaySong => mpd.getPlayer.play()
     case Stop => mpd.getPlayer.stop()
