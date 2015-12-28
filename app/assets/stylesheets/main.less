@@ -2,16 +2,20 @@
 @import "util";
 
 @playlist-icon-size: 24pt;
-
+@table-header-icon-size: @playlist-icon-size - 6pt;
 #actual-song-icon {
   color: @green;
   font-size:@playlist-icon-size;
 }
 #remove-song {
-  font-size:@playlist-icon-size - 6pt;
+  font-size:@table-header-icon-size;
 }
 #save-playlist-btn {
-  font-size:@playlist-icon-size - 6pt;
+  font-size:@table-header-icon-size;
+}
+#clear-playlist-btn {
+  margin-left: 10px;
+  font-size: @table-header-icon-size;
 }
 #add-to-playlist-btn {
   color: @green;

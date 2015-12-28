@@ -19,4 +19,5 @@ class Player extends AbstractMpdController {
   def shuffle(flag:Boolean) = sendToActor(mpdbackend.ShuffleSwitch(flag))
   def repeat(flag:Boolean) = sendToActor(mpdbackend.RepeatSwitch(flag))
   def removeId(idx: Int) = sendToActor(mpdbackend.RemoveSong(idx))
+  def clearPlaylist = sendToActor(mpdbackend.ClearPlaylist)
 }

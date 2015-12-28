@@ -147,6 +147,10 @@ class MpdConnector extends Actor {
       Future {
         mpd.getDatabase.searchAny(key).map(MpdConverters.mpdSongToTitle(_)).toList
       } pipeTo(sender)
+    case ClearPlaylist =>
+      Future {
+        mpd.getPlaylist.clearPlaylist()
+      }
     case s:String => println(s"Got msg $s!")
   }
 }

@@ -22,3 +22,4 @@ case class ShuffleSwitch(f:Boolean) extends ConnectorMesage
 case class RemoveSong(id:Int) extends ConnectorMesage
 case class AddToPlaylist(artist:Option[String], album:Option[String], title: Option[String]) extends ConnectorMesage
 case class Search(key:String) extends ConnectorMesage
+case object ClearPlaylist extends ConnectorMesage
