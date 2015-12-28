@@ -24,7 +24,7 @@ GET     /playlist/play-id/:idx      controllers.Player.playId(idx: Int)
 GET     /playlist/remove/:idx      controllers.Player.removeId(idx: Int)
 GET     /playlist/add				controllers.Lib.addToPlaylist(artist: Option[String], album: Option[String], title: Option[String])
 GET     /playlist/clear				controllers.Player.clearPlaylist
-
+POST    /playlist/save-playlist controllers.Player.savePlaylist
 # db
 GET     /db                 controllers.Lib.search(q: Option[String])
 

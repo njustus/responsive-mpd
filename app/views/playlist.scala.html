@@ -8,7 +8,9 @@
     <thead>
       <tr>
         <td>
-            @icon("fi-save", "save-playlist-btn", true)("step")
+            <a data-toggle="save-playlist-modal" class="fi-save size-60"
+              id="save-playlist-btn"></a>
+            @** @icon("fi-save", "save-playlist-btn", true)("step") **@
             <a href="@routes.Player.clearPlaylist">
               <span class="fi-page-delete size-60 step red"
                   id="clear-playlist-btn">
@@ -24,4 +26,19 @@
       @titles.zipWithIndex.map(x => playlist_line(x._1, x._2))
     </tbody>
   </table>
+
+  <div class="reveal" id="save-playlist-modal" data-reveal>
+    <p>Save the playlist as:</p>
+    <form action="/playlist/save-playlist" method="post">
+      <div class="input-group">
+      <input class="input-group-field" type="text" placeholder="awesome-playlist-name">
+      <div class="input-group-button">
+        <input type="submit" class="button" value="save">
+      </div>
+    </div></form>
+
+    <button class="close-button" data-close aria-label="Close reveal" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
 }
