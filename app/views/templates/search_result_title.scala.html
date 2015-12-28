@@ -7,4 +7,8 @@
     <p class="description">@title.artist - @title.album</p>
   </td>
   <td>@{ s"${title.length._1} : ${title.length._2}" }</td>
+  <td>
+    <a href="@routes.Lib.addToPlaylist(Some(title.artist), Some(title.album), Some(title.name))" 
+      class="fi-plus size-60"></a>
+  </td>
 </tr>
