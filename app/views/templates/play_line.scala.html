@@ -4,7 +4,7 @@
 
 @newIcon(iconname:String, id:String, activate:Boolean = false) = {
   @if(activate) {
-		@icon(iconname, id, true)("font-btn", "blue-on-hover")
+		@icon(iconname, id, true,  List("""active="1""""))("font-btn", "blue", "blue-on-hover")
 	} else {
   		@icon(iconname, id, true)("font-btn", "blue-on-hover")
 	}

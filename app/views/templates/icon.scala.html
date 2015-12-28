@@ -1,8 +1,8 @@
-@(iconname:String, id:String, isButton:Boolean=false)(cssClasses:String*)
+@(iconname:String, id:String, isButton:Boolean=false, attributes:List[String] = Nil)(cssClasses:String*)
 
 @if(isButton) {
 <a style="color:black;">
-  <span class="@iconname size-60 @cssClasses.mkString(" ")" id="@id"></span>
+  <span class="@iconname size-60 @cssClasses.mkString(" ")" id="@id" @attributes.mkString(" ")></span>
 </a>
 } else {
   <span class="@iconname size-60 @cssClasses.mkString(" ")" id="@id"></span>
