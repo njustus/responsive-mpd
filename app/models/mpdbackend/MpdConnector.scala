@@ -25,7 +25,20 @@ class MpdConnector extends Actor {
   import play.api.Play
 
   private lazy val playConf = Play.current.configuration
-  private var mpd: MPD = null
+  private val mpd: MPD = (for {
+        server <- playConf.getString("mpd.servername")
+        port <- playConf.getInt("mpd.port")
+      } yield {
+        val client = playConf.getString("mpd.password") match {
+          case Some(pw) => new MPD.Builder().server(server).port(port).password(pw).build()
+          case None => new MPD.Builder().server(server).port(port).build()
+        }
+        Logger.info(s"Client connected to $server : $port")
+        client
+      }).getOrElse {
+        throw new IllegalStateException("Can't create mpd-instance!")
+      }
+
   private val volumeStep:Int = 10
 
   private[mpdbackend] def getSongById(id:Int): Future[Option[MPDSong]] =
@@ -63,12 +76,11 @@ class MpdConnector extends Actor {
     }
 
   override def postStop(): Unit = {
-    if(mpd != null) {
       mpd.close()
-    }
+      Logger.info("MPD-Connection closed")
   }
 
-  override def preStart(): Unit = {
+  /*override def preStart(): Unit = {
     if(mpd == null) {
       for {
         server <- playConf.getString("mpd.servername")
@@ -81,7 +93,7 @@ class MpdConnector extends Actor {
         Logger.info(s"Client connected to $server : $port")
       }
     }
-  }
+  }*/
 
   def receive = {
     case PlaySong => mpd.getPlayer.play()
