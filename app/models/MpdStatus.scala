@@ -4,7 +4,7 @@ import org.bff.javampd.Player
 
 case class MpdStatus(
     status:Option[Player.Status],
-    actualSong:Title,
+    actualSong:Option[Title],
     volume: Int,
     isShuffling: Boolean,
     isLooping: Boolean

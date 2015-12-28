@@ -94,13 +94,26 @@ class MpdConnector extends Actor {
     case RepeatSwitch(b) => mpd.getPlayer.setRepeat(b)
     case GetMpdStatus =>
       getPlayersStatus.map { status =>
-        MpdStatus(
-          status,
-          MpdConverters.mpdSongToTitle(mpd.getPlayer.getCurrentSong),
-          mpd.getPlayer.getVolume,
-          mpd.getPlayer.isRandom,
-          mpd.getPlayer.isRepeat
-        )
+        val curSongOpt = Option(mpd.getPlayer.getCurrentSong)
+
+        curSongOpt match {
+          case Some(song) =>
+            MpdStatus(
+              status,
+              Some(MpdConverters.mpdSongToTitle(song)),
+              mpd.getPlayer.getVolume,
+              mpd.getPlayer.isRandom,
+              mpd.getPlayer.isRepeat
+            )
+          case None =>
+            MpdStatus(
+              status,
+              None,
+              mpd.getPlayer.getVolume,
+              mpd.getPlayer.isRandom,
+              mpd.getPlayer.isRepeat
+            )
+        }
       } pipeTo(sender)
     case PlaySongId(id) =>
         ifSongIsDefined(id) { song =>
