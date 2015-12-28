@@ -6,7 +6,7 @@ import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
 import org.bff.javampd.MPD
 import akka.actor.{ Actor, ActorRef, Props, actorRef2Scala }
-import akka.pattern.pipe
+import akka.pattern.{pipe, ask}
 import akka.util.Timeout
 import models.MpdStatus
 import play.api.Play.current
@@ -16,6 +16,9 @@ import org.bff.javampd.objects.MPDArtist
 import org.bff.javampd.objects.MPDAlbum
 import org.bff.javampd.objects.MPDSong
 import org.bff.javampd.Player
+import play.api.Logger
+import akka.actor.TypedActor.PostStop
+import scala.concurrent.Await
 
 class MpdConnector extends Actor {
   import MpdConnector._
@@ -59,8 +62,14 @@ class MpdConnector extends Actor {
       repeatUntilSuccess { Option(mpd.getPlayer.getStatus) }
     }
 
-  def receive = {
-    case Connect =>
+  override def postStop(): Unit = {
+    if(mpd != null) {
+      mpd.close()
+    }
+  }
+
+  override def preStart(): Unit = {
+    if(mpd == null) {
       for {
         server <- playConf.getString("mpd.servername")
         port <- playConf.getInt("mpd.port")
@@ -69,7 +78,12 @@ class MpdConnector extends Actor {
           case Some(pw) => mpd = new MPD.Builder().server(server).port(port).password(pw).build()
           case None => mpd = new MPD.Builder().server(server).port(port).build()
         }
+        Logger.info(s"Client connected to $server : $port")
       }
+    }
+  }
+
+  def receive = {
     case PlaySong => mpd.getPlayer.play()
     case Stop => mpd.getPlayer.stop()
     case Next => mpd.getPlayer.playNext()
@@ -139,17 +153,28 @@ class MpdConnector extends Actor {
 
 object MpdConnector {
   private var mpdActor: Option[ActorRef] = None
-  val mpdActorName: String = "Mpd-Connector"
-  val mpdActorPath: String = "/user/"+mpdActorName
+  private var supervisingActor: Option[ActorRef] = None
+//  val mpdActorName: String = "Mpd-Connector"
+  val supervisorName: String = "Mpd-Supervisor"
 
   implicit val actorTimeout:Timeout = Timeout(8 seconds)
 
   def getMpdActor: ActorRef = {
-    if(!mpdActor.isDefined) {
-        val actor = Akka.system.actorOf(Props[MpdConnector], name = mpdActorName)
-        mpdActor = Some(actor)
-    }
+    mpdActor.getOrElse {
+        //supervisor
+        val visor = supervisingActor.getOrElse {
+          val supervisor = Akka.system.actorOf(Props[MpdSupervisor], name = supervisorName)
+          supervisingActor = Some(supervisor)
+          supervisor
+        }
 
-    mpdActor.get
+        //mpd actor
+        val future = (visor ? Props[MpdConnector]).mapTo[ActorRef]
+
+        val actor = Await.result(future, 2 minutes)
+        mpdActor = Some(actor)
+
+        actor
+    }
   }
 }

@@ -1,8 +1,6 @@
 package models.mpdbackend
 
 sealed trait ConnectorMesage
-case object Connect extends ConnectorMesage
-case object Disconnect extends ConnectorMesage
 case object PlaySong extends ConnectorMesage
 case class PlaySongId(id:Int) extends ConnectorMesage
 case object Stop extends ConnectorMesage
