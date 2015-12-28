@@ -23,8 +23,10 @@ GET     /player/repeat(flag)   controllers.Player.repeat(flag:Boolean)
 GET     /playlist/play-id/:idx      controllers.Player.playId(idx: Int)
 GET     /playlist/remove/:idx      controllers.Player.removeId(idx: Int)
 GET     /playlist/add				controllers.Lib.addToPlaylist(artist: Option[String], album: Option[String], title: Option[String])
+GET     /playlist/clear				controllers.Player.clearPlaylist
 
 # db
 GET     /db                 controllers.Lib.search(q: Option[String])
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
