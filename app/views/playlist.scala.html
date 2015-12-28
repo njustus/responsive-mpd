@@ -4,13 +4,13 @@
 @(titles:List[Title])(implicit status:MpdStatus)
 
 @side("Playlist", status) {
+  @change_playlist(List("Blup", "Hans", "Nico"))
   <table id="playlist-table" class="full-width">
     <thead>
       <tr>
         <td>
             <a data-toggle="save-playlist-modal" class="fi-save size-60"
               id="save-playlist-btn"></a>
-            @** @icon("fi-save", "save-playlist-btn", true)("step") **@
             <a href="@routes.Player.clearPlaylist">
               <span class="fi-page-delete size-60 step red"
                   id="clear-playlist-btn">
@@ -29,7 +29,7 @@
 
   <div class="reveal" id="save-playlist-modal" data-reveal>
     <p>Save the playlist as:</p>
-    <form action="/playlist/save-playlist" method="post">
+    <form action="@routes.Player.savePlaylist" method="post">
       <div class="input-group">
       <input class="input-group-field" type="text" placeholder="awesome-playlist-name">
       <div class="input-group-button">

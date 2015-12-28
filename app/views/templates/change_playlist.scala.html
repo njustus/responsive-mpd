@@ -1,0 +1,13 @@
+@(playlists:List[String])
+<div>
+  <button class="button dropdown" type="button"
+    data-toggle="playlist-dropdown">Change Playlist</button>
+  <div class="dropdown-pane" id="playlist-dropdown"
+    data-dropdown data-auto-focus="true">
+    <ul class="menu vertical">
+      @playlists.map { x =>
+        <li><a href="@routes.Player.changePlaylist(Some(x))">@x</a></li>
+      }
+    </ul>
+  </div>
+</div>

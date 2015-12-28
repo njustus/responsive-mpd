@@ -29,4 +29,8 @@ class Player extends AbstractMpdController {
   def savePlaylist= Action { implicit request =>
     Redirect(routes.Application.index())
   }
+
+  def changePlaylist(name:Option[String]) = Action { implicit request =>
+    Redirect(routes.Application.index())
+  }
 }
