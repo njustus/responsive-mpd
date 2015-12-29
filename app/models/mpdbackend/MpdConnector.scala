@@ -173,9 +173,13 @@ class MpdConnector extends Actor {
     case SavePlaylist(name) =>
       Future {
         val dateString = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)
-        val fullName = dateString + name
+        val fullName = dateString + "-" + name
         mpd.getPlaylist.savePlaylist(fullName)
       } pipeTo(sender)
+    case ChangePlaylist(name) =>
+      Future {
+        mpd.getPlaylist.loadPlaylist(name)
+      }
     case s:String => println(s"Got msg $s!")
   }
 }

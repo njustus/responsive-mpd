@@ -25,3 +25,4 @@ case class Search(key:String) extends ConnectorMesage
 case object ClearPlaylist extends ConnectorMesage
 case object GetPlaylistNames extends ConnectorMesage
 case class SavePlaylist(name:String) extends ConnectorMesage
+case class ChangePlaylist(name:String) extends ConnectorMesage

@@ -45,6 +45,12 @@ class Player extends AbstractMpdController {
   }
 
   def changePlaylist(name:Option[String]) = Action { implicit request =>
-    Redirect(routes.Application.index())
+    name match {
+      case Some(n) =>
+        val mpd = MpdConnector.getMpdActor
+        mpd ! ChangePlaylist(n)
+        Redirect(routes.Application.index())
+      case None => Redirect(routes.Application.index())
+    }
   }
 }
