@@ -19,6 +19,8 @@ import org.bff.javampd.Player
 import play.api.Logger
 import akka.actor.TypedActor.PostStop
 import scala.concurrent.Await
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class MpdConnector extends Actor {
   import MpdConnector._
@@ -160,13 +162,19 @@ class MpdConnector extends Actor {
       Future {
         mpd.getDatabase.searchAny(key).map(MpdConverters.mpdSongToTitle(_)).toList
       } pipeTo(sender)
+    case GetPlaylistNames =>
+      Future {
+        mpd.getDatabase.listPlaylists().toList
+      } pipeTo(sender)
     case ClearPlaylist =>
       Future {
         mpd.getPlaylist.clearPlaylist()
       }
     case SavePlaylist(name) =>
       Future {
-        mpd.getPlaylist.savePlaylist(name)
+        val dateString = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)
+        val fullName = dateString + name
+        mpd.getPlaylist.savePlaylist(fullName)
       } pipeTo(sender)
     case s:String => println(s"Got msg $s!")
   }

@@ -8,9 +8,7 @@ import play.api.mvc.{ Action, Controller }
 import scala.concurrent.Future
 import models.mpdbackend.MpdConnector
 import akka.actor.ActorRef
-import models.mpdbackend.GetArtistsList
-import models.mpdbackend.GetAlbumList
-import models.mpdbackend.GetAlbumTitles
+import models.mpdbackend._
 
 class Application extends Controller {
   def index = playlist
@@ -18,7 +16,7 @@ class Application extends Controller {
   def playlist = Action.async {
     val mpdConnector = getMpdActor
     getPlayerStatus(mpdConnector) { implicit status =>
-      (mpdConnector ? models.mpdbackend.GetPlaylist).mapTo[List[Title]].map { titles =>
+      (mpdConnector ? GetPlaylist).mapTo[List[Title]].flatMap { titles =>
           val mappedTitles = titles.map { x =>
             if(x == status.actualSong) {
               x.isPlaying = status.isPlaying
@@ -26,7 +24,11 @@ class Application extends Controller {
             }
             else x
           }
-        Ok(views.html.playlist(mappedTitles))
+
+          (mpdConnector ? GetPlaylistNames).mapTo[List[String]].map { playlists =>
+            Ok(views.html.playlist(mappedTitles, playlists))
+          }
+
       }
     }
 

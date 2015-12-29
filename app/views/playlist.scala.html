@@ -1,10 +1,10 @@
 @import templates._
 @import models.MpdStatus
 
-@(titles:List[Title])(implicit status:MpdStatus)
+@(titles:List[Title], playlists:List[String])(implicit status:MpdStatus)
 
 @side("Playlist", status) {
-  @change_playlist(List("Blup", "Hans", "Nico"))
+  @change_playlist(playlists)
   <table id="playlist-table" class="full-width">
     <thead>
       <tr>
