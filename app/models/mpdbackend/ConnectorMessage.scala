@@ -23,3 +23,5 @@ case class RemoveSong(id:Int) extends ConnectorMesage
 case class AddToPlaylist(artist:Option[String], album:Option[String], title: Option[String]) extends ConnectorMesage
 case class Search(key:String) extends ConnectorMesage
 case object ClearPlaylist extends ConnectorMesage
+case object GetPlaylistNames extends ConnectorMesage
+case class SavePlaylist(name:String) extends ConnectorMesage

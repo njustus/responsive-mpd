@@ -1,33 +1,47 @@
 package controllers
 
 import akka.actor.actorRef2Scala
-import models.mpdbackend
 import models.mpdbackend.MpdConnector
+import play.api.data._
+import play.api.data.Forms._
 import play.api.mvc.{ Action, AnyContent, Controller }
-import models.mpdbackend.ClearPlaylist
 
 class Player extends AbstractMpdController {
 
-  def play = sendToActor(mpdbackend.PlaySong)
-  def playId(id: Int) = sendToActor(mpdbackend.PlaySongId(id))
-  def stop = sendToActor(mpdbackend.Stop)
+  import models.mpdbackend._
 
-  def next = sendToActor(mpdbackend.Next)
-  def prev = sendToActor(mpdbackend.Prev)
+  private val playlistNameForm = Form(
+    single( "playlistname" -> nonEmptyText) )
 
-  def volumeUp = sendToActor(mpdbackend.VolumeUp)
-  def volumeDown = sendToActor(mpdbackend.VolumeDown)
-  def shuffle(flag:Boolean) = sendToActor(mpdbackend.ShuffleSwitch(flag))
-  def repeat(flag:Boolean) = sendToActor(mpdbackend.RepeatSwitch(flag))
-  def removeId(idx: Int) = sendToActor(mpdbackend.RemoveSong(idx))
-  def clearPlaylist = Action {
-    val mpdActor = MpdConnector.getMpdActor
-    mpdActor ! ClearPlaylist
+  def play = sendToActor(PlaySong)
+  def playId(id: Int) = sendToActor(PlaySongId(id))
+  def stop = sendToActor(Stop)
+
+  def next = sendToActor(Next)
+  def prev = sendToActor(Prev)
+
+  def volumeUp = sendToActor(VolumeUp)
+  def volumeDown = sendToActor(VolumeDown)
+  def shuffle(flag:Boolean) = sendToActor(ShuffleSwitch(flag))
+  def repeat(flag:Boolean) = sendToActor(RepeatSwitch(flag))
+  def removeId(idx: Int) = sendToActor(RemoveSong(idx))
+  def clearPlaylist = withActorMsg(ClearPlaylist) {
     Redirect(routes.Application.index())
   }
 
-  def savePlaylist= Action { implicit request =>
-    Redirect(routes.Application.index())
+  def savePlaylist = Action { implicit request =>
+    playlistNameForm.bindFromRequest().fold(
+      withErrors => {
+        BadRequest
+      },
+      playlistName => {
+        val mpd = MpdConnector.getMpdActor
+        mpd ! SavePlaylist(playlistName)
+
+        Redirect(routes.Application.index())
+      }
+    )
+
   }
 
   def changePlaylist(name:Option[String]) = Action { implicit request =>

@@ -3,11 +3,12 @@ package object controllers {
   import akka.actor.ActorRef
   import akka.pattern.ask
   import models.{ MpdStatus, Title }
+  import models.mpdbackend
   import models.mpdbackend.MpdConnector
   import models.mpdbackend.MpdConnector._
   import scala.concurrent.Future
   import play.api.libs.concurrent.Execution.Implicits.defaultContext
-  import play.api.mvc.{ Action, AnyContent, Controller }
+  import play.api.mvc.{ Action, AnyContent, Controller, Result }
 
   private[controllers] def getPlayerStatus[T](mpdConnector:ActorRef)
     (fn: MpdStatus => Future[T]): Future[T] = {
@@ -15,7 +16,15 @@ package object controllers {
         .mapTo[MpdStatus].flatMap(fn)
     }
 
-  private[controllers] def sendToActor(msg:models.mpdbackend.ConnectorMesage)(implicit c:Controller) : Action[AnyContent] = Action {
+  private[controllers] def withActorMsg(msg:mpdbackend.ConnectorMesage)
+    (fn: => Result)
+    (implicit c:Controller) : Action[AnyContent] = Action { implicit request =>
+      val mpdActor = MpdConnector.getMpdActor
+      mpdActor ! msg
+      fn
+  }
+
+  private[controllers] def sendToActor(msg:mpdbackend.ConnectorMesage)(implicit c:Controller) : Action[AnyContent] = Action {
     implicit request =>
       val mpdActor = MpdConnector.getMpdActor
       mpdActor ! msg

@@ -72,7 +72,10 @@ class MpdConnector extends Actor {
 
   private def getPlayersStatus: Future[Option[Player.Status]] =
     Future {
-      repeatUntilSuccess { Option(mpd.getPlayer.getStatus) }
+        Logger.info("mpd is null: " + (mpd == null))
+        Logger.info("play is null: " + (mpd.getPlayer == null))
+        Logger.info("status is null: " + (mpd.getPlayer.getStatus == null))
+        Option(mpd.getPlayer.getStatus)
     }
 
   override def postStop(): Unit = {
@@ -161,6 +164,10 @@ class MpdConnector extends Actor {
       Future {
         mpd.getPlaylist.clearPlaylist()
       }
+    case SavePlaylist(name) =>
+      Future {
+        mpd.getPlaylist.savePlaylist(name)
+      } pipeTo(sender)
     case s:String => println(s"Got msg $s!")
   }
 }

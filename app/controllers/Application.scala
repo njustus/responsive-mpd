@@ -13,7 +13,9 @@ import models.mpdbackend.GetAlbumList
 import models.mpdbackend.GetAlbumTitles
 
 class Application extends Controller {
-  def index = Action.async {
+  def index = playlist
+
+  def playlist = Action.async {
     val mpdConnector = getMpdActor
     getPlayerStatus(mpdConnector) { implicit status =>
       (mpdConnector ? models.mpdbackend.GetPlaylist).mapTo[List[Title]].map { titles =>
