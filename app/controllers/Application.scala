@@ -18,7 +18,7 @@ class Application extends Controller {
     getPlayerStatus(mpdConnector) { implicit status =>
       (mpdConnector ? GetPlaylist).mapTo[List[Title]].flatMap { titles =>
           val mappedTitles = titles.map { x =>
-            if(x == status.actualSong) {
+            if(status.actualSong.isDefined && x == status.actualSong.get) {
               x.isPlaying = status.isPlaying
               x
             }
