@@ -5,16 +5,17 @@ import play.api.Logger
 import play.api.Play
 import org.bff.javampd.exception.MPDException
 
-class MpdSupervisor extends Actor {
+trait MpdSupervisor extends Actor {
 
   import akka.actor.OneForOneStrategy
   import akka.actor.SupervisorStrategy._
   import scala.concurrent.duration._
   import scala.language.postfixOps
 
-  private lazy val playConf = Play.current.configuration
+  protected val log: Logger = Logger("mpdsupervisor")
+  protected lazy val playConf = Play.current.configuration
 
-  private lazy val maxRetrys:Int = playConf.getInt("mpd.max-trys").getOrElse(4)
+  protected lazy val maxRetrys:Int = playConf.getInt("mpd.max-trys").getOrElse(4)
 
   override val supervisorStrategy =
     OneForOneStrategy(maxNrOfRetries = maxRetrys, withinTimeRange = 1 minute) {
@@ -24,12 +25,5 @@ class MpdSupervisor extends Actor {
       case exc: Exception =>
         Logger.error(s"EXCEPTION: $exc.getMessage - escalating actor")
         Escalate
-  }
-
-  def receive = {
-    case p: Props =>
-      //create a child with the given props
-      sender ! context.actorOf(p)
-    case a: Any => Logger.error(s"MpdSupervisor got unknown msg: $a")
   }
 }

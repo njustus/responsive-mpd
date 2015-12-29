@@ -16,17 +16,19 @@ import org.bff.javampd.objects.MPDArtist
 import org.bff.javampd.objects.MPDAlbum
 import org.bff.javampd.objects.MPDSong
 import org.bff.javampd.Player
-import play.api.Logger
 import akka.actor.TypedActor.PostStop
 import scala.concurrent.Await
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import play.api.Logger
 
 class MpdConnector extends Actor {
   import MpdConnector._
   import play.api.Play
 
   private lazy val playConf = Play.current.configuration
+  private val log: Logger = Logger("mpdconnector")
+
   private val mpd: MPD = (for {
         server <- playConf.getString("mpd.servername")
         port <- playConf.getInt("mpd.port")
@@ -35,7 +37,7 @@ class MpdConnector extends Actor {
           case Some(pw) => new MPD.Builder().server(server).port(port).password(pw).build()
           case None => new MPD.Builder().server(server).port(port).build()
         }
-        Logger.info(s"Client connected to $server : $port")
+        log.info(s"Client connected to $server : $port")
         client
       }).getOrElse {
         throw new IllegalStateException("Can't create mpd-instance!")
@@ -74,15 +76,15 @@ class MpdConnector extends Actor {
 
   private def getPlayersStatus: Future[Option[Player.Status]] =
     Future {
-        Logger.info("mpd is null: " + (mpd == null))
-        Logger.info("play is null: " + (mpd.getPlayer == null))
-        Logger.info("status is null: " + (mpd.getPlayer.getStatus == null))
+//        log.info("mpd is null: " + (mpd == null))
+//        log.info("play is null: " + (mpd.getPlayer == null))
+//        log.info("status is null: " + (mpd.getPlayer.getStatus == null))
         Option(mpd.getPlayer.getStatus)
     }
 
   override def postStop(): Unit = {
       mpd.close()
-      Logger.info("MPD-Connection closed")
+      log.info("MPD-Connection closed")
   }
 
   def receive = {
@@ -185,29 +187,19 @@ class MpdConnector extends Actor {
 }
 
 object MpdConnector {
-  private var mpdActor: Option[ActorRef] = None
   private var supervisingActor: Option[ActorRef] = None
 //  val mpdActorName: String = "Mpd-Connector"
-  val supervisorName: String = "Mpd-Supervisor"
+  val supervisorName: String = "Mpd-Supervising-Router"
 
   implicit val actorTimeout:Timeout = Timeout(8 seconds)
 
   def getMpdActor: ActorRef = {
-    mpdActor.getOrElse {
-        //supervisor
-        val visor = supervisingActor.getOrElse {
-          val supervisor = Akka.system.actorOf(Props[MpdSupervisor], name = supervisorName)
-          supervisingActor = Some(supervisor)
-          supervisor
-        }
-
-        //mpd actor
-        val future = (visor ? Props[MpdConnector]).mapTo[ActorRef]
-
-        val actor = Await.result(future, 2 minutes)
-        mpdActor = Some(actor)
-
-        actor
+    //supervisor
+    if(!supervisingActor.isDefined) {
+      val supervisor = Akka.system.actorOf(Props[MpdMaster], name = supervisorName)
+      supervisingActor = Some(supervisor)
     }
+
+    supervisingActor.get
   }
 }
