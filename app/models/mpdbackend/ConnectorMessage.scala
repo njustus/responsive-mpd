@@ -32,6 +32,7 @@ case object IsLooping extends ConnectorMesage
 case object GetArtistsList extends ConnectorMesage
 case class GetAlbumList(artist:String) extends ConnectorMesage
 case class GetAlbumTitles(artist:String, album:String) extends ConnectorMesage
+case object GetStatistics extends ConnectorMesage
 case object GetPlaylistNames extends ConnectorMesage
 case class Search(key:String) extends ConnectorMesage
 

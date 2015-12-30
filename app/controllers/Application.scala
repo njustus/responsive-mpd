@@ -78,18 +78,8 @@ class Application extends Controller {
   def about = Action.async {
     val mpdConnector = getMpdActor
     getPlayerStatus(mpdConnector) { implicit status =>
-      Future {
-        val general = Map(
-          "network" -> "127.0.0.1",
-          "system" -> "linux",
-          "uptime" -> "5000 h"
-        )
-        val db = Map(
-          "song-count" -> "3321",
-          "album-count" -> "978",
-          "artist-count" -> "90"
-        )
-        Ok(views.html.about(general, db))
+      (mpdConnector ? GetStatistics).mapTo[(Map[String,String], Map[String,String])].map {
+        case (general, db) => Ok(views.html.about(general, db))
       }
     }
   }

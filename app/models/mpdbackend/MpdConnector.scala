@@ -9,6 +9,7 @@ import akka.actor.{ Actor, ActorRef, Props, actorRef2Scala }
 import akka.pattern.{pipe, ask}
 import akka.util.Timeout
 import models.MpdStatus
+import models.mpdbackend.MpdConverters._
 import play.api.Play.current
 import play.api.libs.concurrent.Akka
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
@@ -21,6 +22,7 @@ import scala.concurrent.Await
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import play.api.Logger
+import scala.collection.mutable.HashMap
 
 class MpdConnector extends Actor {
   import MpdConnector._
@@ -72,6 +74,29 @@ class MpdConnector extends Actor {
       else new java.util.ArrayList[MPDSong](songs)
 
     mpd.getPlaylist.addSongs(list)
+  }
+
+  private def generalStatistic: Future[Map[String, String]] =
+    Future {
+      val m = HashMap[String,String]()
+
+      m += "Serveraddress" -> mpd.getAddress.getCanonicalHostName
+      m += "Port" -> mpd.getPort.toString
+      m += "MPD-Version" -> mpd.getVersion
+      m += "MPD-Uptime" -> mpd.getAdmin.getDaemonUpTime.toString
+      m.toMap
+    }
+
+  private def dbStatistic: Future[Map[String, String]] =
+    Future {
+      val m = HashMap[String,String]()
+      val db = mpd.getDatabase
+
+      m += "No of artists" -> db.getArtistCount.toString
+      m += "No of albums" -> db.getAlbumCount.toString
+      m += "No of songs" -> db.getSongCount.toString
+      m += "DB update date" -> unixTimestampToReadable(db.getLastUpdateTime)
+      m.toMap
   }
 
   private def getPlayersStatus: Future[Option[Player.Status]] =
@@ -182,6 +207,12 @@ class MpdConnector extends Actor {
       Future {
         mpd.getPlaylist.loadPlaylist(name)
       }
+    case GetStatistics =>
+      generalStatistic flatMap { general =>
+        dbStatistic map { db =>
+          (general, db)
+        }
+      } pipeTo(sender)
     case s:String => println(s"Got msg $s!")
   }
 }
