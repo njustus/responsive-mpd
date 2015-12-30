@@ -9,6 +9,7 @@ import scala.concurrent._
 import org.bff.javampd.exception._
 import java.net.NoRouteToHostException
 import scala.annotation.tailrec
+import java.net.ConnectException
 
 class ErrorHandler @Inject() (
     env: Environment,
@@ -36,9 +37,10 @@ class ErrorHandler @Inject() (
 
   private def mpdException: PartialFunction[Throwable, String] =
     getInnerstException(_) match {
+      case exc:ConnectException => "Can't establish connection to the server:\n" + exc.getMessage
       case exc:NoRouteToHostException => "Can't connect to the server:\n" + exc.getMessage
       case exc:MPDPlayerException =>
-        "Player exception: " + lastException(exc.getMessage)
+        "Player exception: " + exc.getMessage
       case exc:MPDTimeoutException => "Timeout exc"
       case exc:MPDConnectionException => "An error occured while connecting to the mpd server:\n " + exc.getMessage
       case exc:MPDException => "An unknown error from mpd occured:\n" + exc.getMessage
@@ -48,15 +50,4 @@ class ErrorHandler @Inject() (
     case null => "An unknown exception occured!"
     case exc:Throwable => "System totally corrupted!\nPlease consult the developers and report this message:\n" + exc.toString()
   }
-
-  private def lastException(msg:String): String = {
-    val tmp = msg.split(":")
-    tmp(tmp.length-1)
-  }
-
-  /*override def onForbidden(request: RequestHeader, message: String) = {
-    Future.successful(
-      Forbidden("You're not allowed to access this resource.")
-    )
-  }*/
 }
