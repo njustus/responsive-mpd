@@ -1,0 +1,28 @@
+@import templates._
+
+@(msg:String)
+
+<!DOCTYPE html>
+
+<html lang="de">
+    <head>
+    	<meta charset="UTF-8">
+      @head("MPD - Error")
+    </head>
+    <body>
+        @menu("MPD - Error")
+        <div class="row">
+          <div class="small-9 small-centered columns">
+            <div>
+              <h2 style="text-align:center;" class="red">An error occured while handling your request!</h2>
+              <h4 style="text-align:center;">@msg</h4>
+            </div>
+          </div>
+        </div>
+
+        <script>
+          $(document).foundation();
+        </script>
+    </body>
+</html>
+        
