@@ -1,0 +1,6 @@
+@import templates._
+@(address:Option[String], port:Option[String])(implicit status:MpdStatus)
+
+@side("Stream", status) {
+	@stream_view(address, port)
+}

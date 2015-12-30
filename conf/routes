@@ -9,6 +9,8 @@ GET     /lib                        controllers.Application.lib(artist:Option[St
 
 GET     /about                        controllers.Application.about
 
+GET     /stream                        controllers.Application.stream
+
 # player
 GET     /player/stop           controllers.Player.stop
 GET     /player/play           controllers.Player.play

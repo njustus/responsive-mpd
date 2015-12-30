@@ -1,3 +1,14 @@
-@()
-<iframe src="http://192.168.2.1:8000">
-</iframe>
+@(address:Option[String], port:Option[String])
+
+
+@(address, port) match {
+	case (Some(adr), Some(p)) => {
+		<iframe src="http://@adr:@p">
+		</iframe>
+	}
+	case _ => {
+		<h1>Streaming isn't supported by this server.</h1>
+		<p>You may want to set ip and port in conf/mpd.conf file.</p>
+	}
+}
+	

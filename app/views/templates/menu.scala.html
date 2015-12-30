@@ -3,6 +3,7 @@
 @defining(List(
     "Playlist" -> controllers.routes.Application.index,
     "Library" -> controllers.routes.Application.lib(None, None),
+    "Stream" -> controllers.routes.Application.stream,
     "About" -> controllers.routes.Application.about
   )) { sides =>
 
@@ -11,10 +12,16 @@
         <ul class="vertical medium-horizontal menu">
           @sides.map { case (name, route) =>
             @if(name == activeSide) {
-              <li class="bold"><a href="@route">@name</a></li>
+              <li class="bold">
             } else {
-              <li><a href="@route">@name</a></li>
+              <li>
             }
+           		@if(name == "Stream") {
+           			<a href="@route" target="_blank">@name</a>
+           		} else {
+           			<a href="@route">@name</a>
+           		}
+            	</li>
           }
         </ul>
       </div>
