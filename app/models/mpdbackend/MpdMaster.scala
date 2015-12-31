@@ -23,7 +23,7 @@ class MpdMaster extends Actor with MpdSupervisor {
   }
 
   def receive = {
-    case msg:ConnectorMesage => router.route(msg, sender())
+    case msg:ConnectorMessage => router.route(msg, sender())
     case Terminated(actor) =>
       //one actor terminated, start new one
       log.warn(s"A working actor terminated - creating new one")
