@@ -1,6 +1,7 @@
 package models.mpdbackend
 
 sealed trait ConnectorMessage
+abstract class MessageWithId(id:Int)
 
 /* -------------- player messages ---------- */
 /* -------------- actions */
