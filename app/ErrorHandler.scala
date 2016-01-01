@@ -18,8 +18,8 @@ class ErrorHandler @Inject() (
     router: Provider[Router]
   ) extends DefaultHttpErrorHandler(env, config, sourceMapper, router) {
 
-  override def onDevServerError(request: RequestHeader, exception: UsefulException) =
-    onProdServerError(request, exception)
+//  override def onDevServerError(request: RequestHeader, exception: UsefulException) =
+//    onProdServerError(request, exception)
 
   override def onProdServerError(request: RequestHeader, exception: UsefulException) =
     Future {

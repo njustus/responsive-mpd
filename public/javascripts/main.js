@@ -1,4 +1,5 @@
 var ENTER_KEY = 13;
+var socket = newSocketHandler();
 
 function addMenuBarHandlers() {
   $('li button#search-btn').on('click', searchPressed);

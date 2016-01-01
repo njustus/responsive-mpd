@@ -13,11 +13,12 @@ class WebSocketActor(out: ActorRef) extends Actor {
   }
 
   def parsedJsonMessage: PartialFunction[Any, JsAction] = toJsResult.andThen {
-    case JsSuccess(elem) => elem
+    case JsSuccess(elem,_) => elem
   }
 
   def receive = parsedJsonMessage.andThen {
-    case JsPlay =>
+    case JsPlay => println("got play msg")
+    case JsStop => println("got stop msg")
     case _: Any => out ! JsString("Can't handle this type of json")
   }
 }
