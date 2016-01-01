@@ -1,9 +1,23 @@
 package controllers
 
 import akka.actor.{Actor, ActorRef}
+import models.JsMessages
+import models.JsMessages._
+import play.api.data.validation.ValidationError
+import play.api.libs.json._
 
 class WebSocketActor(out: ActorRef) extends Actor {
-  def receive = {
-    case _: Any => out ! "nothing implemented yet!"
+
+  def toJsResult: PartialFunction[Any, JsResult[JsAction]] = {
+    case js:JsValue => js.validate(reads)
+  }
+
+  def parsedJsonMessage: PartialFunction[Any, JsAction] = toJsResult.andThen {
+    case JsSuccess(elem) => elem
+  }
+
+  def receive = parsedJsonMessage.andThen {
+    case JsPlay =>
+    case _: Any => out ! JsString("Can't handle this type of json")
   }
 }
