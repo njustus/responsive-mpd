@@ -5,7 +5,7 @@ function newSocketHandler() {
     clientSocket.send("first msg");
   }
   clientSocket.onmessage = function(msg) {
-    console.log("Got msg: "+msg):
+    console.log("Got msg: "+msg);
   }
 
   var handler = {

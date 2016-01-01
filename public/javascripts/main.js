@@ -43,8 +43,6 @@ $(document).ready(function() {
   addPlaylistHandlers();
   addPlayerHandlers();
   addLibHandlers();
-
-  console.log(globalUris);
 });
 
 function searchPressed() {
