@@ -23,7 +23,7 @@ trait MpdSupervisor extends Actor {
         Logger.error(exc.getMessage + " - restarting actor")
         Restart
       case exc: Exception =>
-        Logger.error(s"EXCEPTION: $exc.getMessage - escalating actor")
+        Logger.error(s"EXCEPTION: $exc - escalating actor")
         Escalate
   }
 }

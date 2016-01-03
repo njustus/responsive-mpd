@@ -104,7 +104,16 @@ class MpdConnector extends Actor {
 //        log.info("mpd is null: " + (mpd == null))
 //        log.info("play is null: " + (mpd.getPlayer == null))
 //        log.info("status is null: " + (mpd.getPlayer.getStatus == null))
-        Option(mpd.getPlayer.getStatus)
+      try {
+        Option(mpd.getPlayer).flatMap( player => Option(player.getStatus) )
+      } catch {
+          case _: NullPointerException =>
+            log.error("NPE found")
+            log.warn(s"mpd: ${mpd==null}")
+            log.warn(s"player ${mpd.getPlayer==null}")
+            log.warn(s"Status: ${mpd.getPlayer.getStatus==null}")
+            None
+        }
     }
 
   override def postStop(): Unit = {
