@@ -22,6 +22,9 @@ trait MpdSupervisor extends Actor {
       case exc: MPDException =>
         Logger.error(exc.getMessage + " - restarting actor")
         Restart
+      case npe: NullPointerException =>
+        Logger.error("NullPointerException occured - try solving with restarting actor")
+        Restart
       case exc: Exception =>
         Logger.error(s"EXCEPTION: $exc - escalating actor")
         Escalate
