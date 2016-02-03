@@ -5,8 +5,11 @@ import models.JsMessages
 import models.JsMessages._
 import play.api.data.validation.ValidationError
 import play.api.libs.json._
+import models.mpdbackend.MpdConnector
 
 class WebSocketActor(out: ActorRef) extends Actor {
+
+  val mpdConnector = MpdConnector.getMpdActor
 
   def toJsResult: PartialFunction[Any, JsResult[JsAction]] = {
     case js:JsValue => js.validate(reads)

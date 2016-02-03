@@ -7,12 +7,24 @@ import play.api.libs.functional.syntax._ // Combinator syntax
 
 object JsMessages {
 
-  sealed trait JsAction
-  case object JsPlay extends JsAction
-  case object JsStop extends JsAction
-  case object JsNext extends JsAction
-  case object JsPrev extends JsAction
-  case class  JsPlayId(id:Int) extends JsAction
+  sealed abstract class JsAction(actionId:Int) {
+    def toJson: JsValue = Json.parse(s"""
+        {
+          "action-id": $actionId,
+          ${internalJson}
+        }
+      """)
+
+    /** Define specific json-object attributes as json-string here. */
+    protected def internalJson: String = ""
+  }
+  case object JsPlay extends JsAction(0)
+  case object JsStop extends JsAction(1)
+  case object JsNext extends JsAction(2)
+  case object JsPrev extends JsAction(3)
+  case class  JsPlayId(id:Int) extends JsAction(4) {
+    override protected def internalJson: String = s""" "id":$id """
+  }
 
   private val parsingError = ValidationError("Can't prove that given json is a JsAction!")
 
