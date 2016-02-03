@@ -1,21 +1,30 @@
 package models.mpdbackend
 
-import akka.actor.ActorRef
+import akka.actor.{ ActorRef, actorRef2Scala }
+
 import scala.collection.mutable.ArrayBuffer
-import org.bff.javampd.events.PlayerBasicChangeListener
-import org.bff.javampd.events.PlayerBasicChangeEvent
+import scala.concurrent.Future
 
-trait MpdListenerLike extends PlayerBasicChangeListener {
+import org.bff.javampd.events.{ PlayerBasicChangeEvent, PlayerBasicChangeListener, PlaylistBasicChangeEvent, PlaylistBasicChangeListener }
 
-  override def playerBasicChange(ev: PlayerBasicChangeEvent): Unit = {
-    ev.getStatus() match {
-      case PlayerBasicChangeEvent.Status.PLAYER_STOPPED        =>
-      case PlayerBasicChangeEvent.Status.PLAYER_STARTED        =>
-      case PlayerBasicChangeEvent.Status.PLAYER_PAUSED         =>
-      case PlayerBasicChangeEvent.Status.PLAYER_UNPAUSED       =>
-      case PlayerBasicChangeEvent.Status.PLAYER_BITRATE_CHANGE =>
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
+
+trait MpdListenerLike extends PlayerBasicChangeListener with PlaylistBasicChangeListener {
+  //private val log: Logger = Logger("mpdlistenerlike")
+  private val listeningActors = ArrayBuffer.empty[ActorRef]
+
+  private def sendToListeners[A](m: A): Future[Unit] = Future {
+    listeningActors.foreach { ref =>
+      ref ! m
     }
   }
 
-  protected def getListeners: ArrayBuffer[ActorRef]
+  override def playerBasicChange(ev: PlayerBasicChangeEvent): Unit = sendToListeners(ev)
+  override def playlistBasicChange(ev: PlaylistBasicChangeEvent): Unit = sendToListeners(ev)
+
+  protected def addListener(a:ActorRef): Future[Unit] = Future {
+    listeningActors.synchronized {
+      listeningActors += a
+    }
+  }
 }
