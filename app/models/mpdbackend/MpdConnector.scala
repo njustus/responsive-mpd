@@ -1,6 +1,7 @@
 package models.mpdbackend
 
 import scala.collection.JavaConversions._
+import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
@@ -24,12 +25,13 @@ import java.time.format.DateTimeFormatter
 import play.api.Logger
 import scala.collection.mutable.HashMap
 
-class MpdConnector extends Actor {
+class MpdConnector extends Actor with MpdListenerLike {
   import MpdConnector._
   import play.api.Play
 
   private lazy val playConf = Play.current.configuration
   private val log: Logger = Logger("mpdconnector")
+  private val webSocketListeners = ArrayBuffer.empty[ActorRef]
 
   private val mpd: MPD = (for {
         server <- playConf.getString("mpd.servername")
@@ -121,7 +123,11 @@ class MpdConnector extends Actor {
       log.info("MPD-Connection closed")
   }
 
-  def receive = {
+  private def addSocketListener: PartialFunction[Any,Unit] = {
+    case AddSocketListener => webSocketListeners += sender
+  }
+
+  def receive = addSocketListener.orElse {
     case PlaySong => mpd.getPlayer.play()
     case Stop => mpd.getPlayer.stop()
     case Next => mpd.getPlayer.playNext()
@@ -223,6 +229,10 @@ class MpdConnector extends Actor {
         }
       } pipeTo(sender)
     case s:String => println(s"Got msg $s!")
+  }
+
+  def getListeners: ArrayBuffer[ActorRef] = {
+    webSocketListeners
   }
 }
 
