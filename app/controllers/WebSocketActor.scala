@@ -2,35 +2,33 @@ package controllers
 
 import akka.actor.{ Actor, ActorRef, actorRef2Scala }
 import akka.pattern.ask
-
-import org.bff.javampd.events.PlayerBasicChangeEvent.Status
-import org.bff.javampd.events.PlaylistBasicChangeEvent.Event
+import org.bff.javampd.events.PlayerChangeEvent
+import org.bff.javampd.events.PlaylistChangeEvent
 import org.bff.javampd.objects.MPDSong
-
 import models.JsMessages.{ JsPlay, JsPlaySong, JsReloadPage, JsStop }
 import models.mpdbackend.{ AddSocketListener, GetActualSong, MpdConnector }
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json.JsString
+import play.api.Logger
 
 class WebSocketActor(out: ActorRef) extends Actor {
   import models.mpdbackend.MpdConnector._
-  val mpdConnector = MpdConnector.getMpdActor
+  private val log: Logger = Logger("websocketActor")
+  private val mpdConnector = MpdConnector.getMpdActor
 
   mpdConnector ! AddSocketListener
+  log.info("send mpdconnector request for adding as socketlistener")
 
   def receive = {
-    case Status.PLAYER_STOPPED  => out ! JsStop.toJson
-    case Status.PLAYER_UNPAUSED => out ! JsPlay.toJson
-    case Status.PLAYER_STARTED  => out ! JsPlay.toJson
-    case Status.PLAYER_PAUSED   =>  out ! JsStop.toJson
-    case Event.SONG_CHANGED =>
+    case PlayerChangeEvent.Event.PLAYER_STOPPED  => out ! JsStop.toJson
+    case PlayerChangeEvent.Event.PLAYER_UNPAUSED => out ! JsPlay.toJson
+    case PlayerChangeEvent.Event.PLAYER_STARTED  => out ! JsPlay.toJson
+    case PlayerChangeEvent.Event.PLAYER_PAUSED   =>  out ! JsStop.toJson
+    case PlayerChangeEvent.Event.PLAYER_SONG_SET =>
       (mpdConnector ? GetActualSong).mapTo[MPDSong].map { song =>
         out ! JsPlaySong(song).toJson
       }
-    case Event.SONG_ADDED       => out ! JsReloadPage.toJson
-    case Event.SONG_DELETED     => out ! JsReloadPage.toJson
-    case Event.PLAYLIST_CHANGED => out ! JsReloadPage.toJson
-    case Event.PLAYLIST_ENDED   => out ! JsStop.toJson
-    case _: Any => out ! JsString("Can't handle this type of json")
+    case _:PlaylistChangeEvent.Event  => out ! JsReloadPage.toJson
+    case a: Any => log.warn(s"Can't handle this msg $a")
   }
 }

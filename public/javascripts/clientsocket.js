@@ -5,7 +5,8 @@ function newSocketHandler() {
     console.log("connection opened");
   }
   clientSocket.onmessage = function(msg) {
-    console.log("Got msg: "+msg);
+    console.log("Got msg: ");
+    console.log(msg);
     if(typeof(msg) === 'object') {
       switch(msg.action-id) {
         case 0: case 1:

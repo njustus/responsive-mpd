@@ -15,7 +15,7 @@ object JsMessages {
   sealed abstract class JsAction(actionId:Int) {
     def toJson: JsValue = Json.parse(s"""
         {
-          "action-id": $actionId,
+          action-id: "$actionId",
           ${internalJson}
         }
       """)
@@ -29,10 +29,10 @@ object JsMessages {
   case object JsPrev extends JsAction(3)
   case class  JsPlaySong(s:MPDSong) extends JsAction(4) {
     override protected def internalJson: String = s"""
-      "position": ${s.getPosition},
-      "title":${s.getTitle},
-      "artist":${s.getArtistName},
-      "album":${s.getAlbumName}
+      position: "${s.getPosition}",
+      title:"${s.getTitle}",
+      artist:"${s.getArtistName}",
+      album:"${s.getAlbumName}"
       """
   }
   case object JsReloadPage extends JsAction(5)

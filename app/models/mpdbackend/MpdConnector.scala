@@ -46,6 +46,10 @@ class MpdConnector extends Actor with MpdListenerLike {
         throw new IllegalStateException("Can't create mpd-instance!")
       }
 
+  mpd.getPlayer.addPlayerChangeListener(this)
+  mpd.getPlaylist.addPlaylistChangeListener(this)
+  log.info("registered me as changelistener")
+
   private val volumeStep:Int = 10
 
   private[mpdbackend] def getSongById(id:Int): Future[Option[MPDSong]] =
@@ -123,7 +127,9 @@ class MpdConnector extends Actor with MpdListenerLike {
   }
 
   private def addSocketListener: PartialFunction[Any,Unit] = {
-    case AddSocketListener => addListener(sender)
+    case AddSocketListener =>
+      log.info(s"registered sender ${sender.toString()} as websocket-listener")
+      addListener(sender)
   }
 
   def receive = addSocketListener.orElse {
