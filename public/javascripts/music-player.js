@@ -21,19 +21,23 @@ var playerHandler = {
   prev: function() {
     fireAjax(globalUris.player.prevSong);
   },
-  playToggle: function() {
+  playToggle: function(noAjaxCall) {
     if($(this).hasClass('fi-stop')) {
       //stop playing
       $(this).removeClass('fi-stop');
       $(this).addClass('fi-play');
 
-      fireAjax(globalUris.player.stop);
+      if(noAjaxCall === undefined) {
+        fireAjax(globalUris.player.stop);
+      }
     } else {
       //resume playing
       $(this).removeClass('fi-play');
       $(this).addClass('fi-stop');
 
-      fireAjax(globalUris.player.play);
+      if(noAjaxCall === undefined) {
+        fireAjax(globalUris.player.play);
+      }
     }
   },
   repeatToggle: function() {

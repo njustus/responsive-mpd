@@ -6,6 +6,13 @@ function newSocketHandler() {
   }
   clientSocket.onmessage = function(msg) {
     console.log("Got msg: "+msg);
+    if(typeof(msg) === 'object') {
+      switch(msg.action-id) {
+        case 0: case 1:
+          playerHandler.playToggle(true)
+          break
+      }
+    }
   }
 
   var handler = {
