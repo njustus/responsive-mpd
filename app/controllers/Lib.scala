@@ -1,7 +1,6 @@
 package controllers
 
 import akka.pattern.ask
-import akka.actor.actorRef2Scala
 import models.mpdbackend
 import models.mpdbackend.MpdConnector
 import play.api.mvc.{ Action, AnyContent, Controller }

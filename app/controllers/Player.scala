@@ -1,6 +1,5 @@
 package controllers
 
-import akka.actor.actorRef2Scala
 import models.mpdbackend.MpdConnector
 import play.api.data._
 import play.api.data.Forms._
