@@ -31,7 +31,6 @@ class MpdConnector extends Actor with MpdListenerLike {
 
   private lazy val playConf = Play.current.configuration
   private val log: Logger = Logger("mpdconnector")
-  private val webSocketListeners = ArrayBuffer.empty[ActorRef]
 
   private val mpd: MPD = (for {
         server <- playConf.getString("mpd.servername")
@@ -124,7 +123,7 @@ class MpdConnector extends Actor with MpdListenerLike {
   }
 
   private def addSocketListener: PartialFunction[Any,Unit] = {
-    case AddSocketListener => webSocketListeners += sender
+    case AddSocketListener => addListener(sender)
   }
 
   def receive = addSocketListener.orElse {
@@ -229,10 +228,6 @@ class MpdConnector extends Actor with MpdListenerLike {
         }
       } pipeTo(sender)
     case s:String => println(s"Got msg $s!")
-  }
-
-  def getListeners: ArrayBuffer[ActorRef] = {
-    webSocketListeners
   }
 }
 
