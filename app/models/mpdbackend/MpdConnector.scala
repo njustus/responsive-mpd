@@ -132,7 +132,7 @@ class MpdConnector extends Actor {
             MpdStatus(
               status,
               None,
-              mpd.getPlayer.getVolume,
+              0, //no song = no volume
               mpd.getPlayer.isRandom,
               mpd.getPlayer.isRepeat
             )
