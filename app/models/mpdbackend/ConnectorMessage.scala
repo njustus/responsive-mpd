@@ -43,5 +43,7 @@ case class SavePlaylist(name:String) extends ConnectorMessage
 case class ChangePlaylist(name:String) extends ConnectorMessage
 
 /*-------------- communication between websocket, mpd-actor and the listener-api from the mpd-monitor. */
-/* add a websocket-actor as a listener */
+/* adds  the sender as a listener */
 case object AddSocketListener extends ConnectorMessage
+/* removes the sender from the listeners */
+case object RemoveSocketListener extends ConnectorMessage
