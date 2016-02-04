@@ -27,7 +27,7 @@ var playerHandler = {
       $(this).removeClass('fi-stop');
       $(this).addClass('fi-play');
 
-      if(noAjaxCall === undefined) {
+      if(noAjaxCall !== true) {
         fireAjax(globalUris.player.stop);
       }
     } else {
@@ -35,7 +35,7 @@ var playerHandler = {
       $(this).removeClass('fi-play');
       $(this).addClass('fi-stop');
 
-      if(noAjaxCall === undefined) {
+      if(noAjaxCall !== true) {
         fireAjax(globalUris.player.play);
       }
     }
