@@ -7,6 +7,14 @@
       <pattern>%coloredLevel - %logger - %message%n%xException</pattern>
     </encoder>
   </appender>
+  
+  <!-- append to application.log -->
+  <appender name="LOGFILE" class="ch.qos.logback.core.FileAppender">
+    <file>${application.home}/logs/application.log</file>
+    <encoder>
+      <pattern>%date [%level] - %logger - %message%n%xException</pattern>
+    </encoder>
+  </appender>
 
   <!--
     The logger name is typically the Java/Scala package name.
@@ -17,6 +25,7 @@
 
   <root level="INFO">
     <appender-ref ref="STDOUT" />
+    <appender-ref ref="LOGFILE" />
   </root>
 
 </configuration>

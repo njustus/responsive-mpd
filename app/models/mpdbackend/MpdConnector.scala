@@ -62,17 +62,6 @@ class MpdConnector extends Actor with MpdListenerLike {
       song = songOpt.get
     } yield { fn(song) }
 
-  private def repeatUntilSuccess[T](fn: => Option[T]): Option[T] = {
-    var res:Option[T] = fn
-    var i = 0
-    var maxTrys = playConf.getInt("mpd.max-trys").getOrElse(4)
-    while(i<maxTrys && !res.isDefined) {
-      res = fn
-      i += 1
-    }
-    res
-  }
-
   private def addSongs(songs:java.util.Collection[MPDSong]): Future[Unit] = Future {
     val list:java.util.List[MPDSong] =
       if(songs.isInstanceOf[java.util.List[MPDSong]]) songs.asInstanceOf[java.util.List[MPDSong]]
@@ -106,19 +95,15 @@ class MpdConnector extends Actor with MpdListenerLike {
 
   private def getPlayersStatus: Future[Option[Player.Status]] =
     Future {
-//        log.info("mpd is null: " + (mpd == null))
-//        log.info("play is null: " + (mpd.getPlayer == null))
-//        log.info("status is null: " + (mpd.getPlayer.getStatus == null))
+        //either player or status could be null,
+        //avoid exception by wrapping into an option
+
+    //Option(mpd).flatMap( m => Option(m.getPlayer) ).flatMap( p => Option(p.getStatus) )
       try {
-        Option(mpd.getPlayer).flatMap( player => Option(player.getStatus) )
+        Some(mpd.getPlayer.getStatus) //getStatus throws npe if status not found
       } catch {
-          case _: NullPointerException =>
-            log.error("NPE found")
-            log.warn(s"mpd: ${mpd==null}")
-            log.warn(s"player ${mpd.getPlayer==null}")
-            log.warn(s"Status: ${mpd.getPlayer.getStatus==null}")
-            None
-        }
+        case _:NullPointerException => None
+      }
     }
 
   override def postStop(): Unit = {
@@ -158,7 +143,7 @@ class MpdConnector extends Actor with MpdListenerLike {
             MpdStatus(
               status,
               None,
-              mpd.getPlayer.getVolume,
+              0, //no song = no volume
               mpd.getPlayer.isRandom,
               mpd.getPlayer.isRepeat
             )
