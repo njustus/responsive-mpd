@@ -13,12 +13,14 @@ import play.api.libs.json.{ JsValue, Json }
 object JsMessages {
 
   sealed abstract class JsAction(actionId:Int) {
-    def toJson: JsValue = Json.parse(s"""
+    def toJson: JsValue = {
+      Json.parse(s"""
         {
-          action-id: "$actionId",
+          "action_id": ${actionId}
           ${internalJson}
         }
       """)
+    }
 
     /** Define specific json-object attributes as json-string here. */
     protected def internalJson: String = ""
@@ -28,11 +30,11 @@ object JsMessages {
   case object JsNext extends JsAction(2)
   case object JsPrev extends JsAction(3)
   case class  JsPlaySong(s:MPDSong) extends JsAction(4) {
-    override protected def internalJson: String = s"""
-      position: "${s.getPosition}",
-      title:"${s.getTitle}",
-      artist:"${s.getArtistName}",
-      album:"${s.getAlbumName}"
+    override protected def internalJson: String = s""",
+      "position": ${s.getPosition},
+      "title":"${s.getTitle}",
+      "artist":"${s.getArtistName}",
+      "album":"${s.getAlbumName}"
       """
   }
   case object JsReloadPage extends JsAction(5)
