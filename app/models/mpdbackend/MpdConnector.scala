@@ -92,7 +92,13 @@ class MpdConnector extends Actor {
     Future {
         //either player or status could be null,
         //avoid exception by wrapping into an option
-        Option(mpd).flatMap( m => Option(m.getPlayer) ).flatMap( p => Option(p.getStatus) )
+
+    //Option(mpd).flatMap( m => Option(m.getPlayer) ).flatMap( p => Option(p.getStatus) )
+      try {
+        Some(mpd.getPlayer.getStatus) //getStatus throws npe if status not found
+      } catch {
+        case _:NullPointerException => None
+      }
     }
 
   override def postStop(): Unit = {
