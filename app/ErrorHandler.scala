@@ -18,8 +18,21 @@ class ErrorHandler @Inject() (
     router: Provider[Router]
   ) extends DefaultHttpErrorHandler(env, config, sourceMapper, router) {
 
-//  override def onDevServerError(request: RequestHeader, exception: UsefulException) =
-//    onProdServerError(request, exception)
+  private val modeKey = "application.mode"
+  private lazy val possibleModes = Some(Set("prod", "dev", "PROD", "DEV"))
+
+  def isDevelopingMode:Boolean = {
+    (for {
+      str <- config.getString(modeKey, possibleModes)
+      if str == "dev" || str == "DEV"
+    } yield true).getOrElse(false)
+  }
+
+  def isProductionMode:Boolean = !isDevelopingMode
+
+  override def onDevServerError(request: RequestHeader, exception: UsefulException) =
+    if(isProductionMode) onProdServerError(request, exception)
+    else super.onDevServerError(request, exception)
 
   override def onProdServerError(request: RequestHeader, exception: UsefulException) =
     Future {
