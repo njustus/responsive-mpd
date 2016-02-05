@@ -8,14 +8,29 @@
     </encoder>
   </appender>
   
-  <!-- append to application.log -->
-  <appender name="LOGFILE" class="ch.qos.logback.core.FileAppender">
-    <file>${application.home}/logs/application.log</file>
+  <!-- append all infos to info.log -->
+  <appender name="INFO-LOGFILE" class="ch.qos.logback.core.FileAppender">
+    <file>${application.home}/logs/info.log</file>
+
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>INFO</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
     <encoder>
       <pattern>%date [%level] - %logger - %message%n%xException</pattern>
     </encoder>
   </appender>
 
+  <!-- append all warnings, errors to error.log -->
+  <appender name="ERROR-LOGFILE" class="ch.qos.logback.core.FileAppender">
+    <file>${application.home}/logs/error.log</file>
+
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>WARN</level>
+    </filter>
+    <encoder>
+      <pattern>%date [%level] - %logger - %message%n%xException</pattern>
   <!--
     The logger name is typically the Java/Scala package name.
     This configures the log level to log at for a package and its children packages.
@@ -25,7 +40,8 @@
 
   <root level="INFO">
     <appender-ref ref="STDOUT" />
-    <appender-ref ref="LOGFILE" />
+    <appender-ref ref="INFO-LOGFILE" />
+    <appender-ref ref="ERROR-LOGFILE" />
   </root>
 
 </configuration>
