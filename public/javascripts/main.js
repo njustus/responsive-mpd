@@ -24,12 +24,18 @@ function addPlayerHandlers() {
   $('span#next-btn').on('click', playerHandler.next);
 }
 function addPlaylistHandlers() {
-  $('tr.playlist-item').on('dblclick', playSongPressed);
-  $('td span#remove-song').on('click', removeSongPressed);
-  //$('tr.playlist-item').on('click', markSong);
-  //$('td span#save-playlist-btn').on('click')
+  $('tr.playlist-item').on('dblclick', function() {
+    var idx = $(this).attr("idx");
+    playSong(this);
+    playerHandler.playSong(idx);
+  });
+  $('td span#remove-song').on('click', function() {
+    var trElem = $(this).parents('tr.playlist-item');
+    var idx = $(trElem).attr('idx');
+    removeSong(this);
+    playerHandler.removeSong(idx);
+  });
 }
-
 function addLibHandlers() {
   if(getBrowserUrl().indexOf("/lib") != -1) {
     $('span#add-to-playlist-btn').on('click', function() {
@@ -38,15 +44,15 @@ function addLibHandlers() {
     });
   }
 }
+function searchPressed() {
+  var key = $('li input[type=search]').val();
+  libHandler.search(key);
+}
 
+//add all $handlers
 $(document).ready(function() {
   addMenuBarHandlers();
   addPlaylistHandlers();
   addPlayerHandlers();
   addLibHandlers();
 });
-
-function searchPressed() {
-  var key = $('li input[type=search]').val();
-  libHandler.search(key);
-}

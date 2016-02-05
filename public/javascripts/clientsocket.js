@@ -7,18 +7,25 @@ function newSocketHandler() {
   clientSocket.onmessage = function(msg) {
 	  var data = JSON.parse(msg.data);
     switch(data.action_id) {
-    	case 0: case 1:
+    	case 0: case 1: //play,stop
     		console.log("play toggle");
     		playerHandler.playToggle(true);
     		break;
     	case 2: break;
     	case 3: break;
-    	case 4:
+    	case 4: //play(song)
+        //set playing line
         var elem = $('li.actual-song-text > span#actual-song-line');
         var newLine = data.artist + " - " + data.title;
         elem.html(newLine);
+
+        //set icon in playlist
+        var listItem = $('tr.playlist-item').filter(function() {
+          return $(this).attr('idx') == data.position
+        });
+        playSong(listItem);
         break;
-    	case 5:
+    	case 5: //reload
     		clientSocket.close();
     		location.reload(true);
     		break;
