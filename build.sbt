@@ -1,6 +1,6 @@
-name := """mpd-web"""
+name := """responsive-mpd"""
 
-version := "1.0-SNAPSHOT"
+version := "1.5-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
