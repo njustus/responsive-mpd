@@ -1,6 +1,6 @@
 @import models.MpdStatus
 
-@(title:String, status:MpdStatus)(content: Html)
+@(title:String, status:MpdStatus, withWebsocket:Boolean=false)(content: Html)
 <!DOCTYPE html>
 
 <html lang="en">
@@ -11,7 +11,9 @@
     </head>
     <body>
         @menu(title)
+        @**
         @play_line(status)
+        **@
 
         <div class="row">
           <div class="small-9 small-centered columns">
@@ -22,7 +24,7 @@
           </div>
         </div>
 
-		@scripts()
+		@scripts(withWebsocket)
         <script>
           $(document).foundation();
         </script>

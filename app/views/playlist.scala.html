@@ -3,8 +3,39 @@
 
 @(titles:List[Title], playlists:List[String])(implicit status:MpdStatus)
 
-@side("Playlist", status) {
+@playerControl(lbl:Option[String], id:String)(css:String*)={
+  <button id="@id" class="button rounded-edges @css.mkString(" ")">
+    @lbl.getOrElse("")
+  </button>
+}
+
+@side("Playlist", status, true) {
+  <div class="row">
+    <div class="column small-centered small-6">
+      @playerControl(None, "prev-btn")("small", "fi-previous")
+      @playerControl(None, "stop-btn")("fi-stop")
+      @playerControl(None, "next-btn")("small", "fi-next")
+      @playerControl(None, "repeat-btn")("small", "fi-refresh")
+      @playerControl(None, "shuffle-btn")("small", "fi-shuffle")
+    </div>
+  </div>
+  <div class="row">
+    <div class="column small-centered small-6">
+        <span>Volume</span>
+        @playerControl(None, "volume-minus-btn")("small", "fi-minus", "progressbar-button")
+        <div class="progress" role="progressbar" tabindex="0"
+          aria-valuenow="50" aria-valuemin="0" aria-valuetext="50 percent" aria-valuemax="100"
+          style="width:30%; display:inline-flex;"
+        >
+          <div class="progress-meter" style="width: 60%"></div>
+        </div>
+        @playerControl(None, "volume-plus-btn")("small", "fi-plus", "progressbar-button")
+    </div>
+  </div>
+
+  @**
   @change_playlist(playlists)
+  **@
   <table id="playlist-table" class="full-width">
     <thead>
       <tr>
