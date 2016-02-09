@@ -1,15 +1,19 @@
 function newSocketHandler() {
-  clientSocket = new WebSocket("ws://" + globalUris.websocket);
+  var clientSocket = new WebSocket("ws://" + globalUris.websocket);
 
   clientSocket.onopen = function(evt) {
     console.log("connection opened");
   }
   clientSocket.onmessage = function(msg) {
-	  var data = JSON.parse(msg.data);
+	var data = JSON.parse(msg.data);
     switch(data.action_id) {
-    	case 0: case 1: //play,stop
-    		console.log("play toggle");
-    		playerHandler.playToggle(true);
+    	case 0: //play
+    		console.log("resume playing");
+    		playerHandler.playToggle($('span#stop-btn'), true, false);
+    		break;
+		case 1: //stop
+    		console.log("stop playing");
+    		playerHandler.playToggle($('span#stop-btn'), false, false);
     		break;
     	case 2: break;
     	case 3: break;

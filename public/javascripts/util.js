@@ -15,7 +15,6 @@ function fireAjax(uriObj) {
 }
 
 function addPlayIcon(elem) {
-  console.log(elem);
   var tdElem = $(elem).children(":first")
   tdElem.append("<br/>");
   tdElem.append("<span class=\"fi-play size-60 step\" id=\"actual-song-icon\"></span>");
