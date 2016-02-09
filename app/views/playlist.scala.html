@@ -12,11 +12,37 @@
 @side("Playlist", status, true) {
   <div class="row">
     <div class="column small-centered small-6">
+      <span id="actual-song-line" style="">
+        @status.actualSong match {
+         case Some(song) => { @song.artist - @song.name }
+         case None => { }
+        }
+      </span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="column small-centered small-6">
       @playerControl(None, "prev-btn")("small", "fi-previous")
-      @playerControl(None, "stop-btn")("fi-stop")
+
+      @if(status.isPlaying) {
+        @playerControl(None, "stop-btn")("fi-stop")
+      } else {
+          @playerControl(None, "stop-btn")("fi-play")
+      }
+
       @playerControl(None, "next-btn")("small", "fi-next")
-      @playerControl(None, "repeat-btn")("small", "fi-refresh")
-      @playerControl(None, "shuffle-btn")("small", "fi-shuffle")
+
+      @if(status.isLooping) {
+          @playerControl(None, "repeat-btn")("small", "fi-refresh")
+      } else {
+        @playerControl(None, "repeat-btn")("small", "fi-refresh", "hollow")
+      }
+      @if(status.isShuffling) {
+        @playerControl(None, "shuffle-btn")("small", "fi-shuffle")
+      } else {
+        @playerControl(None, "shuffle-btn")("small", "fi-shuffle", "hollow")
+      }
+
     </div>
   </div>
   <div class="row">
@@ -27,7 +53,7 @@
           aria-valuenow="50" aria-valuemin="0" aria-valuetext="50 percent" aria-valuemax="100"
           style="width:30%; display:inline-flex;"
         >
-          <div class="progress-meter" style="width: 60%"></div>
+          <div class="progress-meter" style="width: @{status.volume}%"></div>
         </div>
         @playerControl(None, "volume-plus-btn")("small", "fi-plus", "progressbar-button")
     </div>

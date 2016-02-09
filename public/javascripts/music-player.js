@@ -104,11 +104,9 @@ var playerHandler = {
 }
 
 function changeActiveState(elem) {
-  if($(elem).attr('active') === '1') {
-    $(elem).css('color', 'black');
-    $(elem).attr('active', '0')
+  if($(elem).hasClass('hollow')) {
+    $(elem).removeClass('hollow');
   } else {
-    $(elem).css('color', defaultBlue);
-    $(elem).attr('active', '1')
+    $(elem).addClass('hollow');
   }
 }

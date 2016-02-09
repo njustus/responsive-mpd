@@ -9,17 +9,17 @@ function newSocketHandler() {
     switch(data.action_id) {
     	case 0: //play
     		console.log("resume playing");
-    		playerHandler.playToggle($('span#stop-btn'), true, false);
+    		playerHandler.playToggle($('button#stop-btn'), true, false);
     		break;
 		case 1: //stop
     		console.log("stop playing");
-    		playerHandler.playToggle($('span#stop-btn'), false, false);
+    		playerHandler.playToggle($('button#stop-btn'), false, false);
     		break;
     	case 2: break;
     	case 3: break;
     	case 4: //play(song)
         //set playing line
-        var elem = $('li.actual-song-text > span#actual-song-line');
+        var elem = $('span#actual-song-line');
         var newLine = data.artist + " - " + data.title;
         elem.html(newLine);
 
