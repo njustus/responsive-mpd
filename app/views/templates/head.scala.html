@@ -1,9 +1,5 @@
 @(title:String)
 
-@jsfile(file:String) = {
-      <script src="@routes.Assets.versioned(s"javascripts/$file")"></script>
-}
-
 <title>MPD Web Client - @title</title>
 <link rel="stylesheet" type="text/css"
   href="@routes.Assets.versioned("fw/foundation-6/css/foundation.css")" />
@@ -12,14 +8,3 @@
 <link rel="stylesheet" type="text/css"
   href="@routes.Assets.versioned("fw/foundation-icons/foundation-icons.css")"
 />
-
-
-<script src="@routes.Assets.versioned("fw/foundation-6/js/vendor/jquery.min.js")"></script>
-<script src="@routes.Assets.versioned("fw/foundation-6/js/foundation.min.js")"></script>
-@rest_uris()
-@jsfile("util.js")
-@jsfile("music-player.js")
-@jsfile("playlist.js")
-@jsfile("lib.js")
-@jsfile("clientsocket.js")
-@jsfile("main.js")
