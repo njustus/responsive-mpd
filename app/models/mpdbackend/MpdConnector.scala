@@ -1,6 +1,7 @@
 package models.mpdbackend
 
 import scala.collection.JavaConversions._
+import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
@@ -23,8 +24,9 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import play.api.Logger
 import scala.collection.mutable.HashMap
+import org.bff.javampd.monitor.MPDStandAloneMonitor
 
-class MpdConnector extends Actor {
+class MpdConnector extends Actor with MpdListenerLike {
   import MpdConnector._
   import play.api.Play
 
@@ -44,6 +46,9 @@ class MpdConnector extends Actor {
       }).getOrElse {
         throw new IllegalStateException("Can't create mpd-instance!")
       }
+
+  override protected val monitor = mpd.getMonitor
+  setupMonitor()
 
   private val volumeStep:Int = 10
 
@@ -102,11 +107,21 @@ class MpdConnector extends Actor {
     }
 
   override def postStop(): Unit = {
+      stopMonitor()
       mpd.close()
       log.info("MPD-Connection closed")
   }
 
-  def receive = {
+  private def handleSocketListener: PartialFunction[Any,Unit] = {
+    case AddSocketListener =>
+      log.info(s"registered sender ${sender.toString()} as websocket-listener")
+      addListener(sender)
+    case RemoveSocketListener =>
+      log.info(s"removed sender ${sender.toString()} from listeners")
+      removeListener(sender)
+  }
+
+  def receive = handleSocketListener.orElse {
     case PlaySong => mpd.getPlayer.play()
     case Stop => mpd.getPlayer.stop()
     case Next => mpd.getPlayer.playNext()

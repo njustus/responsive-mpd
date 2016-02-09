@@ -11,6 +11,9 @@ GET     /about                        controllers.Application.about
 
 GET     /stream                        controllers.Application.stream
 
+#websocket
+GET     /websocket             controllers.WebSocket.socket
+
 # player
 GET     /player/stop           controllers.Player.stop
 GET     /player/play           controllers.Player.play

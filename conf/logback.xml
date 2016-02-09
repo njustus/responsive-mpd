@@ -31,6 +31,9 @@
     </filter>
     <encoder>
       <pattern>%date [%level] - %logger - %message%n%xException</pattern>
+    </encoder>
+  </appender>
+
   <!--
     The logger name is typically the Java/Scala package name.
     This configures the log level to log at for a package and its children packages.

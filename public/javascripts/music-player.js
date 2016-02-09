@@ -21,52 +21,64 @@ var playerHandler = {
   prev: function() {
     fireAjax(globalUris.player.prevSong);
   },
-  playToggle: function() {
-    if($(this).hasClass('fi-stop')) {
+  playToggle: function(element, flag, ajaxCallFlag) {
+    if($(element).hasClass('fi-stop') && flag === false) {
       //stop playing
-      $(this).removeClass('fi-stop');
-      $(this).addClass('fi-play');
-
-      fireAjax(globalUris.player.stop);
-    } else {
+      $(element).removeClass('fi-stop');
+      $(element).addClass('fi-play');
+      if(ajaxCallFlag) {
+    	  fireAjax(globalUris.player.stop);
+      }
+    } else if($(element).hasClass('fi-play') && flag === true){
       //resume playing
-      $(this).removeClass('fi-play');
-      $(this).addClass('fi-stop');
-
-      fireAjax(globalUris.player.play);
+      $(element).removeClass('fi-play');
+      $(element).addClass('fi-stop');
+      if(ajaxCallFlag) {
+    	  fireAjax(globalUris.player.play);
+      }
     }
   },
-  repeatToggle: function() {
-    if($(this).attr('active')=== '1') {
-      //disable it
-      fireAjax({
-        method: globalUris.player.repeat.method,
-        uri: globalUris.player.repeat.uri.off
-      });
-    } else {
-      //activate it
-      fireAjax({
-        method: globalUris.player.repeat.method,
-        uri: globalUris.player.repeat.uri.on
-      });
+  repeatToggle: function(element, flag, ajaxCallFlag) {
+	  if(!flag) {
+    	//disable it
+    	changeActiveState(element);
+    	if(ajaxCallFlag) {
+			fireAjax({
+		        method: globalUris.player.repeat.method,
+		        uri: globalUris.player.repeat.uri.off
+		    	});
+    	}
+    } else if(flag){
+    	//activate it
+    	changeActiveState(element);
+    	if(ajaxCallFlag) {
+	      fireAjax({
+	          method: globalUris.player.repeat.method,
+	          uri: globalUris.player.repeat.uri.on
+	        });
+    	}
     }
-    changeActiveState(this);
   },
-  shuffleToggle: function() {
-    if($(this).attr('active')=== '1') {
-      //disable it
-      fireAjax({
-        method: globalUris.player.shuffle.method,
-        uri: globalUris.player.shuffle.uri.off
-      });
-    } else {
+  shuffleToggle: function(element, flag, ajaxCallFlag) {
+    if(!flag) {
+    	//disable it
+    	changeActiveState(element);
+      if(ajaxCallFlag) {
+    	fireAjax({
+	        method: globalUris.player.shuffle.method,
+	        uri: globalUris.player.shuffle.uri.off
+    	});
+      }
+    } else if(flag){
       //activate it
-      fireAjax({
-        method: globalUris.player.shuffle.method,
-        uri: globalUris.player.shuffle.uri.on
-      });
+      changeActiveState(element);
+    	if(ajaxCallFlag) {
+	      fireAjax({
+	        method: globalUris.player.shuffle.method,
+	        uri: globalUris.player.shuffle.uri.on
+	      });
+    	}
     }
-    changeActiveState(this);
   },
   playSong: function(songIdx) {
     console.log("play idx: "+songIdx);

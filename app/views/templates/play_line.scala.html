@@ -33,10 +33,12 @@
       <li>@newIcon("fi-next", "next-btn")</li>
 
        <li class="actual-song-text">
-           @status.actualSong match {
-           	case Some(song) => { @song.artist - @song.name }
-           	case None => { }
-           }
+           <span id="actual-song-line">
+             @status.actualSong match {
+             	case Some(song) => { @song.artist - @song.name }
+             	case None => { }
+              }
+            </span>
        </li>
 
     <li class="actual-song-text left-10-pt">Volume</li>

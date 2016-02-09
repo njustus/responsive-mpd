@@ -1,6 +1,7 @@
 package models.mpdbackend
 
 sealed trait ConnectorMessage
+abstract class MessageWithId(id:Int)
 
 /* -------------- player messages ---------- */
 /* -------------- actions */
@@ -40,3 +41,9 @@ case class Search(key:String) extends ConnectorMessage
 case object ClearPlaylist extends ConnectorMessage
 case class SavePlaylist(name:String) extends ConnectorMessage
 case class ChangePlaylist(name:String) extends ConnectorMessage
+
+/*-------------- communication between websocket, mpd-actor and the listener-api from the mpd-monitor. */
+/* adds  the sender as a listener */
+case object AddSocketListener extends ConnectorMessage
+/* removes the sender from the listeners */
+case object RemoveSocketListener extends ConnectorMessage
