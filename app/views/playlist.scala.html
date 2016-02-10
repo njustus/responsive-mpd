@@ -37,22 +37,22 @@
         @playerControl(None, "prev-btn")("small", "fi-previous")
 
         @if(status.isPlaying) {
-          @playerControl(None, "stop-btn")("fi-stop")
+          @playerControl(None, "stop-btn")("fi-stop", "left-6-pt")
         } else {
-            @playerControl(None, "stop-btn")("fi-play")
+            @playerControl(None, "stop-btn")("fi-play", "left-6-pt")
         }
 
-        @playerControl(None, "next-btn")("small", "fi-next")
+        @playerControl(None, "next-btn")("small", "fi-next", "left-6-pt")
 
         @if(status.isLooping) {
-            @playerControl(None, "repeat-btn")("small", "fi-refresh")
+            @playerControl(None, "repeat-btn")("small", "fi-refresh", "left-6-pt")
         } else {
-          @playerControl(None, "repeat-btn")("small", "fi-refresh", "hollow")
+          @playerControl(None, "repeat-btn")("small", "fi-refresh", "hollow", "left-6-pt")
         }
         @if(status.isShuffling) {
-          @playerControl(None, "shuffle-btn")("small", "fi-shuffle")
+          @playerControl(None, "shuffle-btn")("small", "fi-shuffle", "left-6-pt")
         } else {
-          @playerControl(None, "shuffle-btn")("small", "fi-shuffle", "hollow")
+          @playerControl(None, "shuffle-btn")("small", "fi-shuffle", "hollow", "left-6-pt")
         }
       </ul>
     }
