@@ -31,9 +31,15 @@ function addPlayerHandlers() {
   $('li#next-btn').on('click', playerHandler.next);
 }
 function addPlaylistHandlers() {
-  $('tr.playlist-item').on('dblclick touchstart', function() {
+  var playlistItemSelector = 'tr.playlist-item';
+  $(playlistItemSelector).on('dblclick', function() {
     var idx = $(this).attr("idx");
     playSong(this);
+    playerHandler.playSong(idx);
+  });
+  $('p#playlist-song-name').on('click', function() {
+    var idx = $(this).parents(playlistItemSelector).attr('idx');
+    playSong(playlistItemSelector);
     playerHandler.playSong(idx);
   });
   $('td span#remove-song').on('click', function() {
