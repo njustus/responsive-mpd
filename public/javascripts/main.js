@@ -15,20 +15,20 @@ function addPlayerHandlers() {
   $('button#volume-plus-btn').on('click', function() {
     playerHandler.volume.up(bar);
   });
-  $('button#stop-btn').on('click', function() {
+  $('li#stop-btn').on('click', function() {
 	  var flag = $(this).hasClass('fi-play');
 	  playerHandler.playToggle(this, flag, true);
   });
-  $('button#repeat-btn').on('click', function() {
+  $('li#repeat-btn').on('click', function() {
 	  var flag = $(this).hasClass('hollow');
 	  playerHandler.repeatToggle(this, flag, true);
   });
-  $('button#shuffle-btn').on('click', function() {
+  $('li#shuffle-btn').on('click', function() {
 	  var flag = $(this).hasClass('hollow');
 	  playerHandler.shuffleToggle(this, flag, true);
   });
-  $('button#prev-btn').on('click', playerHandler.prev);
-  $('button#next-btn').on('click', playerHandler.next);
+  $('li#prev-btn').on('click', playerHandler.prev);
+  $('li#next-btn').on('click', playerHandler.next);
 }
 function addPlaylistHandlers() {
   $('tr.playlist-item').on('dblclick touchstart', function() {
