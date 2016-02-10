@@ -5,13 +5,13 @@
 @(titles:List[Title], playlists:List[String])(implicit header:RequestHeader, status:MpdStatus)
 
 @playerControl(lbl:Option[String], id:String)(css:String*)={
-  <li id="@id" class="button rounded-edges @css.mkString(" ")"
+  <li id="@id" class="button @css.mkString(" ")"
     @lbl.getOrElse("")
   </li>
 }
 
 @centeredColumn(size:Int, id:Option[String]=None)(content:Html)={
-  <div class="column small-@size small-centered"
+  <div class="column large-centered large-@size"
     @if(id.isDefined) {
       id="@id.get"
     }
@@ -21,7 +21,7 @@
 }
 
 @side("Playlist", true) {
-  <div class="row">
+  <div class="row align-center">
     @centeredColumn(4, Some("actual-song-line-container")) {
       <span id="actual-song-line">
         @status.actualSong match {
@@ -31,7 +31,7 @@
       </span>
     }
   </div>
-  <div class="row">
+  <div class="row align-center">
     @centeredColumn(4) {
       <ul class="button-group">
         @playerControl(None, "prev-btn")("small", "fi-previous")
@@ -57,7 +57,7 @@
       </ul>
     }
   </div>
-  <div class="row">
+  <div class="row align-center">
     @centeredColumn(4) {
         <span>Volume</span>
         <button id="volume-minus-btn" class="small button rounded-edges fi-minus progressbar-button"></button>
