@@ -14,6 +14,13 @@ import play.api.Play
 class Application extends AbstractMpdController {
   def index = Action { Redirect(routes.Application.playlist()) }
 
+  /*
+   * TODO change player controls grid into button-groups
+   * TODO change adding a song from a search list into an ajax action, instead of link
+   * TODO add the changePlaylist button
+   * TODO add tooltip-texts to savePlaylist, clearPlaylist, deleteSong, shuffle, repeat, + icons in lib/search
+   */
+
   def playlist = mpdAction { implicit request => mpdConnector =>
     getPlayerStatus(mpdConnector){ implicit status =>
       (mpdConnector ? GetPlaylist).mapTo[List[Title]].flatMap { titles =>
