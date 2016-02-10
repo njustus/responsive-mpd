@@ -33,11 +33,21 @@ var libHandler = {
         uri: globalUris.playlist.addToPlaylist.uri + "?artist="+selectedData
       });
     }
+
+    animateActive(trElem);
   },
   search: function(searchString) {
     console.log("search for "+searchString);
     searchString = toUriComponent(searchString);
 
     window.location = globalUris.db.search.uri + searchString;
+  },
+  addSearchResultToPlaylist: function(trElem) {
+	  var href = $(trElem).data('target-ref');
+	  animateActive(trElem);
+	  fireAjax({
+		 method: globalUris.playlist.addToPlaylist.method,
+		 uri: href
+	  });
   }
 }

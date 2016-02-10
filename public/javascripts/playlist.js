@@ -1,6 +1,5 @@
 function playSong(elem) {
-  $(elem).fadeOut("fast");
-  $(elem).fadeIn("fast");
+	animateActive(elem);
   removePlayIcons();
   addPlayIcon(elem);
 }

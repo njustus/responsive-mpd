@@ -50,6 +50,13 @@ function addLibHandlers() {
       libHandler.addToPlaylist(elem);
     });
   }
+
+  if(getBrowserUrl().indexOf("/db") != -1) {
+	  $('a.add-search-result').on('click', function() {
+		  var trElem = $(this).parents('tr.search-result');
+		  libHandler.addSearchResultToPlaylist(trElem);
+	  });
+  }
 }
 function searchPressed() {
   var key = $('li input[type=search]').val();

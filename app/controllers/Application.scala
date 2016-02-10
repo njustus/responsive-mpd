@@ -16,7 +16,6 @@ class Application extends AbstractMpdController {
 
   /*
    * TODO change player controls grid into button-groups
-   * TODO change adding a song from a search list into an ajax action, instead of link
    * TODO add the changePlaylist button
    * TODO add tooltip-texts to savePlaylist, clearPlaylist, deleteSong, shuffle, repeat, + icons in lib/search
    */

@@ -1,6 +1,6 @@
 @(title:Title, idx:Int)
 
-<tr>
+<tr data-target-ref="@routes.Lib.addToPlaylist(Some(title.artist), Some(title.album), Some(title.name))" class="search-result">
   <td>@idx</td>
   <td>
     <p class="bold">@title.name</p>
@@ -8,7 +8,6 @@
   </td>
   <td>@{ s"${title.length._1} : ${title.length._2}" }</td>
   <td>
-    <a href="@routes.Lib.addToPlaylist(Some(title.artist), Some(title.album), Some(title.name))" 
-      class="fi-plus size-60"></a>
+    <a class="fi-plus size-60 add-search-result"></a>
   </td>
 </tr>

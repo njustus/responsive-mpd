@@ -26,6 +26,11 @@ function removePlayIcons() {
   tdElems.find('span#actual-song-icon').remove();
 }
 
+function animateActive(element) {
+	$(element).fadeOut('fast');
+	$(element).fadeIn('fast');
+}
+
 function getBrowserUrl() {
   return window.location.href;
 }
