@@ -15,8 +15,7 @@ class Application extends AbstractMpdController {
   def index = Action { Redirect(routes.Application.playlist()) }
 
   /*
-   * TODO change player controls grid into button-groups
-   * TODO add the changePlaylist button
+   * TODO add socket-event for repeating/shuffling
    * TODO add tooltip-texts to savePlaylist, clearPlaylist, deleteSong, shuffle, repeat, + icons in lib/search
    */
 

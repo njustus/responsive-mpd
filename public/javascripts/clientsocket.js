@@ -9,11 +9,11 @@ function newSocketHandler() {
     switch(data.action_id) {
     	case 0: //play
     		console.log("resume playing");
-    		playerHandler.playToggle($('button#stop-btn'), true, false);
+    		playerHandler.playToggle($('li#stop-btn'), true, false);
     		break;
 		case 1: //stop
     		console.log("stop playing");
-    		playerHandler.playToggle($('button#stop-btn'), false, false);
+    		playerHandler.playToggle($('li#stop-btn'), false, false);
     		break;
     	case 2: break;
     	case 3: break;
