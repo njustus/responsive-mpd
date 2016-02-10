@@ -31,7 +31,7 @@ function addPlayerHandlers() {
   $('button#next-btn').on('click', playerHandler.next);
 }
 function addPlaylistHandlers() {
-  $('tr.playlist-item').on('dblclick', function() {
+  $('tr.playlist-item').on('dblclick touchstart', function() {
     var idx = $(this).attr("idx");
     playSong(this);
     playerHandler.playSong(idx);
