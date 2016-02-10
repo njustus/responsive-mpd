@@ -1,24 +1,27 @@
 # Responsive mpd
 ### The usable web client for mpd.
 
-This is a web-based and responsive client for the famous [mpd](http://www.musicpd.org/)-linux-daemon. This client was created with the ambition for a client which can be used from everywhere without installing any special software.
+This is a web-based and responsive client for the famous [mpd](http://www.musicpd.org/)-linux-daemon. This client was created with the ambition for a client which can be used from everywhere without installing any special software. All known web-based solutions got the major problem that they aren't usable from a smartphone, because they wasn't ever build for multiple systems.
 
-For example you could install mpd and this client on a Raspberry Pi and control the music-player from your PC, your Tablet or your Smartphone.
+You could install mpd and this client on a Raspberry Pi and control the music-player from your PC, your Tablet or your Smartphone without the need to know 2, 3 different clients.
 
-This client is written with the power of Scala, [Akka](http://akka.io/) and [Play!](https://www.playframework.com/)
+This client is written with the power of [Scala](http://www.scala-lang.org/), [Akka](http://akka.io/) and [Play!](https://www.playframework.com/)
 
 # Get a taste
 Playlist view:
-![Playlist](doc/img/playlist.png)
-Database view:
-![Database](doc/img/db.png)
 
-## Test, use it
-For testing and using this project follow this steps:
+![Playlist](doc/img/playlist.png)
+
+Database view:
+
+![Database](doc/img/lib.png)
+
+## Try it
+If you like it and want to try it, follow this steps:
 - clone this repository
 - change the ```conf/mpd.conf``` file to sweet your needs
 - start the client via ```activator run```
-- open up the client in a web-browser at ```http://<localhost>:9000```
+- open up the client in a web-browser at ```http://<serveradress>:9000```
 
 # License
 This software is licensed under the [Apache 2](http://www.apache.org/licenses/LICENSE-2.0) license.
