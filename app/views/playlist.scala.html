@@ -11,8 +11,8 @@
 
 @side("Playlist", status, true) {
   <div class="row">
-    <div class="column small-centered small-6">
-      <span id="actual-song-line" style="">
+    <div class="column small-centered small-6" id="actual-song-line-container">
+      <span id="actual-song-line">
         @status.actualSong match {
          case Some(song) => { @song.artist - @song.name }
          case None => { }
