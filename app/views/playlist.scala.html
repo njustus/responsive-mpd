@@ -22,7 +22,7 @@
 
 @side("Playlist", true) {
   <div class="row">
-    @centeredColumn(6, Some("actual-song-line-container")) {
+    @centeredColumn(4, Some("actual-song-line-container")) {
       <span id="actual-song-line">
         @status.actualSong match {
          case Some(song) => { @song.artist - @song.name }
@@ -32,7 +32,7 @@
     }
   </div>
   <div class="row">
-    @centeredColumn(6) {
+    @centeredColumn(4) {
       <ul class="button-group">
         @playerControl(None, "prev-btn")("small", "fi-previous")
 
@@ -58,7 +58,7 @@
     }
   </div>
   <div class="row">
-    @centeredColumn(6) {
+    @centeredColumn(4) {
         <span>Volume</span>
         <button id="volume-minus-btn" class="small button rounded-edges fi-minus progressbar-button"></button>
         <div class="progress" role="progressbar" tabindex="0"
@@ -70,10 +70,13 @@
         <button id="volume-plus-btn" class="small button rounded-edges fi-plus progressbar-button"></button>
     }
   </div>
+  <div class="row">
+    @centeredColumn(4) {
+      @change_playlist(playlists)
+    }
+  </div>
 
-  @**
-  @change_playlist(playlists)
-  **@
+
   <table id="playlist-table" class="full-width">
     <thead>
       <tr>
