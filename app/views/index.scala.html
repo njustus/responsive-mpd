@@ -1,6 +1,7 @@
 @import templates._
 @import models.MpdStatus
+@import play.api.mvc.RequestHeader
 
-@(titles:List[Title], playlists:List[String])(implicit status:MpdStatus)
+@(titles:List[Title], playlists:List[String])(implicit header:RequestHeader, status:MpdStatus)
 
 @playlist(titles, playlists)

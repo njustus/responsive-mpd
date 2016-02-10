@@ -4,6 +4,8 @@ import models.mpdbackend.MpdConnector
 import play.api.data._
 import play.api.data.Forms._
 import play.api.mvc.{ Action, AnyContent, Controller }
+import scala.concurrent.Future
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 class Player extends AbstractMpdController {
 
@@ -25,31 +27,30 @@ class Player extends AbstractMpdController {
   def repeat(flag:Boolean) = sendToActor(RepeatSwitch(flag))
   def removeId(idx: Int) = sendToActor(RemoveSong(idx))
   def clearPlaylist = withActorMsg(ClearPlaylist) {
-    Redirect(routes.Application.index())
+    Redirect(routes.Application.playlist())
   }
 
-  def savePlaylist = Action { implicit request =>
-    playlistNameForm.bindFromRequest().fold(
-      withErrors => {
-        BadRequest
-      },
-      playlistName => {
-        val mpd = MpdConnector.getMpdActor
-        mpd ! SavePlaylist(playlistName)
+  def savePlaylist = mpdAction { implicit request => mpd =>
+    Future {
+      playlistNameForm.bindFromRequest().fold(
+        withErrors => {
+          BadRequest
+        },
+        playlistName => {
+          mpd ! SavePlaylist(playlistName)
+          Redirect(routes.Application.playlist())
+        })
+    }
+  }
 
-        Redirect(routes.Application.index())
+  def changePlaylist(name: Option[String]) = mpdAction { implicit request => mpd =>
+    Future {
+      name match {
+        case Some(n) =>
+          mpd ! ChangePlaylist(n)
+        case _ => //ignore
       }
-    )
-
-  }
-
-  def changePlaylist(name:Option[String]) = Action { implicit request =>
-    name match {
-      case Some(n) =>
-        val mpd = MpdConnector.getMpdActor
-        mpd ! ChangePlaylist(n)
-        Redirect(routes.Application.index())
-      case None => Redirect(routes.Application.index())
+      Redirect(routes.Application.playlist())
     }
   }
 }

@@ -5,6 +5,8 @@
 # Home page
 GET     /                           controllers.Application.index
 
+GET     /playlist                   controllers.Application.playlist
+
 GET     /lib                        controllers.Application.lib(artist:Option[String], album:Option[String])
 
 GET     /about                        controllers.Application.about

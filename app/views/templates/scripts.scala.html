@@ -1,4 +1,6 @@
-@(withWebsocket:Boolean)
+@import play.api.mvc.RequestHeader
+
+@(withWebsocket:Boolean)(implicit header:RequestHeader)
 
 @jsfile(file:String) = {
       <script src="@routes.Assets.versioned(s"javascripts/$file")"></script>

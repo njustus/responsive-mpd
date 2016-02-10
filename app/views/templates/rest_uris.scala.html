@@ -1,4 +1,4 @@
-@()
+@()(implicit header:RequestHeader)
 <script type="text/javascript">
 			var player = {
 				play: {
@@ -69,6 +69,6 @@
 				"player": player,
 				"playlist": playlist,
 				"db": db,
-				"websocket": "localhost:9000@routes.WebSocket.socket"
+				"websocket": "@routes.WebSocket.socket.webSocketURL()"
 			};
 </script>

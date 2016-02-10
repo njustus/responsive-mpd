@@ -16,6 +16,7 @@ package object controllers {
         .mapTo[MpdStatus].flatMap(fn)
     }
 
+  //TODO move into abstract controller
   private[controllers] def withActorMsg(msg:mpdbackend.ConnectorMessage)
     (fn: => Result)
     (implicit c:Controller) : Action[AnyContent] = Action { implicit request =>
@@ -24,6 +25,7 @@ package object controllers {
       fn
   }
 
+  //TODO move into abstract controller
   private[controllers] def sendToActor(msg:mpdbackend.ConnectorMessage)(implicit c:Controller) : Action[AnyContent] = Action {
     implicit request =>
       val mpdActor = MpdConnector.getMpdActor

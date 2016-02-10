@@ -1,6 +1,8 @@
 @import templates._
-@(address:Option[String], port:Option[String])(implicit status:MpdStatus)
+@import play.api.mvc.RequestHeader
 
-@side("Stream", status) {
+@(address:Option[String], port:Option[String])(implicit header:RequestHeader)
+
+@side("Stream") {
 	@stream_view(address, port)
 }

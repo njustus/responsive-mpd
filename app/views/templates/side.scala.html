@@ -1,6 +1,7 @@
 @import models.MpdStatus
+@import play.api.mvc.RequestHeader
 
-@(title:String, status:MpdStatus, withWebsocket:Boolean=false)(content: Html)
+@(title:String, withWebsocket:Boolean=false)(content: Html)(implicit header:RequestHeader)
 <!DOCTYPE html>
 
 <html lang="en">
@@ -11,9 +12,6 @@
     </head>
     <body>
         @menu(title)
-        @**
-        @play_line(status)
-        **@
 
         <div class="row">
           <div class="small-9 small-centered columns">

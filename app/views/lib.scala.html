@@ -1,8 +1,9 @@
 @import templates._
 @import models.MpdStatus
+@import play.api.mvc.RequestHeader
 
-@(list:Html)(implicit status:MpdStatus)
+@(list:Html)(implicit header:RequestHeader)
 
-@side("Library", status) {
+@side("Library") {
   @list
 }

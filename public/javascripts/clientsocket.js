@@ -1,5 +1,5 @@
 function newSocketHandler() {
-  var clientSocket = new WebSocket("ws://" + globalUris.websocket);
+  var clientSocket = new WebSocket(globalUris.websocket);
 
   clientSocket.onopen = function(evt) {
     console.log("connection opened");

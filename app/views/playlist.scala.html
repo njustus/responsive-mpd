@@ -1,7 +1,8 @@
 @import templates._
 @import models.MpdStatus
+@import play.api.mvc.RequestHeader
 
-@(titles:List[Title], playlists:List[String])(implicit status:MpdStatus)
+@(titles:List[Title], playlists:List[String])(implicit header:RequestHeader, status:MpdStatus)
 
 @playerControl(lbl:Option[String], id:String)(css:String*)={
   <button id="@id" class="button rounded-edges @css.mkString(" ")">
@@ -9,7 +10,7 @@
   </button>
 }
 
-@side("Playlist", status, true) {
+@side("Playlist", true) {
   <div class="row">
     <div class="column small-centered small-6" id="actual-song-line-container">
       <span id="actual-song-line">

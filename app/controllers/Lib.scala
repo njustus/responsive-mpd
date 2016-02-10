@@ -14,10 +14,9 @@ class Lib extends AbstractMpdController {
   def addToPlaylist(artist:Option[String], album:Option[String], title: Option[String]) =
     sendToActor(mpdbackend.AddToPlaylist(artist, album, title))
 
-  def search(q: Option[String]) = Action.async { implicit request =>
+  def search(q: Option[String]) = mpdAction { implicit request => mpdActor =>
     q match {
         case Some(key) =>
-          val mpdActor = MpdConnector.getMpdActor
           getPlayerStatus(mpdActor) { implicit status =>
             (mpdActor ? mpdbackend.Search(key)).mapTo[List[Title]].map { xs =>
               val sorted = xs.sorted
