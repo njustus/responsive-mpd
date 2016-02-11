@@ -1,15 +1,15 @@
 package controllers
 
 import akka.pattern.ask
-import models.{ MpdStatus, Title }
-import models.mpdbackend.MpdConnector.{ actorTimeout, getMpdActor }
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import play.api.mvc.{ Action, Controller }
+
 import scala.concurrent.Future
-import models.mpdbackend.MpdConnector
-import akka.actor.ActorRef
+
+import models.Title
 import models.mpdbackend._
+import models.mpdbackend.MpdConnector.actorTimeout
 import play.api.Play
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import play.api.mvc.Action
 
 class Application extends AbstractMpdController {
   def index = Action { Redirect(routes.Application.playlist()) }

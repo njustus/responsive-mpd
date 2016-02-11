@@ -1,15 +1,17 @@
-import javax.inject._
+import scala.annotation.tailrec
+import scala.concurrent.Future
+
+import java.net.{ ConnectException, NoRouteToHostException }
+
+import org.bff.javampd.exception.{ MPDConnectionException, MPDException, MPDPlayerException, MPDTimeoutException }
+
+import javax.inject.{ Inject, Provider }
+import play.api.{ Configuration, Environment, OptionalSourceMapper, UsefulException }
 import play.api.http.DefaultHttpErrorHandler
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import play.api._
-import play.api.mvc._
-import play.api.mvc.Results._
+import play.api.mvc.{ RequestHeader, Result }
+import play.api.mvc.Results.InternalServerError
 import play.api.routing.Router
-import scala.concurrent._
-import org.bff.javampd.exception._
-import java.net.NoRouteToHostException
-import scala.annotation.tailrec
-import java.net.ConnectException
 
 class ErrorHandler @Inject() (
     env: Environment,

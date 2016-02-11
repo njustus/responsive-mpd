@@ -1,10 +1,11 @@
 package controllers
 
-import play.api.mvc._
-import scala.concurrent.Future
-import models.MpdStatus
-import models.mpdbackend.MpdConnector
 import akka.actor.ActorRef
+
+import scala.concurrent.Future
+
+import models.mpdbackend.MpdConnector
+import play.api.mvc._
 
 private[controllers] abstract trait AbstractMpdController extends Controller {
   implicit val ctrl: Controller = this

@@ -1,15 +1,15 @@
 package controllers
 
-import models.mpdbackend.MpdConnector
-import play.api.data._
-import play.api.data.Forms._
-import play.api.mvc.{ Action, AnyContent, Controller }
+import akka.actor.actorRef2Scala
+
 import scala.concurrent.Future
+
+import models.mpdbackend._
+import play.api.data.Form
+import play.api.data.Forms.{ nonEmptyText, single }
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 class Player extends AbstractMpdController {
-
-  import models.mpdbackend._
 
   private val playlistNameForm = Form(
     single( "playlistname" -> nonEmptyText) )

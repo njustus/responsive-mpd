@@ -1,9 +1,10 @@
 package controllers
 
 import akka.actor.Props
+
+import play.api.Play.current
 import play.api.libs.json.JsValue
 import play.api.mvc._
-import play.api.Play.current
 
 class WebSocket extends Controller {
   type Message = JsValue

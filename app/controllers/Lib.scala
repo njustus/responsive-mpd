@@ -1,14 +1,12 @@
 package controllers
 
 import akka.pattern.ask
-import models.mpdbackend
-import models.mpdbackend.MpdConnector
-import play.api.mvc.{ Action, AnyContent, Controller }
-import play.api.Play.current
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
+
 import scala.concurrent.Future
-import models.Title
-import models.mpdbackend.MpdConnector._
+
+import models.{ Title, mpdbackend }
+import models.mpdbackend.MpdConnector.actorTimeout
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 class Lib extends AbstractMpdController {
   def addToPlaylist(artist:Option[String], album:Option[String], title: Option[String]) =

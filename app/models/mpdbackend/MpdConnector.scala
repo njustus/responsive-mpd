@@ -1,34 +1,31 @@
 package models.mpdbackend
 
+import akka.actor.{ Actor, ActorRef, Props, actorRef2Scala }
+import akka.pattern.pipe
+import akka.util.Timeout
+
 import scala.collection.JavaConversions._
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.HashMap
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
-import org.bff.javampd.MPD
-import akka.actor.{ Actor, ActorRef, Props, actorRef2Scala }
-import akka.pattern.{pipe, ask}
-import akka.util.Timeout
+
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
+import org.bff.javampd.{ MPD, Player }
+import org.bff.javampd.objects.{ MPDAlbum, MPDArtist, MPDSong }
+
 import models.MpdStatus
-import models.mpdbackend.MpdConverters._
+import models.mpdbackend.MpdConverters.unixTimestampToReadable
+import play.api.Logger
+import play.api.Play
 import play.api.Play.current
 import play.api.libs.concurrent.Akka
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import org.bff.javampd.objects.MPDArtist
-import org.bff.javampd.objects.MPDAlbum
-import org.bff.javampd.objects.MPDSong
-import org.bff.javampd.Player
-import akka.actor.TypedActor.PostStop
-import scala.concurrent.Await
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import play.api.Logger
-import scala.collection.mutable.HashMap
-import org.bff.javampd.monitor.MPDStandAloneMonitor
 
 class MpdConnector extends Actor with MpdListenerLike {
   import MpdConnector._
-  import play.api.Play
 
   private lazy val playConf = Play.current.configuration
   private val log: Logger = Logger("mpdconnector")

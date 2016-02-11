@@ -1,14 +1,9 @@
 package models.mpdbackend
 
-import akka.actor.Actor
-import play.api.Play
-import akka.actor.Props
-import akka.routing.ActorRefRoutee
-import akka.routing.Router
-import akka.routing.RoundRobinRoutingLogic
+import akka.actor.{ Actor, Props, Terminated }
+import akka.routing.{ ActorRefRoutee, RoundRobinRoutingLogic, Router }
+
 import play.api.Logger
-import akka.actor.Terminated
-import akka.actor.PoisonPill
 
 class MpdMaster extends Actor with MpdSupervisor {
 

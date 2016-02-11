@@ -1,7 +1,7 @@
-import akka.actor.actorRef2Scala
+import akka.actor.{ PoisonPill, actorRef2Scala }
+
 import models.mpdbackend.MpdConnector
-import play.api.{ GlobalSettings, Logger, Application }
-import akka.actor.PoisonPill
+import play.api.{ Application, GlobalSettings, Logger }
 
 object Global extends GlobalSettings {
 

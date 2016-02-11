@@ -2,17 +2,14 @@ package controllers
 
 import akka.actor.{ Actor, ActorRef, actorRef2Scala }
 import akka.pattern.ask
-import org.bff.javampd.events.PlayerChangeEvent
-import org.bff.javampd.events.PlaylistChangeEvent
+
+import org.bff.javampd.events.{ PlayerBasicChangeEvent, PlaylistBasicChangeEvent }
 import org.bff.javampd.objects.MPDSong
-import models.JsMessages.{ JsPlay, JsPlaySong, JsReloadPage, JsStop }
-import models.mpdbackend.{ AddSocketListener, GetActualSong, MpdConnector }
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import play.api.libs.json.JsString
+
+import models.JsMessages._
+import models.mpdbackend._
 import play.api.Logger
-import org.bff.javampd.events.PlayerBasicChangeEvent
-import org.bff.javampd.events.PlaylistBasicChangeEvent
-import models.mpdbackend.RemoveSocketListener
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 class WebSocketActor(out: ActorRef) extends Actor {
   import models.mpdbackend.MpdConnector._

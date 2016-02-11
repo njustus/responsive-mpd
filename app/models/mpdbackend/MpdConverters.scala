@@ -1,10 +1,12 @@
 package models.mpdbackend
 
-import java.util.concurrent.TimeUnit
-import org.bff.javampd.objects.MPDSong
-import models.Title
-import java.util.Date
 import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.concurrent.TimeUnit
+
+import org.bff.javampd.objects.MPDSong
+
+import models.Title
 
 object MpdConverters {
   private def secondsToMinutesAndSeconds(seconds:Int): (Int, Int)= {
@@ -18,7 +20,7 @@ object MpdConverters {
   def unixTimestampToReadable(timestamp:Long): String = {
     val date = new Date(timestamp);
     val format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    return format.format(date);
+    format.format(date);
   }
 
   def mpdSongToTitle(song:MPDSong, isPlaying:Boolean = false): Title =

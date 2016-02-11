@@ -1,17 +1,16 @@
 package models.mpdbackend
 
-import akka.actor.{ Actor, ActorRef, Props, actorRef2Scala }
-import play.api.Logger
-import play.api.Play
+import akka.actor.{ Actor, OneForOneStrategy }
+import akka.actor.SupervisorStrategy.{ Escalate, Restart }
+
+import scala.concurrent.duration.DurationInt
+import scala.language.postfixOps
+
 import org.bff.javampd.exception.MPDException
 
+import play.api.{ Logger, Play }
+
 trait MpdSupervisor extends Actor {
-
-  import akka.actor.OneForOneStrategy
-  import akka.actor.SupervisorStrategy._
-  import scala.concurrent.duration._
-  import scala.language.postfixOps
-
   protected val log: Logger = Logger("mpdsupervisor")
   protected lazy val playConf = Play.current.configuration
 

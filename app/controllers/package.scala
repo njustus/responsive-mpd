@@ -3,7 +3,7 @@ package object controllers {
   import akka.actor.ActorRef
   import akka.pattern.ask
   import models.{ MpdStatus, Title }
-  import models.mpdbackend
+  import models.mpdbackend.ConnectorMessage
   import models.mpdbackend.MpdConnector
   import models.mpdbackend.MpdConnector._
   import scala.concurrent.Future
@@ -17,7 +17,7 @@ package object controllers {
     }
 
   //TODO move into abstract controller
-  private[controllers] def withActorMsg(msg:mpdbackend.ConnectorMessage)
+  private[controllers] def withActorMsg(msg:ConnectorMessage)
     (fn: => Result)
     (implicit c:Controller) : Action[AnyContent] = Action { implicit request =>
       val mpdActor = MpdConnector.getMpdActor
@@ -26,7 +26,7 @@ package object controllers {
   }
 
   //TODO move into abstract controller
-  private[controllers] def sendToActor(msg:mpdbackend.ConnectorMessage)(implicit c:Controller) : Action[AnyContent] = Action {
+  private[controllers] def sendToActor(msg:ConnectorMessage)(implicit c:Controller) : Action[AnyContent] = Action {
     implicit request =>
       val mpdActor = MpdConnector.getMpdActor
       mpdActor ! msg
