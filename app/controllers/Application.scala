@@ -16,6 +16,8 @@ class Application extends AbstractMpdController {
 
   /*
    * TODO add socket-event for repeating/shuffling
+   * TODO move list of listener-actors to mpdmaster: if connector terminated all listeners are lost
+   * TODO split up connectors behaviour in several traits, mixin in the behaviour and putting the partialfns together
    * TODO add tooltip-texts to savePlaylist, clearPlaylist, deleteSong, shuffle, repeat, + icons in lib/search
    */
 
