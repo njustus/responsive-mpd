@@ -15,8 +15,7 @@ class Application extends AbstractMpdController {
   def index = Action { Redirect(routes.Application.playlist()) }
 
   /*
-   * TODO add socket-event for repeating/shuffling: implement own actor-based listener that uses custom messages, there are no events for shuffling, repeating, etc..
-   * TODO move list of listener-actors to mpdmaster: if connector terminated all listeners are lost
+   * TODO Change return of GetActualSong to Option[Song] .. this song could be null (if playlist is empty), which breaks akka's message-delivery roules
    * TODO split up connectors behaviour in several traits, mixin in the behaviour and putting the partialfns together
    * TODO add tooltip-texts to savePlaylist, clearPlaylist, deleteSong, shuffle, repeat, + icons in lib/search
    */
