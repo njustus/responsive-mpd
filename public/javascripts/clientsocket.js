@@ -6,7 +6,7 @@ function newSocketHandler() {
   }
   clientSocket.onmessage = function(msg) {
 	var data = JSON.parse(msg.data);
-    switch(data.action_id) {
+	switch(data.action_id) {
     	case 0: //play
     		console.log("resume playing");
     		playerHandler.playToggle($('li#stop-btn'), true, false);

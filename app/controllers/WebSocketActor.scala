@@ -27,7 +27,7 @@ class WebSocketActor(out: ActorRef) extends Actor {
 
   def receive = {
     case js:JsAction =>
-      out ! js
+      out ! js.toJson
       log.info(s"send to client: $js")
     case a: Any => log.warn(s"Can't handle this $a")
   }
