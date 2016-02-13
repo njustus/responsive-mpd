@@ -24,7 +24,7 @@ import play.api.Play.current
 import play.api.libs.concurrent.Akka
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
-class MpdConnector extends Actor with MpdListenerLike {
+class MpdConnector extends Actor {
   import MpdConnector._
 
   private lazy val playConf = Play.current.configuration
@@ -43,9 +43,6 @@ class MpdConnector extends Actor with MpdListenerLike {
       }).getOrElse {
         throw new IllegalStateException("Can't create mpd-instance!")
       }
-
-  override protected val monitor = mpd.getMonitor
-  setupMonitor()
 
   private val volumeStep:Int = 10
 
@@ -104,21 +101,11 @@ class MpdConnector extends Actor with MpdListenerLike {
     }
 
   override def postStop(): Unit = {
-      stopMonitor()
       mpd.close()
       log.info("MPD-Connection closed")
   }
 
-  private def handleSocketListener: PartialFunction[Any,Unit] = {
-    case AddSocketListener =>
-      log.info(s"registered sender ${sender.toString()} as websocket-listener")
-      addListener(sender)
-    case RemoveSocketListener =>
-      log.info(s"removed sender ${sender.toString()} from listeners")
-      removeListener(sender)
-  }
-
-  def receive = handleSocketListener.orElse {
+  def receive = {
     case PlaySong => mpd.getPlayer.play()
     case Stop => mpd.getPlayer.stop()
     case Next => mpd.getPlayer.playNext()
