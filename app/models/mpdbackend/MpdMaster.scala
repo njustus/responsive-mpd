@@ -31,6 +31,7 @@ class MpdMaster extends Actor with MpdSupervisor {
   override def postStop(): Unit = {
     scheduledTask.cancel()
     monitorActor ! PoisonPill
+    log.info("stopped: task-scheduling, monitorActor")
   }
 
   def receive = {

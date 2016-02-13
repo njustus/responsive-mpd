@@ -43,30 +43,41 @@ class MpdMonitoringActor(mpd: ActorRef) extends Actor {
       if(status.isPlaying != isPlaying) {
         isPlaying = status.isPlaying
         fireMsg( if(isPlaying) JsPlay else JsStop )
+        log.info(s"isPlaying changed: $isPlaying")
       }
       if(song != newSong) {
           song = newSong
           fireMsg(JsPlaySong(newSong))
+          log.info(s"song changed: $song")
       }
       if(status.isLooping != isLooping) {
         isLooping = status.isLooping
         fireMsg(JsRepeating(isLooping))
+        log.info(s"looping changed: $isLooping")
       }
       if(status.isShuffling != isShuffling) {
         isShuffling = status.isShuffling
         fireMsg(JsShuffling(isShuffling))
+        log.info(s"shuffling changed: $isShuffling")
       }
       if(newList != playlist) {
         playlist = newList
         fireMsg(JsReloadPage)
+        log.info("playlist changed")
       }
     }
   }
 
   def receive = {
-    case AddSocketListener => listeningActors += sender()
-    case RemoveSocketListener => listeningActors -= sender()
-    case Lookup => lookupChanges()
+    case AddSocketListener =>
+      log.info("got new listener")
+      listeningActors += sender()
+    case RemoveSocketListener =>
+      log.info("remove listener")
+      listeningActors -= sender()
+    case Lookup =>
+      log.info("lookup changes")
+      lookupChanges()
   }
 }
 
