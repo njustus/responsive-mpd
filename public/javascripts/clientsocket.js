@@ -35,8 +35,8 @@ function newSocketHandler() {
     		break;
       case 6: //shuffling
         var $btn = $('li#shuffle-btn');
-        if( (data.isRepeating && $btn.hasClass('hollow')) ||
-            (!data.isRepeating && !$btn.hasClass('hollow'))
+        if( (data.isShuffling && $btn.hasClass('hollow')) ||
+            (!data.isShuffling && !$btn.hasClass('hollow'))
           ) {
           /*conditions:
               - button is off & state is on
@@ -46,7 +46,7 @@ function newSocketHandler() {
         }
         break;
       case 7: //repeating
-        var $btn = $('li#shuffle-btn');
+        var $btn = $('li#repeat-btn');
         if( (data.isRepeating && $btn.hasClass('hollow')) ||
             (!data.isRepeating && !$btn.hasClass('hollow'))
           ) {
