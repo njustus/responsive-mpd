@@ -38,6 +38,16 @@ object JsMessages {
       """
   }
   case object JsReloadPage extends JsAction(5)
+  case class JsShuffling(flag:Boolean) extends JsAction(6) {
+    override protected def internalJson: String = s""",
+      "isShuffling": ${flag}
+      """
+  }
+  case class JsRepeating(flag:Boolean) extends JsAction(7) {
+    override protected def internalJson: String = s""",
+      "isRepeating": ${flag}
+      """
+  }
 
   private val parsingError = ValidationError("Can't prove that given json is a JsAction!")
 }

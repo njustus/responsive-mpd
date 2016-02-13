@@ -11,7 +11,7 @@ function newSocketHandler() {
     		console.log("resume playing");
     		playerHandler.playToggle($('li#stop-btn'), true, false);
     		break;
-		case 1: //stop
+		  case 1: //stop
     		console.log("stop playing");
     		playerHandler.playToggle($('li#stop-btn'), false, false);
     		break;
@@ -33,6 +33,34 @@ function newSocketHandler() {
     		clientSocket.close();
     		location.reload(true);
     		break;
+      case 6: //shuffling
+        var $btn = $('li#shuffle-btn');
+        if( (data.isRepeating && $btn.hasClass('hollow')) ||
+            (!data.isRepeating && !$btn.hasClass('hollow'))
+          ) {
+          /*conditions:
+              - button is off & state is on
+              - button is on & state is off
+          */
+          playerHandler.repeatToggle($btn, data.isRepeating, false);
+        }
+        break;
+      case 7: //repeating
+        var $btn = $('li#shuffle-btn');
+        if( (data.isRepeating && $btn.hasClass('hollow')) ||
+            (!data.isRepeating && !$btn.hasClass('hollow'))
+          ) {
+          /*conditions:
+              - button is off & state is on
+              - button is on & state is off
+          */
+          playerHandler.repeatToggle($btn, data.isRepeating, false);
+        }
+        break;
+      default:
+        console.log("socket got unknown message");
+        console.log(data);
+        break;
       }
   }
 
