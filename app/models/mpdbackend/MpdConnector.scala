@@ -198,6 +198,7 @@ class MpdConnector extends Actor {
       } pipeTo(sender)
     case ChangePlaylist(name) =>
       Future {
+        mpd.getPlaylist.clearPlaylist()
         mpd.getPlaylist.loadPlaylist(name)
       }
     case GetStatistics =>
