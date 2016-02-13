@@ -26,15 +26,9 @@ class WebSocketActor(out: ActorRef) extends Actor {
   }
 
   def receive = {
-    case PlayerBasicChangeEvent.Status.PLAYER_STOPPED  => out ! JsStop.toJson
-    case PlayerBasicChangeEvent.Status.PLAYER_UNPAUSED => out ! JsPlay.toJson
-    case PlayerBasicChangeEvent.Status.PLAYER_STARTED  => out ! JsPlay.toJson
-    case PlayerBasicChangeEvent.Status.PLAYER_PAUSED   =>  out ! JsStop.toJson
-    case PlaylistBasicChangeEvent.Event.SONG_CHANGED =>
-      (mpdConnector ? GetActualSong).mapTo[MPDSong].map { song =>
-        out ! JsPlaySong(song).toJson
-      }
-    case _:PlaylistBasicChangeEvent.Event  => out ! JsReloadPage.toJson
-    case a: Any => log.warn(s"Can't handle this msg $a")
+    case js:JsAction =>
+      out ! js
+      log.info(s"send to client: $js")
+    case a: Any => log.warn(s"Can't handle this $a")
   }
 }
