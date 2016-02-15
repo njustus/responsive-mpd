@@ -10,6 +10,8 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 object MpdConverters {
+  private val timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+
   private def secondsToMinutesAndSeconds(seconds:Int): (Int, Int)= {
     val minutes = TimeUnit.SECONDS.toMinutes(seconds).toInt
     (
@@ -20,8 +22,7 @@ object MpdConverters {
 
   def unixTimestampToReadable(timestamp:Long): String = {
     val instant = Instant.ofEpochSecond(timestamp)
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-    instant.atZone(ZoneId.systemDefault()).format(formatter)
+    instant.atZone(ZoneId.systemDefault()).format(timeFormatter)
   }
 
   def mpdSongToTitle(song:MPDSong, isPlaying:Boolean = false): Title =
