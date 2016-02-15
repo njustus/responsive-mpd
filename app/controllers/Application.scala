@@ -10,8 +10,12 @@ import models.mpdbackend.MpdConnector.actorTimeout
 import play.api.Play
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.mvc.Action
+import views._
+import html.templates._
 
 class Application extends AbstractMpdController {
+  private lazy val playConf = Play.current.configuration
+
   def index = Action { Redirect(routes.Application.playlist()) }
 
   /*
@@ -32,7 +36,7 @@ class Application extends AbstractMpdController {
           }
 
           (mpdConnector ? GetPlaylistNames).mapTo[List[String]].map { playlists =>
-            Ok(views.html.playlist(mappedTitles, playlists))
+            Ok(html.playlist(mappedTitles, playlists))
           }
       }
     }
@@ -42,39 +46,39 @@ class Application extends AbstractMpdController {
     (artist, album) match {
       case (Some(art), Some(alb)) =>
         (mpdConnector ? GetAlbumTitles(art, alb)).mapTo[List[String]].map { titles =>
-          val libList = views.html.templates.lib_list(titles, artist, album, s"$art - $alb") { _ =>
-            controllers.routes.Application.lib(None, None)
+          val libList = lib_list(titles, artist, album, s"$art - $alb") { _ =>
+            routes.Application.lib(None, None)
           }
-          Ok(views.html.lib(libList))
+          Ok(html.lib(libList))
         }
       case (Some(art), None) =>
         (mpdConnector ? GetAlbumList(art)).mapTo[List[String]].map { albums =>
-          val libList = views.html.templates.lib_list(albums, artist, album, art) { s =>
-            controllers.routes.Application.lib(Some(art), Some(s))
+          val libList = lib_list(albums, artist, album, art) { s =>
+            routes.Application.lib(Some(art), Some(s))
           }
-          Ok(views.html.lib(libList))
+          Ok(html.lib(libList))
         }
       case _ =>
         (mpdConnector ? GetArtistsList).mapTo[List[String]].map { artists =>
-          val libList = views.html.templates.lib_list(artists, artist, album, "Artists") { s =>
-            controllers.routes.Application.lib(Some(s), None)
+          val libList = lib_list(artists, artist, album, "Artists") { s =>
+            routes.Application.lib(Some(s), None)
           }
-          Ok(views.html.lib(libList))
+          Ok(html.lib(libList))
         }
     }
   }
 
   def stream = Action.async { implicit request =>
     Future {
-        val adrOpt = Play.current.configuration.getString("mpd.streaming.ip")
-        val ipOpt = Play.current.configuration.getString("mpd.streaming.port")
-        Ok(views.html.stream_music(adrOpt, ipOpt))
+        val adrOpt = playConf.getString("mpd.streaming.ip")
+        val ipOpt = playConf.getString("mpd.streaming.port")
+        Ok(html.stream_music(adrOpt, ipOpt))
       }
   }
 
   def about = mpdAction { implicit request => mpdConnector =>
     (mpdConnector ? GetStatistics).mapTo[(Map[String, String], Map[String, String])].map {
-      case (general, db) => Ok(views.html.about(general, db))
+      case (general, db) => Ok(html.about(general, db))
     }
   }
 }
