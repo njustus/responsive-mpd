@@ -69,7 +69,7 @@ class MpdConnector extends Actor {
       Map("Serveraddress" -> mpd.getAddress.getCanonicalHostName,
           "Port" -> mpd.getPort.toString,
           "MPD-Version" -> mpd.getVersion,
-          "MPD-Uptime" -> mpd.getAdmin.getDaemonUpTime.toString)
+          "MPD-Uptime" -> unixTimestampToReadable(mpd.getAdmin.getDaemonUpTime))
     }
 
   private def dbStatistic: Future[Map[String, String]] =

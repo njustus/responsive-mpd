@@ -3,10 +3,11 @@ package models.mpdbackend
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.concurrent.TimeUnit
-
 import org.bff.javampd.objects.MPDSong
-
 import models.Title
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 object MpdConverters {
   private def secondsToMinutesAndSeconds(seconds:Int): (Int, Int)= {
@@ -18,9 +19,9 @@ object MpdConverters {
   }
 
   def unixTimestampToReadable(timestamp:Long): String = {
-    val date = new Date(timestamp);
-    val format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    format.format(date);
+    val instant = Instant.ofEpochSecond(timestamp)
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+    instant.atZone(ZoneId.systemDefault()).format(formatter)
   }
 
   def mpdSongToTitle(song:MPDSong, isPlaying:Boolean = false): Title =
