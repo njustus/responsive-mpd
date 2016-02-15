@@ -7,9 +7,8 @@ import play.api.libs.json.JsValue
 import play.api.mvc._
 
 class WebSocket extends Controller {
-  type Message = JsValue
 
-  def socket = WebSocket.acceptWithActor[Message, Message] { request => out =>
+  def socket = WebSocket.acceptWithActor[JsValue, JsValue] { request => out =>
     Props(new WebSocketActor(out))
   }
 }
