@@ -23,5 +23,3 @@ If you like it and want to try it, follow this steps:
 - start the client via ```activator run```
 - open up the client in a web-browser at ```http://<serveradress>:9000```
 
-# License
-This software is licensed under the [Apache 2](http://www.apache.org/licenses/LICENSE-2.0) license.
