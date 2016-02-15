@@ -66,35 +66,27 @@ class MpdConnector extends Actor {
 
   private def generalStatistic: Future[Map[String, String]] =
     Future {
-      val m = HashMap[String,String]()
-
-      m += "Serveraddress" -> mpd.getAddress.getCanonicalHostName
-      m += "Port" -> mpd.getPort.toString
-      m += "MPD-Version" -> mpd.getVersion
-      m += "MPD-Uptime" -> mpd.getAdmin.getDaemonUpTime.toString
-      m.toMap
+      Map("Serveraddress" -> mpd.getAddress.getCanonicalHostName,
+          "Port" -> mpd.getPort.toString,
+          "MPD-Version" -> mpd.getVersion,
+          "MPD-Uptime" -> mpd.getAdmin.getDaemonUpTime.toString)
     }
 
   private def dbStatistic: Future[Map[String, String]] =
     Future {
-      val m = HashMap[String,String]()
       val db = mpd.getDatabase
 
-      m += "No of artists" -> db.getArtistCount.toString
-      m += "No of albums" -> db.getAlbumCount.toString
-      m += "No of songs" -> db.getSongCount.toString
-      m += "DB update date" -> unixTimestampToReadable(db.getLastUpdateTime)
-      m.toMap
+      Map("No of artists" -> db.getArtistCount.toString,
+          "No of albums" -> db.getAlbumCount.toString,
+          "No of songs" -> db.getSongCount.toString,
+          "DB update date" -> unixTimestampToReadable(db.getLastUpdateTime))
   }
 
   private def getPlayersStatus: Future[Option[Player.Status]] =
     Future {
-        //either player or status could be null,
-        //avoid exception by wrapping into an option
-
-    //Option(mpd).flatMap( m => Option(m.getPlayer) ).flatMap( p => Option(p.getStatus) )
       try {
-        Some(mpd.getPlayer.getStatus) //getStatus throws npe if status not found
+        //getStatus throws npe if status not found
+        Some(mpd.getPlayer.getStatus)
       } catch {
         case _:NullPointerException => None
       }
