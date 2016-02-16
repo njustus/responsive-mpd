@@ -73,6 +73,9 @@
   <div class="row">
     @centeredColumn(4) {
       @change_playlist(playlists)
+      <button class="button success" type="button"
+        data-toggle="add-url-modal"
+      >Add URL</button>
     }
   </div>
 
@@ -106,6 +109,21 @@
       <input class="input-group-field" type="text" placeholder="awesome-playlist-name" name="playlistname">
       <div class="input-group-button">
         <input type="submit" class="button" value="save">
+      </div>
+    </div></form>
+
+    <button class="close-button" data-close aria-label="Close reveal" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="reveal" id="add-url-modal" data-reveal>
+    <p>Add URL to Playlist:</p>
+    <form action="#" method="post">
+      <div class="input-group">
+      <input class="input-group-field" type="text" placeholder="/home/user/music/awesome.mp3" name="url">
+      <div class="input-group-button">
+        <input type="submit" class="button" value="add">
       </div>
     </div></form>
 
