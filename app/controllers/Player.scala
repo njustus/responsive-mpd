@@ -61,13 +61,6 @@ class Player extends AbstractMpdController {
   }
 
   def changePlaylist(name: Option[String]) = mpdAction { implicit request => mpd =>
-    Future {
-      name match {
-        case Some(n) =>
-          mpd ! ChangePlaylist(n)
-        case _ => //ignore
-      }
-      Redirect(routes.Application.playlist())
-    }
+    Future.successful(NotImplemented)
   }
 }
