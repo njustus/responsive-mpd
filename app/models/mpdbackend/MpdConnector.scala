@@ -3,19 +3,15 @@ package models.mpdbackend
 import akka.actor.{ Actor, ActorRef, Props, actorRef2Scala }
 import akka.pattern.pipe
 import akka.util.Timeout
-
 import scala.collection.JavaConversions._
 import scala.collection.mutable.HashMap
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
-
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-
 import org.bff.javampd.{ MPD, Player }
 import org.bff.javampd.objects.{ MPDAlbum, MPDArtist, MPDSong }
-
 import models.MpdStatus
 import models.mpdbackend.MpdConverters.unixTimestampToReadable
 import play.api.Logger
@@ -23,6 +19,7 @@ import play.api.Play
 import play.api.Play.current
 import play.api.libs.concurrent.Akka
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import org.bff.javampd.MPDFile
 
 class MpdConnector extends Actor {
   import MpdConnector._
@@ -192,6 +189,10 @@ class MpdConnector extends Actor {
       Future {
         mpd.getPlaylist.clearPlaylist()
         mpd.getPlaylist.loadPlaylist(name)
+      }
+    case AddUrl(url) =>
+      Future {
+        log.error("add-url not supported yet!")
       }
     case GetStatistics =>
       generalStatistic flatMap { general =>
