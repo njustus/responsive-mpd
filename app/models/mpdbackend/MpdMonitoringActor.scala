@@ -76,7 +76,6 @@ class MpdMonitoringActor(mpd: ActorRef) extends Actor {
       log.info("remove listener")
       listeningActors -= sender()
     case Lookup =>
-      log.info("lookup changes")
       lookupChanges()
   }
 }
