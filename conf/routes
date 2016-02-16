@@ -33,6 +33,7 @@ GET     /playlist/add				controllers.Lib.addToPlaylist(artist: Option[String], a
 GET     /playlist/clear				controllers.Player.clearPlaylist
 GET     /playlist/change-playlist controllers.Player.changePlaylist(name:Option[String])
 POST    /playlist/save-playlist controllers.Player.savePlaylist
+POST    /playlist/add-url       controllers.Player.addUrl
 
 # db
 GET     /db                 controllers.Lib.search(q: Option[String])

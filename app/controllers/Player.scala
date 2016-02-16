@@ -12,7 +12,11 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 class Player extends AbstractMpdController {
 
   private val playlistNameForm = Form(
-    single( "playlistname" -> nonEmptyText) )
+    single( "playlistname" -> nonEmptyText)
+  )
+  private val addUrlForm = Form(
+    single( "url" -> nonEmptyText )
+  )
 
   def play = sendToActor(PlaySong)
   def playId(id: Int) = sendToActor(PlaySongId(id))
@@ -38,6 +42,19 @@ class Player extends AbstractMpdController {
         },
         playlistName => {
           mpd ! SavePlaylist(playlistName)
+          Redirect(routes.Application.playlist())
+        })
+    }
+  }
+
+  def addUrl = mpdAction { implicit request => mpd =>
+    Future {
+      addUrlForm.bindFromRequest().fold(
+        withErrors => {
+          BadRequest
+        },
+        url => {
+          println(s"got $url")
           Redirect(routes.Application.playlist())
         })
     }
