@@ -25,7 +25,7 @@ def writeHeader(header, filePath):
                                 x.startswith(END_COMMENT)
                         , original)
 
-        newLines = header + "\n" + "\n".join(content)
+        newLines = header + "\n" + "".join(content)
         f.write(newLines)
 
 def asComment(lines):
