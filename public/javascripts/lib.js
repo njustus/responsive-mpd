@@ -37,6 +37,9 @@ var libHandler = {
     animateActive(trElem);
   },
   search: function(searchString) {
+      //TODO: define better search: add artist,album for scoped search
+      //match-all regex: artist:([\w\s\d]+)album:([\w\s\d]+)title:([\w\s\d]+)
+
     console.log("search for "+searchString);
     searchString = toUriComponent(searchString);
 
