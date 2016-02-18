@@ -37,13 +37,38 @@ var libHandler = {
     animateActive(trElem);
   },
   search: function(searchString) {
-      //TODO: define better search: add artist,album for scoped search
-      //match-all regex: artist:([\w\s\d]+)album:([\w\s\d]+)title:([\w\s\d]+)
+    //TODO implement server-side
+      let createSearchUri = () => {
+        let uri = globalUris.db.search.uri
+        let parameters = {}
+        let splitted = searchString.split("$");
 
-    console.log("search for "+searchString);
-    searchString = toUriComponent(searchString);
+        for(let item of splitted) {
+          let matchObj = /([a-z]+):\s*([\+\.\w\d\s]+)/g.exec(item);
+          if(matchObj !== null) {
+            switch(matchObj[1]) {
+              case "artist": parameters.artist = matchObj[2]; break;
+              case "album": parameters.album = matchObj[2]; break;
+              case "title": parameters.title = matchObj[2]; break;
+            }
+          }
+        }
 
-    window.location = globalUris.db.search.uri + searchString;
+        if($.isEmptyObject(parameters)) {
+          return uri + "?q=" + toUriComponent(searchString);
+        } else {
+          let str = Object.keys(parameters).reduce( (prev, key) => {
+            return prev + key + "=" + toUriComponent(parameters[key]) + "&"
+          }, uri+"?");
+
+          return str.substring(0, str.length-1);
+        }
+      };
+
+    let uri = createSearchUri();
+    console.log(uri);
+
+    window.location = uri;
   },
   addSearchResultToPlaylist: function(trElem) {
 	  var href = $(trElem).data('target-ref');

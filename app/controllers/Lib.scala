@@ -12,7 +12,12 @@ class Lib extends AbstractMpdController {
   def addToPlaylist(artist:Option[String], album:Option[String], title: Option[String]) =
     sendToActor(mpdbackend.AddToPlaylist(artist, album, title))
 
-  def search(q: Option[String]) = mpdAction { implicit request => mpdActor =>
+  def search(q: Option[String], artist: Option[String],
+            album: Option[String], title: Option[String]) = mpdAction { implicit request => mpdActor =>
+              //TODO: implement handling of all options
+              println(artist)
+              println(album)
+              println(title)
     q match {
         case Some(key) =>
           getPlayerStatus(mpdActor) { implicit status =>
