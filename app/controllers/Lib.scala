@@ -15,10 +15,6 @@ class Lib extends AbstractMpdController {
 
   def search(q: Option[String], artist: Option[String],
             album: Option[String], title: Option[String]) = mpdAction { implicit request => mpdActor =>
-              //TODO: implement handling of all options
-              println(artist)
-              println(album)
-              println(title)
     q match {
         case Some(key) =>
             (mpdActor ? mpdbackend.Search(key)).mapTo[List[Title]].map { xs =>
