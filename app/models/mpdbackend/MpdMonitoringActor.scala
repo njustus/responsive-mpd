@@ -37,7 +37,7 @@ class MpdMonitoringActor(mpd: ActorRef) extends Actor {
   private def lookupChanges(): Future[Unit] = {
     for {
       status <- (mpd ? GetMpdStatus).mapTo[MpdStatus]
-      newSong <- (mpd ? GetActualSong).mapTo[MPDSong]
+      newSong <- (mpd ? GetActualSong).mapTo[Option[MPDSong]]
       newList <- (mpd ? GetPlaylist).mapTo[List[Title]]
     } yield {
       if(status.isPlaying != isPlaying) {
@@ -45,9 +45,10 @@ class MpdMonitoringActor(mpd: ActorRef) extends Actor {
         fireMsg( if(isPlaying) JsPlay else JsStop )
         log.info(s"isPlaying changed: $isPlaying")
       }
-      if(song != newSong) {
-          song = newSong
-          fireMsg(JsPlaySong(newSong))
+      if(newSong.isDefined && song != newSong.get) {
+          val tmpSong = newSong.get
+          song = tmpSong
+          fireMsg(JsPlaySong(tmpSong))
           log.info(s"song changed: $song")
       }
       if(status.isLooping != isLooping) {

@@ -150,10 +150,10 @@ class MpdConnector extends Actor {
         }
       }
     case GetActualSong =>
-      sender ! mpd.getPlayer.getCurrentSong
+      sender ! Option(mpd.getPlayer.getCurrentSong)
     case GetPlaylist =>
       Future {
-        mpd.getPlaylist.getSongList.map(MpdConverters.mpdSongToTitle(_)).toList
+         mpd.getPlaylist.getSongList.map(MpdConverters.mpdSongToTitle(_)).toList
       } pipeTo(sender)
     case GetArtistsList =>
       Future {

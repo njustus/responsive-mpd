@@ -98,7 +98,14 @@
       </tr>
     </thead>
     <tbody>
-      @titles.zipWithIndex.map(x => playlist_line(x._1, x._2))
+    	@if(titles.isEmpty) {
+    		<td></td>
+    		<td></td>
+    		<td>Empty playlist</td>
+    		<td></td>
+    	} else {
+      		@titles.zipWithIndex.map(x => playlist_line(x._1, x._2))
+      	}
     </tbody>
   </table>
 
