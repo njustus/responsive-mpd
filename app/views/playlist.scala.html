@@ -5,7 +5,7 @@
 @(titles:List[Title], playlists:List[String])(implicit header:RequestHeader, status:MpdStatus)
 
 @playerControl(lbl:Option[String], id:String)(css:String*)={
-  <li id="@id" class="button @css.mkString(" ")"
+  <li id="@id" class="button @css.mkString(" ")" >
     @lbl.getOrElse("")
   </li>
 }
