@@ -169,7 +169,15 @@ class MpdConnector extends Actor {
       } pipeTo(sender)
     case Search(key) =>
       Future {
-        mpd.getDatabase.searchAny(key).map(MpdConverters.mpdSongToTitle(_)).toList
+        MpdConverters.mpdSongsToTitles( mpd.getDatabase.searchAny(key) )
+      } pipeTo(sender)
+    case SearchTitle(title) =>
+      Future {
+        MpdConverters.mpdSongsToTitles( mpd.getDatabase.findTitle(title) )
+      } pipeTo(sender)
+    case SearchAlbum(album) =>
+      Future {
+        MpdConverters.mpdSongsToTitles( mpd.getDatabase.findAlbum(album) )
       } pipeTo(sender)
     case GetPlaylistNames =>
       Future {

@@ -35,7 +35,10 @@ case class GetAlbumList(artist:String) extends ConnectorMessage
 case class GetAlbumTitles(artist:String, album:String) extends ConnectorMessage
 case object GetStatistics extends ConnectorMessage
 case object GetPlaylistNames extends ConnectorMessage
+/* -------------- search in db */
 case class Search(key:String) extends ConnectorMessage
+case class SearchTitle(title:String) extends ConnectorMessage
+case class SearchAlbum(album:String) extends ConnectorMessage
 
 /* -------------- actions */
 case object ClearPlaylist extends ConnectorMessage
