@@ -38,3 +38,8 @@ function getBrowserUrl() {
 function toUriComponent(str) {
   return encodeURIComponent(str);
 }
+
+function containsOnlyWhitespace(str) {
+  let regex = /\s/g;
+  return (str.replace(regex, "").length <= 0) ? true : false;
+}

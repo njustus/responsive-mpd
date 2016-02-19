@@ -37,19 +37,24 @@ var libHandler = {
     animateActive(trElem);
   },
   search: function(searchString) {
-    //TODO implement server-side
       let createSearchUri = () => {
         let uri = globalUris.db.search.uri
         let parameters = {}
         let splitted = searchString.split("$");
 
+        if(searchString.length <= 0) {
+          return uri;
+        } else if(containsOnlyWhitespace(searchString)) {
+          return uri;
+        }
+
         for(let item of splitted) {
           let matchObj = /([a-z]+):\s*([\+\.\w\d\s]+)/g.exec(item);
           if(matchObj !== null) {
             switch(matchObj[1]) {
-              case "artist": parameters.artist = matchObj[2]; break;
-              case "album": parameters.album = matchObj[2]; break;
-              case "title": parameters.title = matchObj[2]; break;
+              case "artist": parameters.artist = matchObj[2].trim(); break;
+              case "album": parameters.album = matchObj[2].trim(); break;
+              case "title": parameters.title = matchObj[2].trim(); break;
             }
           }
         }
