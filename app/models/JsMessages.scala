@@ -48,6 +48,4 @@ object JsMessages {
       "isRepeating": ${flag}
       """
   }
-
-  private val parsingError = ValidationError("Can't prove that given json is a JsAction!")
 }
