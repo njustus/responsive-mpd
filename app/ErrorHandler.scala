@@ -37,9 +37,7 @@ class ErrorHandler @Inject() (
     else super.onDevServerError(request, exception)
 
   override def onProdServerError(request: RequestHeader, exception: UsefulException) =
-    Future {
-      exceptionHandler(exception.cause)
-  }
+    Future( exceptionHandler(exception.cause) )
 
   private def exceptionHandler: PartialFunction[Throwable, Result] =
       mpdException.orElse(otherExceptions).andThen { msg => InternalServerError(views.html.error(msg)) }
@@ -54,8 +52,7 @@ class ErrorHandler @Inject() (
     getInnerstException(_) match {
       case exc:ConnectException => "Can't establish connection to the server:\n" + exc.getMessage
       case exc:NoRouteToHostException => "Can't connect to the server:\n" + exc.getMessage
-      case exc:MPDPlayerException =>
-        "Player exception: " + exc.getMessage
+      case exc:MPDPlayerException => "Player exception: " + exc.getMessage
       case exc:MPDTimeoutException => "Timeout exc"
       case exc:MPDConnectionException => "An error occured while connecting to the mpd server:\n " + exc.getMessage
       case exc:MPDException => "An unknown error from mpd occured:\n" + exc.getMessage
