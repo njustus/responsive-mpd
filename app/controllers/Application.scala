@@ -28,8 +28,7 @@ class Application extends AbstractMpdController {
       (mpdConnector ? GetPlaylist).mapTo[List[Title]].flatMap { titles =>
           val mappedTitles = titles.map { x =>
             if(status.actualSong.isDefined && x == status.actualSong.get) {
-              x.isPlaying = status.isPlaying
-              x
+              new Title(x.name, x.artist, x.album, x.length, true)
             }
             else x
           }
