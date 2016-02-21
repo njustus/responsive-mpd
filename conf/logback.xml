@@ -1,5 +1,5 @@
 <configuration>
-    
+
   <conversionRule conversionWord="coloredLevel" converterClass="play.api.Logger$ColoredLevel" />
 
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -7,7 +7,7 @@
       <pattern>%coloredLevel - %logger - %message%n%xException</pattern>
     </encoder>
   </appender>
-  
+
   <!-- append all infos to info.log -->
   <appender name="INFO-LOGFILE" class="ch.qos.logback.core.FileAppender">
     <file>${application.home}/logs/info.log</file>
@@ -41,7 +41,7 @@
   <logger name="play" level="INFO" />
   <logger name="application" level="DEBUG" />
 
-  <root level="INFO">
+  <root level="DEBUG">
     <appender-ref ref="STDOUT" />
     <appender-ref ref="INFO-LOGFILE" />
     <appender-ref ref="ERROR-LOGFILE" />
