@@ -19,13 +19,13 @@ trait MpdSupervisor extends Actor {
   override val supervisorStrategy =
     OneForOneStrategy(maxNrOfRetries = maxRetrys, withinTimeRange = 1 minute) {
       case exc: MPDException =>
-        Logger.error(exc.getMessage + " - restarting actor")
+        log.warn(exc.getMessage + " - restarting actor")
         Restart
-      case npe: NullPointerException =>
-        Logger.error("NullPointerException occured - try solving with restarting actor")
-        Restart
+//      case npe: NullPointerException =>
+//        log.error("NullPointerException occured - try solving with restarting actor")
+//        Restart
       case exc: Exception =>
-        Logger.error(s"EXCEPTION: $exc - escalating actor")
+        log.error(s"EXCEPTION: $exc - escalating actor")
         Escalate
   }
 }
