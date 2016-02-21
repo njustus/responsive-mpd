@@ -5,7 +5,17 @@ This is a web-based and responsive client for the famous [mpd](http://www.musicp
 
 You could install mpd and this client on a Raspberry Pi and control the music-player from your PC, your Tablet or your Smartphone without the need to know 2, 3 different clients.
 
-This client is written with the power of [Scala](http://www.scala-lang.org/), [Akka](http://akka.io/) and [Play!](https://www.playframework.com/)
+This client is using the following frameworks/librarys:
+- [Play!](https://www.playframework.com/)
+(Web Framework - Apache 2 License)
+- [Akka](http://akka.io/)
+(Reactive Framework - Apache 2 License)
+- [JavaMPD](http://www.thejavashop.net/javampd/)
+(mpd protocol implementation in java - GPLv3)
+- [Foundation 6](http://foundation.zurb.com/sites)
+(A responsive front-end framework - MIT License)
+- [jQuery](https://jquery.com/)
+(JavaScript Library - MIT License)
 
 # Get a taste
 Playlist view:
@@ -22,4 +32,3 @@ If you like it and want to try it, follow this steps:
 - change the ```conf/mpd.conf``` file to sweet your needs
 - start the client via ```activator run```
 - open up the client in a web-browser at ```http://<serveradress>:9000```
-
