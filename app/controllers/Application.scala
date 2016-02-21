@@ -19,6 +19,7 @@ class Application extends AbstractMpdController {
   def index = Action { Redirect(routes.Application.playlist()) }
 
   /*
+   * TODO check js errors in chrome, (let isn't supported outside strict-mode)!
    * TODO split up connectors behaviour in several traits, mixin in the behaviour and putting the partialfns together
    * TODO add tooltip-texts to savePlaylist, clearPlaylist, deleteSong, shuffle, repeat, + icons in lib/search
    */
