@@ -5,6 +5,8 @@ import org.bff.javampd.objects.MPDSong
 import play.api.data.validation.ValidationError
 import play.api.libs.json.{ JsValue, Json }
 
+import mpdbackend.MpdConverters
+
 /**
  * JsMessages are '''only''' used for '''server-to-client communication''' over websockets.
  *
@@ -36,6 +38,8 @@ object JsMessages {
       "artist":"${s.getArtistName}",
       "album":"${s.getAlbumName}"
       """
+
+    override def toString(): String = s"JsPlaySong(${MpdConverters.shortMpdSong(s)})"
   }
   case object JsReloadPage extends JsAction(5)
   case class JsShuffling(flag:Boolean) extends JsAction(6) {

@@ -49,7 +49,7 @@ class MpdMonitoringActor(mpd: ActorRef) extends Actor {
           val tmpSong = newSong.get
           song = tmpSong
           fireMsg(JsPlaySong(tmpSong))
-          log.info(s"song changed: $song")
+          log.info(s"song changed: ${MpdConverters.shortMpdSong(song)}")
       }
       if(status.isLooping != isLooping) {
         isLooping = status.isLooping

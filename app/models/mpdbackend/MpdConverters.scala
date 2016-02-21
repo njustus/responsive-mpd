@@ -27,7 +27,15 @@ object MpdConverters {
     instant.atZone(ZoneId.systemDefault()).format(timeFormatter)
   }
 
+  def ifEmptyString(str:String)(fn: => String) = if(str.isEmpty || str.matches("^\\s+$")) fn else str
+
   def mpdSongsToTitles(songs:Collection[MPDSong]): List[Title] = songs.map(mpdSongToTitle(_)).toList
-  def mpdSongToTitle(song:MPDSong, isPlaying:Boolean = false): Title =
-    Title(song.getTitle, song.getArtistName, song.getAlbumName, secondsToMinutesAndSeconds(song.getLength), isPlaying)
+  def mpdSongToTitle(song:MPDSong, isPlaying:Boolean = false): Title = {
+    val title  = ifEmptyString(song.getTitle)("unknown title")
+    val artist = ifEmptyString(song.getArtistName)("unknown artist")
+    val album  = ifEmptyString(song.getAlbumName)("unknown album")
+    Title(title, artist, album, secondsToMinutesAndSeconds(song.getLength), isPlaying)
+  }
+
+  def shortMpdSong(song:MPDSong):String = s"${song.getArtistName} - ${song.getTitle}"
 }
