@@ -200,7 +200,7 @@ class MpdConnector extends Actor {
       }
     case AddUrl(url) =>
       Future {
-        log.error("add-url not supported yet!")
+        log.warn("add-url not supported yet!")
       }
     case GetStatistics =>
       generalStatistic flatMap { general =>
@@ -208,7 +208,7 @@ class MpdConnector extends Actor {
           (general, db)
         }
       } pipeTo(sender)
-    case s:String => println(s"Got msg $s!")
+    case a:Any => log.warn(s"Can't handle this msg: $a")
   }
 }
 

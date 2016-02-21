@@ -24,14 +24,14 @@ class MpdMaster extends Actor with MpdSupervisor {
       context.watch(child)
       ActorRefRoutee(child)
     }
-    log.info(s"Created $sizeOfPool clients - starting supervisor")
+    log.debug(s"Created $sizeOfPool clients - starting supervisor")
     Router(RoundRobinRoutingLogic(), routes)
   }
 
   override def postStop(): Unit = {
     scheduledTask.cancel()
     monitorActor ! PoisonPill
-    log.info("stopped: task-scheduling, monitorActor")
+    log.debug("stopped: task-scheduling, monitorActor")
   }
 
   def receive = {
@@ -45,7 +45,7 @@ class MpdMaster extends Actor with MpdSupervisor {
       val child = context.actorOf(Props[MpdConnector])
       context.watch(child)
       router.addRoutee(child)
-    case any:Any => Logger.warn(s"Can't handle: $any")
+    case any:Any => log.warn(s"Can't handle: $any")
   }
 
   private def sizeOfPool: Int = playConf.getInt("mpd.clientcount").getOrElse(4)

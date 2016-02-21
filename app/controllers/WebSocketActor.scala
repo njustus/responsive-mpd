@@ -17,18 +17,18 @@ class WebSocketActor(out: ActorRef) extends Actor {
   private val mpdConnector = MpdConnector.getMpdActor
 
   mpdConnector ! AddSocketListener
-  log.info("send mpdconnector request for adding as socketlistener")
+  log.debug("send mpdconnector request for adding as socketlistener")
 
   //handle closing of socket: logout from listeners
   override def postStop():Unit = {
     mpdConnector ! RemoveSocketListener
-    log.info("logged out from listeners")
+    log.debug("logged out from listeners")
   }
 
   def receive = {
     case js:JsAction =>
       out ! js.toJson
-      log.info(s"send to client: $js")
+      log.debug(s"send to client: $js")
     case a: Any => log.warn(s"Can't handle this $a")
   }
 }
