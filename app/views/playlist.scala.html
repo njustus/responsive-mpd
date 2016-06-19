@@ -1,143 +1,303 @@
+@*
+ * Copyright (C) 2015, 2016 Nicola Justus <nicola.justus@mni.thm.de>
+ * 
+ * This file is part of Responsive mpd.
+ * 
+ * Responsive mpd is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * Responsive mpd is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Responsive mpd.  If not, see <http://www.gnu.org/licenses/>.
+ *@
 @import templates._
+
 @import models.MpdStatus
+
 @import play.api.mvc.RequestHeader
+
+
 
 @(titles:List[Title], playlists:List[String])(implicit header:RequestHeader, status:MpdStatus)
 
+
+
 @playerControl(lbl:Option[String], id:String)(css:String*)={
+
   <li id="@id" class="button @css.mkString(" ")" >
+
     @lbl.getOrElse("")
+
   </li>
+
 }
+
+
 
 @centeredColumn(size:Int, id:Option[String]=None)(content:Html)={
+
   <div class="column large-centered large-@size"
+
     @if(id.isDefined) {
+
       id="@id.get"
+
     }
+
   >
+
     @content
+
   </div>
+
 }
 
+
+
 @side("Playlist", true) {
+
   <div class="row align-center">
+
     @centeredColumn(4, Some("actual-song-line-container")) {
+
       <span id="actual-song-line">
+
         @status.actualSong match {
+
          case Some(song) => { @song.artist - @song.name }
+
          case None => { }
+
         }
+
       </span>
+
     }
+
   </div>
+
   <div class="row align-center">
+
     @centeredColumn(4) {
+
       <ul class="button-group">
+
         @playerControl(None, "prev-btn")("small", "fi-previous")
 
+
+
         @if(status.isPlaying) {
+
           @playerControl(None, "stop-btn")("fi-stop", "left-6-pt")
+
         } else {
+
             @playerControl(None, "stop-btn")("fi-play", "left-6-pt")
+
         }
+
+
 
         @playerControl(None, "next-btn")("small", "fi-next", "left-6-pt")
 
+
+
         @if(status.isLooping) {
+
             @playerControl(None, "repeat-btn")("small", "fi-refresh", "left-6-pt")
+
         } else {
+
           @playerControl(None, "repeat-btn")("small", "fi-refresh", "hollow", "left-6-pt")
+
         }
+
         @if(status.isShuffling) {
+
           @playerControl(None, "shuffle-btn")("small", "fi-shuffle", "left-6-pt")
+
         } else {
+
           @playerControl(None, "shuffle-btn")("small", "fi-shuffle", "hollow", "left-6-pt")
+
         }
+
       </ul>
+
     }
+
   </div>
+
   <div class="row align-center">
+
     @centeredColumn(4) {
+
         <span>Volume</span>
+
         <button id="volume-minus-btn" class="small button rounded-edges fi-minus progressbar-button"></button>
+
         <div class="progress" role="progressbar" tabindex="0"
+
           aria-valuenow="50" aria-valuemin="0" aria-valuetext="50 percent" aria-valuemax="100"
+
           style="width:30%; display:inline-flex;"
+
         >
+
           <div class="progress-meter" style="width: @{status.volume}%"></div>
+
         </div>
+
         <button id="volume-plus-btn" class="small button rounded-edges fi-plus progressbar-button"></button>
+
     }
+
   </div>
+
   <div class="row">
+
     @centeredColumn(4) {
+
       @change_playlist(playlists)
+
       @*
+
         <button class="button success" type="button"
+
           data-toggle="add-url-modal"
+
         >Add URL</button>
+
       *@
+
     }
+
   </div>
+
+
+
 
 
   <table id="playlist-table" class="full-width">
+
     <thead>
+
       <tr>
+
         <td>
+
             <a data-toggle="save-playlist-modal" class="fi-save size-60"
+
               id="save-playlist-btn"></a>
+
             <a href="@routes.Player.clearPlaylist">
+
               <span class="fi-page-delete size-60 step red"
+
                   id="clear-playlist-btn">
+
               </span>
+
             </a>
+
         </td>
+
         <td>#</td>
+
         <td>Title</td>
+
         <td>Length</td>
+
       </tr>
+
     </thead>
+
     <tbody>
+
     	@if(titles.isEmpty) {
+
     		<td></td>
+
     		<td></td>
+
     		<td>Empty playlist</td>
+
     		<td></td>
+
     	} else {
+
       		@titles.zipWithIndex.map(x => playlist_line(x._1, x._2))
+
       	}
+
     </tbody>
+
   </table>
 
+
+
   <div class="reveal" id="save-playlist-modal" data-reveal>
+
     <p>Save the playlist as:</p>
+
     <form action="@routes.Player.savePlaylist" method="post">
+
       <div class="input-group">
+
       <input class="input-group-field" type="text" placeholder="awesome-playlist-name" name="playlistname">
+
       <div class="input-group-button">
+
         <input type="submit" class="button" value="save">
+
       </div>
+
     </div></form>
 
+
+
     <button class="close-button" data-close aria-label="Close reveal" type="button">
+
       <span aria-hidden="true">&times;</span>
+
     </button>
+
   </div>
+
+
 
   <div class="reveal" id="add-url-modal" data-reveal>
+
     <p>Add URL to Playlist:</p>
+
     <form action="@routes.Player.addUrl" method="post">
+
       <div class="input-group">
+
       <input class="input-group-field" type="text" placeholder="/home/user/music/awesome.mp3" name="url">
+
       <div class="input-group-button">
+
         <input type="submit" class="button" value="add">
+
       </div>
+
     </div></form>
 
+
+
     <button class="close-button" data-close aria-label="Close reveal" type="button">
+
       <span aria-hidden="true">&times;</span>
+
     </button>
+
   </div>
+
 }

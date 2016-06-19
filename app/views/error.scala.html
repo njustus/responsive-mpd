@@ -1,29 +1,75 @@
+@*
+ * Copyright (C) 2015, 2016 Nicola Justus <nicola.justus@mni.thm.de>
+ * 
+ * This file is part of Responsive mpd.
+ * 
+ * Responsive mpd is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * Responsive mpd is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Responsive mpd.  If not, see <http://www.gnu.org/licenses/>.
+ *@
 @import templates._
+
+
 
 @(msg:String)
 
+
+
 <!DOCTYPE html>
 
+
+
 <html lang="de">
+
     <head>
+
     	<meta name="viewport" content="width=device-width">
+
     	<meta charset="UTF-8">
+
       @head("MPD - Error")
+
     </head>
+
     <body>
+
         @menu("MPD - Error")
+
         <div class="row">
+
           <div class="small-9 small-centered columns">
+
             <div class="alert callout" style="margin-top: 5%;">
+
               <p style="text-align:center;" class="bold">An error occured while handling your request!</p>
+
               <p style="text-align:center;">@msg</p>
+
             </div>
+
           </div>
+
         </div>
 
+
+
         <script>
+
           $(document).foundation();
+
         </script>
+
     </body>
+
 </html>
+
         

@@ -1,43 +1,103 @@
+@*
+ * Copyright (C) 2015, 2016 Nicola Justus <nicola.justus@mni.thm.de>
+ * 
+ * This file is part of Responsive mpd.
+ * 
+ * Responsive mpd is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * Responsive mpd is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Responsive mpd.  If not, see <http://www.gnu.org/licenses/>.
+ *@
 @(activeSide:String)
 
+
+
 @defining(List(
+
     "Playlist" -> controllers.routes.Application.index,
+
     "Library" -> controllers.routes.Application.lib(None, None),
+
     "Stream" -> controllers.routes.Application.stream,
+
     "About" -> controllers.routes.Application.about
+
   )) { sides =>
 
+
+
 <div class="title-bar" data-responsive-toggle="main-menu" data-hide-for="medium">
+
         <button class="menu-icon" type="button" data-toggle></button>
+
         <div class="title-bar-title">Menu</div>
+
       </div>
+
+
+
 
 
     <div class="top-bar" id="main-menu">
+
       <div class="top-bar-left">
+
         <ul class="vertical medium-horizontal menu">
+
           @sides.map { case (name, route) =>
+
             @if(name == activeSide) {
+
               <li class="bold">
+
             } else {
+
               <li>
+
             }
+
            		@if(name == "Stream") {
+
            			<a href="@route" target="_blank">@name</a>
+
            		} else {
+
            			<a href="@route">@name</a>
+
            		}
+
             	</li>
+
           }
+
         </ul>
+
       </div>
+
       <div class="top-bar-right">
+
       </div>
+
       <div class="top-bar-right">
+
         <ul class="menu">
+
             <li><input type="search" placeholder="Search in DB"></li>
+
             <li><button type="button" class="button" id="search-btn">Search</button></li>
+
         </ul>
+
       </div>
+
     </div>
+
 }
