@@ -32,3 +32,8 @@ If you like it and want to try it, follow this steps:
 - change the ```conf/mpd.conf``` file to sweet your needs
 - start the client via ```activator run```
 - open up the client in a web-browser at ```http://<serveradress>:9000```
+
+# License
+Responsive mpd is distributed under the terms of the
+__GNU General Public License Version 3__ -
+see *LICENSE* file for copying permission.
