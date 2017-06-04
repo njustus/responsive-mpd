@@ -1,15 +1,27 @@
 import { Component } from '@angular/core'
 import { Song } from '../models/song'
+import { PlaylistService } from '../services/playlist.service'
 
 @Component({
   selector: 'playlist',
   templateUrl: './playlist.html'
 })
 export class PlaylistComponent  {
-	songs:[Song] = [
-    new Song("Last Hope", "Paramore", "Self-titled", 3.50),
-    new Song("Until it's gone", "Linkin Park", "Living Things", 3.24),
-    new Song("Last Night", "Blink-182", "Neighbourhoods", 2.33),
-    new Song("OK", "Robin Schulz", "Uncovered", 5.40, true),
-  ]
+  playlistService:PlaylistService
+
+  constructor(playlistService:PlaylistService) {
+    this.playlistService = playlistService
+    //this.playlistService.currentSongEmitter.subscribe((song:Song) => console.log("Song changed to: ", song))
+  }
+
+  getSongs():[Song] {
+    return this.playlistService.getCurrentPlaylist()
+  }
+  playingSong():Song {
+    return this.playlistService.getPlayingSong()
+  }
+
+  playSong(song:Song):void {
+    this.playlistService.setCurrentSong(song)
+  }
 }

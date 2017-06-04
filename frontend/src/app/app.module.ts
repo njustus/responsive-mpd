@@ -16,6 +16,8 @@ import { PlaylistComponent } from './playlist/playlist.component'
 import { SearchComponent } from './search/search.component'
 import { LibraryComponent } from './library/library.component'
 
+import {PlaylistService} from './services/playlist.service'
+
 @NgModule({
   imports: [
     NoopAnimationsModule,
@@ -35,6 +37,9 @@ import { LibraryComponent } from './library/library.component'
     LibraryComponent,
     SearchComponent,
     PlayerComponent
+  ],
+  providers: [
+    PlaylistService
   ],
   bootstrap:    [ AppComponent ]
 })

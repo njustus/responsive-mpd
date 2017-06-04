@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'
-import { Song } from '../song/song'
+import { Song } from '../models/song'
 
 @Component({
   selector: 'library',

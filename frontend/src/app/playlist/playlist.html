@@ -6,8 +6,8 @@
 		</md-nav-list>
 	</md-sidenav>
 	<md-list>
-		<md-list-item *ngFor="let song of songs">
-			<md-icon *ngIf="song.playing" md-list-icon color="accent">play_arrow</md-icon>
+		<md-list-item *ngFor="let song of getSongs()" (click)="playSong(song)">
+			<md-icon *ngIf="song === playingSong()" md-list-icon color="accent">play_arrow</md-icon>
 			<h3 md-line> {{song.title}} </h3>
 	    <p md-line>
 	      {{song.artist}} -

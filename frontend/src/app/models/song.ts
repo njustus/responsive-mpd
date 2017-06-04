@@ -3,13 +3,11 @@ export class Song {
 	readonly artist:string
 	readonly album:string
 	readonly length:number
-	readonly playing:boolean
 
-	constructor(title:string,artist:string,album:string,length:number, playing:boolean=false) {
+	constructor(title:string,artist:string,album:string,length:number) {
 			this.title = title
 			this.artist = artist
 			this.album = album
 			this.length = length
-			this.playing = playing
 		}
 }
