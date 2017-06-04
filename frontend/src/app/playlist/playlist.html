@@ -1,0 +1,11 @@
+<md-list>
+	<md-list-item *ngFor="let song of songs">
+		<md-icon *ngIf="song.playing" md-list-icon color="accent">play_arrow</md-icon>
+		<h3 md-line> {{song.title}} </h3>
+    <p md-line>
+      {{song.artist}} -
+      <span class="album-label"> {{song.album}} </span>
+    </p>
+		<p>{{song.length | number:'2.2'}}</p>
+	</md-list-item>
+</md-list>
