@@ -11,10 +11,12 @@ export class PlaylistService {
 	  ]
 
 		playingSong:Song
+		currentSongIdx:number
 		currentSongEmitter:EventEmitter<Song> = new EventEmitter()
 
 		constructor() {
-			this.playingSong = this.currentPlaylist[3]
+			this.currentSongIdx = 3
+			this.playingSong = this.currentPlaylist[this.currentSongIdx]
 		}
 
 		getPlayingSong():Song {
@@ -25,8 +27,25 @@ export class PlaylistService {
 			return this.currentPlaylist
 		}
 
+		private songChanged(): void {
+			this.currentSongEmitter.emit(this.playingSong)
+		}
+
 		setCurrentSong(song:Song):void {
 			this.playingSong = song
-			this.currentSongEmitter.emit(this.playingSong)
+			this.currentSongIdx = this.currentPlaylist.findIndex((s:Song) => s === song)
+			this.songChanged()
+		}
+
+		playNextSong(): void {
+			this.currentSongIdx+=1
+			this.playingSong = this.currentPlaylist[this.currentSongIdx]
+			this.songChanged()
+		}
+
+		playPrevSong(): void {
+			this.currentSongIdx-=1
+			this.playingSong = this.currentPlaylist[this.currentSongIdx]
+			this.songChanged()
 		}
 }

@@ -12,8 +12,25 @@ export class PlayerComponent  {
 
   constructor(playlistService:PlaylistService) {
     this.playlistService = playlistService
-    console.log("current song: ", playlistService.getPlayingSong())
     this.currentSong = playlistService.getPlayingSong()
-    this.playlistService.currentSongEmitter.subscribe((song:Song) => this.currentSong = song)
+    this.playlistService.currentSongEmitter.subscribe((song:Song) => {
+      this.currentSong = song
+    })
+  }
+
+  togglePlay():void {
+    if(this.playlistService.getPlayingSong() === undefined) {
+      this.playlistService.setCurrentSong(this.playlistService.getCurrentPlaylist()[0])
+    } else {
+      this.playlistService.setCurrentSong(undefined)
+    }
+  }
+
+  nextSong():void {
+    this.playlistService.playNextSong()
+  }
+
+  prevSong():void {
+    this.playlistService.playPrevSong()
   }
 }
