@@ -8,7 +8,8 @@ import { MdSidenavModule,
         MdIconModule,
         MdToolbarModule,
         MdTabsModule,
-        MdInputModule, } from '@angular/material'
+        MdInputModule,
+        MdTooltipModule } from '@angular/material'
 
 import { AppComponent }  from './app.component'
 import { PlayerComponent } from './player/player.component'
@@ -30,6 +31,7 @@ import {PlaylistService} from './services/playlist.service'
     MdToolbarModule,
     MdTabsModule,
     MdInputModule,
+    MdTooltipModule
     ],
   declarations: [
     AppComponent,
